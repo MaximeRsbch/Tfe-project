@@ -56,12 +56,11 @@ async function createComment() {
                     </h1>
                     <div class="flex justify-center">
                         <p class="pt-4 max-w-3xl text-justify">
-                            {{ attributes.descriptions }}
+                            {{ attributes.FullDescrib }}
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 </template>

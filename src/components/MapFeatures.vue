@@ -60,21 +60,21 @@ const removeResults = () => {
     >
         <!-- Search-->
         <div class="relative flex-1 md:min-w-[350px]">
-            {{ searchQuery }}
-
-            {{ searchResults }}
-            {{ selectedResult }}
             <!-- Input-->
-            <input
-                v-model="searchQuery"
-                class="pl-9 pr-4 py-3 text-sm focus:outline-none w-full shadow-md rounded-md"
-                type="text"
-                placeholder="Start your search"
-                @input="search"
-                @focus="$emit('toggleSearchResults')"
-            />
+            <div class="pt-10">
+                <input
+                    v-model="searchQuery"
+                    class="pl-9 pr-4 py-3 text-sm focus:outline-none w-full shadow-md rounded-md"
+                    type="text"
+                    placeholder="Start your search"
+                    @input="search"
+                    @focus="$emit('toggleSearchResults')"
+                />
+            </div>
             <!-- search icon-->
-            <div class="absolute top-0 left-[8px] h-full flex items-center">
+            <div
+                class="absolute top-0 left-[8px] h-full flex items-center pt-10"
+            >
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <!-- Search result-->
@@ -121,18 +121,20 @@ const removeResults = () => {
             </div>
         </div>
         <!-- Geolocation-->
-        <div
-            class="px-4 bg-white flex items-center shadow-md rounded-md min-h-[45px]"
-            :class="{ 'bg-black': coords }"
-        >
-            <i
-                class="fas fa-location-arrow text-slate-600 text-[18px]"
-                :class="{
-                    'text-salte-600': coords,
-                    'animate-pulse': fetchCoords,
-                }"
-                @click="$emit('getGeolocation')"
-            ></i>
+        <div class="pt-10">
+            <div
+                class="px-4 bg-white flex items-center shadow-md rounded-md min-h-[45px]"
+                :class="{ 'bg-black': coords }"
+            >
+                <i
+                    class="fas fa-location-arrow text-slate-600 text-[18px]"
+                    :class="{
+                        'text-salte-600': coords,
+                        'animate-pulse': fetchCoords,
+                    }"
+                    @click="$emit('getGeolocation')"
+                ></i>
+            </div>
         </div>
     </div>
 </template>
