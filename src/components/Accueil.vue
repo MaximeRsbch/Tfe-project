@@ -36,7 +36,8 @@ onMounted(() => {
 
     getGeoLocation();
     plotInfo();
-    queuetime.fetchQueueTime();
+    queuetime.fetchQueueTimeWalibi();
+    queuetime.fetchQueueTimeEnergy();
 });
 
 const coords = ref(null);
@@ -146,22 +147,75 @@ const removeResult = () => {
     map.removeLayer(resultMarker.value);
 };
 
-const test = computed(() => queuetime.getQueueTimes);
+const queuetimeWalibi = computed(() => queuetime.getQueueTimesWalibi);
 
-const location = [
-    ["Vampire", 50.69977661301508, 4.593864012988636, test.value[48]],
-    ["Radja", 50.70230283921515, 4.591885596073698, test.value[37]],
-    ["Loup", 50.700759712506, 4.590341917711024, test.value[50]],
-    ["Cobra", 50.70049381391455, 4.593959463970398, test.value[11]],
-    ["Pulsar", 50.69935099850555, 4.590583087541805, test.value[36]],
-    ["Calamity", 50.699113379933955, 4.587394287601669, test.value[9]],
-    ["Dalton", 50.69883615674339, 4.588037406936669, test.value[12]],
-    ["Kondaa", 50.697218045811205, 4.5853398787353274, test.value[25]],
+const queuetimeEnergy = computed(() => queuetime.getQueueTimesEnergy);
+
+const walibiLocation = [
+    [
+        "Vampire",
+        50.69977661301508,
+        4.593864012988636,
+        queuetimeWalibi.value[48],
+    ],
+    ["Radja", 50.70230283921515, 4.591885596073698, queuetimeWalibi.value[37]],
+    ["Loup", 50.700759712506, 4.590341917711024, queuetimeWalibi.value[50]],
+    ["Cobra", 50.70049381391455, 4.593959463970398, queuetimeWalibi.value[11]],
+    ["Pulsar", 50.69935099850555, 4.590583087541805, queuetimeWalibi.value[36]],
+    [
+        "Calamity",
+        50.699113379933955,
+        4.587394287601669,
+        queuetimeWalibi.value[9],
+    ],
+    ["Dalton", 50.69883615674339, 4.588037406936669, queuetimeWalibi.value[12]],
+    [
+        "Kondaa",
+        50.697218045811205,
+        4.5853398787353274,
+        queuetimeWalibi.value[25],
+    ],
+];
+
+const energyLocation = [
+    [
+        "hyperion",
+        50.00047086880883,
+        19.411556348514026,
+        queuetimeEnergy.value[19],
+    ],
+    ["atlantis", 50.0011398047901, 19.40886341052339, queuetimeEnergy.value[7]],
+    [
+        "anakonda",
+        50.001236351500275,
+        19.405644759612045,
+        queuetimeEnergy.value[12],
+    ],
+    [
+        "zadra",
+        50.001850108083175,
+        19.404046162956252,
+        queuetimeEnergy.value[51],
+    ],
+    [
+        "frida",
+        50.002201807760045,
+        19.401203021441635,
+        queuetimeEnergy.value[16],
+    ],
+    ["mayan", 50.001794939282796, 19.40606318423004, queuetimeEnergy.value[30]],
+    [
+        "boomerange",
+        50.001567367270106,
+        19.40847717246866,
+        queuetimeEnergy.value[9],
+    ],
 ];
 
 const attractionMarkers = ref(null);
 const showModalResults = ref(false);
 const showAttractionResults = ref(null);
+
 const plotInfo = () => {
     // create custom marker
     const customMarker = leaflet.icon({
@@ -176,9 +230,9 @@ const plotInfo = () => {
         })
         .addTo(map);
 
-    for (var i = 0; i < location.length; i++) {
+    for (var i = 0; i < walibiLocation.length; i++) {
         leaflet
-            .marker([location[i][1], location[i][2]])
+            .marker([walibiLocation[i][1], walibiLocation[i][2]])
             .addTo(map)
             .on("click", function (e) {
                 showModalResults.value = true;
@@ -186,49 +240,100 @@ const plotInfo = () => {
                     e.latlng.lat == 50.69977661301508 &&
                     e.latlng.lng == 4.593864012988636
                 ) {
-                    showAttractionResults.value = test.value[48];
+                    showAttractionResults.value = queuetimeWalibi.value[48];
                 }
                 if (
                     e.latlng.lat == 50.70230283921515 &&
                     e.latlng.lng == 4.591885596073698
                 ) {
-                    showAttractionResults.value = test.value[37];
+                    showAttractionResults.value = queuetimeWalibi.value[37];
                 }
                 if (
                     e.latlng.lat == 50.700759712506 &&
                     e.latlng.lng == 4.590341917711024
                 ) {
-                    showAttractionResults.value = test.value[50];
+                    showAttractionResults.value = queuetimeWalibi.value[50];
                 }
                 if (
                     e.latlng.lat == 50.70049381391455 &&
                     e.latlng.lng == 4.593959463970398
                 ) {
-                    showAttractionResults.value = test.value[11];
+                    showAttractionResults.value = queuetimeWalibi.value[11];
                 }
                 if (
                     e.latlng.lat == 50.69935099850555 &&
                     e.latlng.lng == 4.590583087541805
                 ) {
-                    showAttractionResults.value = test.value[36];
+                    showAttractionResults.value = queuetimeWalibi.value[36];
                 }
                 if (
                     e.latlng.lat == 50.699113379933955 &&
                     e.latlng.lng == 4.587394287601669
                 ) {
-                    showAttractionResults.value = test.value[9];
+                    showAttractionResults.value = queuetimeWalibi.value[9];
                 }
                 if (
                     e.latlng.lat == 50.69883615674339 &&
                     e.latlng.lng == 4.588037406936669
                 ) {
-                    showAttractionResults.value = test.value[12];
+                    showAttractionResults.value = queuetimeWalibi.value[12];
                 }
                 if (
                     e.latlng.lat == 50.697218045811205 &&
                     e.latlng.lng == 4.5853398787353274
                 ) {
-                    showAttractionResults.value = test.value[25];
+                    showAttractionResults.value = queuetimeWalibi.value[25];
+                }
+            });
+    }
+
+    for (var i = 0; i < energyLocation.length; i++) {
+        leaflet
+            .marker([energyLocation[i][1], energyLocation[i][2]])
+            .addTo(map)
+            .on("click", function (e) {
+                showModalResults.value = true;
+                if (
+                    e.latlng.lat == 50.00047086880883 &&
+                    e.latlng.lng == 19.411556348514026
+                ) {
+                    showAttractionResults.value = queuetimeEnergy.value[19];
+                }
+                if (
+                    e.latlng.lat == 50.0011398047901 &&
+                    e.latlng.lng == 19.40886341052339
+                ) {
+                    showAttractionResults.value = queuetimeEnergy.value[7];
+                }
+                if (
+                    e.latlng.lat == 50.001236351500275 &&
+                    e.latlng.lng == 19.405644759612045
+                ) {
+                    showAttractionResults.value = queuetimeEnergy.value[12];
+                }
+                if (
+                    e.latlng.lat == 50.001850108083175 &&
+                    e.latlng.lng == 19.404046162956252
+                ) {
+                    showAttractionResults.value = queuetimeEnergy.value[51];
+                }
+                if (
+                    e.latlng.lat == 50.002201807760045 &&
+                    e.latlng.lng == 19.401203021441635
+                ) {
+                    showAttractionResults.value = queuetimeEnergy.value[16];
+                }
+                if (
+                    e.latlng.lat == 50.001794939282796 &&
+                    e.latlng.lng == 19.40606318423004
+                ) {
+                    showAttractionResults.value = queuetimeEnergy.value[30];
+                }
+                if (
+                    e.latlng.lat == 50.001567367270106 &&
+                    e.latlng.lng == 19.40847717246866
+                ) {
+                    showAttractionResults.value = queuetimeEnergy.value[9];
                 }
             });
     }
@@ -255,6 +360,7 @@ const removeAttrResults = () => {
             :fetchCoords="fetchCoords"
             :searchResults="searchResults"
         />
+
         <div
             v-if="showModalResults"
             class="h-screen w-full absolute z-10 flex justify-center items-start pt-[125px] bg-black/50"

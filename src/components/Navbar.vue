@@ -8,7 +8,6 @@ import jwtDecode from "jwt-decode";
 const links = [
     { label: "Accueil", href: "/" },
     { label: "Features", href: "/features" },
-    { label: "Contact", href: "/contact" },
 ];
 
 onMounted(() => {
@@ -39,9 +38,9 @@ const goToLogin = () => {
                 <a href="/" class="h-full flex items-center">
                     <img
                         id="logo"
-                        src=""
+                        src="../assets/img/WatchUrPark.png"
                         alt="Logo"
-                        class="w-44 lg:bg-white lg:rounded-md lg:px-4 lg:py-2"
+                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 w-32"
                     />
                 </a>
                 <nav

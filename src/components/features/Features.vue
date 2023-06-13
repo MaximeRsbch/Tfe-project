@@ -4,6 +4,7 @@ import { useImageStore } from "../../stores/image.js";
 import { BASE_URL } from "../../common/config.js";
 import { RouterLink } from "vue-router";
 import { useRouter } from "vue-router";
+import CommentSection from "./CommentSection.vue";
 
 const imageStore = useImageStore();
 
@@ -61,6 +62,7 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
                     </div>
                 </div>
             </div>
+            <CommentSection />
         </div>
     </div>
 </template>

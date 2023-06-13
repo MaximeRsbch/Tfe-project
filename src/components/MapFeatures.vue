@@ -101,20 +101,6 @@ const removeResults = () => {
                     <!-- Ici faudra mettre les images du parc, avis, étoiles et bondée ou pas -->
                     <h1 class="text-lg">{{ selectedResult.text }}</h1>
 
-                    <div class="flex justify-center pt-3">
-                        <button
-                            class="px-5 py-2 bg-stone-500 rounded-lg text-white"
-                        >
-                            Démarrer navigation
-                        </button>
-                    </div>
-                    <div class="flex justify-center pt-3">
-                        <button
-                            class="px-5 py-2 bg-stone-500 rounded-lg text-white"
-                        >
-                            Afficher la carte complète du parc
-                        </button>
-                    </div>
                     <p class="text-xs mb-1">
                         {{ selectedResult.properties.address }},
                         {{ selectedResult.city }}, {{ selectedResult.state }}
@@ -128,11 +114,14 @@ const removeResults = () => {
         <!-- Geolocation-->
         <div
             class="px-4 bg-white flex items-center shadow-md rounded-md min-h-[45px]"
-            :class="{ 'bg-slate-600': coords }"
+            :class="{ 'bg-black': coords }"
         >
             <i
                 class="fas fa-location-arrow text-slate-600 text-[18px]"
-                :class="{ 'text-white': coords, 'animate-pulse': fetchCoords }"
+                :class="{
+                    'text-salte-600': coords,
+                    'animate-pulse': fetchCoords,
+                }"
                 @click="$emit('getGeolocation')"
             ></i>
         </div>

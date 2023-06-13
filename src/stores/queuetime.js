@@ -3,22 +3,36 @@ import { CapacitorHttp } from "@capacitor/core";
 
 export const useQueueTimeStore = defineStore("queuetime", {
     state: () => ({
-        queueTimeDict: {},
+        queueTimeDictWalibi: {},
+        queueTimeDictEnergy: {},
     }),
     getters: {
-        getQueueTimes: (state) => Object.values(state.queueTimeDict),
+        getQueueTimesWalibi: (state) =>
+            Object.values(state.queueTimeDictWalibi),
+        getQueueTimesEnergy: (state) =>
+            Object.values(state.queueTimeDictEnergy),
     },
     actions: {
-        async fetchQueueTime() {
+        async fetchQueueTimeWalibi() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/queuetime",
+                url: "http://localhost:3000/api/queuetime/14",
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                console.log(res.data.rides);
-                this.queueTimeDict = res.data.rides;
+                this.queueTimeDictWalibi = res.data.rides;
+            });
+        },
+        async fetchQueueTimeEnergy() {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: "http://localhost:3000/api/queuetime/317",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.queueTimeDictEnergy = res.data.rides;
             });
         },
     },
