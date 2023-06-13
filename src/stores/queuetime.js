@@ -16,7 +16,7 @@ export const useQueueTimeStore = defineStore("queuetime", {
         async fetchQueueTimeWalibi() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/queuetime/14",
+                url: "http://10.0.2.2:3000/api/queuetime/14",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -27,7 +27,7 @@ export const useQueueTimeStore = defineStore("queuetime", {
         async fetchQueueTimeEnergy() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/queuetime/317",
+                url: "http://10.0.2.2:3000/api/queuetime/317",
                 headers: {
                     "Content-Type": "application/json",
                 },

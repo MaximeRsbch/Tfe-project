@@ -12,7 +12,7 @@ export const useCommentStore = defineStore("comment", {
         async comment(content) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/comment",
+                url: "http://10.0.2.2:3000/api/comment",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -26,7 +26,7 @@ export const useCommentStore = defineStore("comment", {
         async recupComment() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/comments",
+                url: "http://10.0.2.2:3000/api/comments",
                 headers: {
                     "Content-Type": "application/json",
                 },

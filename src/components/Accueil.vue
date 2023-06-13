@@ -30,10 +30,6 @@ onMounted(() => {
         )
         .addTo(map);
 
-    map.on("moveend", () => {
-        closeSearchResults();
-    });
-
     getGeoLocation();
     plotInfo();
     queuetime.fetchQueueTimeWalibi();

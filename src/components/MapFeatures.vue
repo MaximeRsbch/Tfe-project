@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { CapacitorHttp } from "@capacitor/core";
 import LoadingSpinner from "../components/LoadingSpinner.vue";
 
 const props = defineProps({
@@ -30,9 +31,13 @@ const search = () => {
                     ? `${props.coords.lng},${props.coords.lat}`
                     : "0,0",
             });
-            const getData = await axios.get(
-                `http://localhost:3000/api/search/${searchQuery.value}?${params}`
-            );
+            const getData = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/search/${searchQuery.value}?${params}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             searchData.value = getData.data.features;
             console.log(searchData.value);
         }
@@ -55,6 +60,10 @@ const removeResults = () => {
     >
         <!-- Search-->
         <div class="relative flex-1 md:min-w-[350px]">
+            {{ searchQuery }}
+
+            {{ searchResults }}
+            {{ selectedResult }}
             <!-- Input-->
             <input
                 v-model="searchQuery"

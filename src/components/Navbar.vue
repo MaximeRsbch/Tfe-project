@@ -38,7 +38,7 @@ const goToLogin = () => {
                 <a href="/" class="h-full flex items-center">
                     <img
                         id="logo"
-                        src="../assets/img/WatchUrPark.png"
+                        src="../assets/img/logo.png"
                         alt="Logo"
                         class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-32 hidden lg:flex"
                     />
