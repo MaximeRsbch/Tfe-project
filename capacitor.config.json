@@ -1,0 +1,14 @@
+{
+    "appId": "com.tfe.app",
+    "appName": "project_tfe",
+    "webDir": "dist",
+    "plugins": {
+        "CapacitorHttp": {
+            "enable": true
+        }
+    },
+    "server": {
+        "androidScheme": "http",
+        "allowNavigation": ["*"]
+    }
+}
