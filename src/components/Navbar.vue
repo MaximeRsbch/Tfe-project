@@ -40,7 +40,7 @@ const goToLogin = () => {
                         id="logo"
                         src="../assets/img/WatchUrPark.png"
                         alt="Logo"
-                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 w-32"
+                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-32 hidden lg:flex"
                     />
                 </a>
                 <nav

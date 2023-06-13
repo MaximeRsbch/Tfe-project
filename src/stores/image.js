@@ -30,7 +30,6 @@ export const useImageStore = defineStore("image", {
                 },
             }).then((res) => {
                 this.imageDict = res.data;
-                console.log(res.data);
             });
         },
     },

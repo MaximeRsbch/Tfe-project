@@ -58,7 +58,6 @@ export const useUsersStore = defineStore("users", {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                console.log(res.data.data);
                 this.usersDict = res.data.data;
             });
         },
@@ -70,7 +69,6 @@ export const useUsersStore = defineStore("users", {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                console.log(res.data.data);
                 this.usersDict = res.data.data;
             });
         },
