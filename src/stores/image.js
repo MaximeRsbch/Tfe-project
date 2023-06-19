@@ -13,7 +13,7 @@ export const useImageStore = defineStore("image", {
         async image() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://10.0.2.2:7064/api/articles?populate=*",
+                url: "http://localhost:7064/api/articles?populate=*",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -24,7 +24,7 @@ export const useImageStore = defineStore("image", {
         async imageById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://10.0.2.2:7064/api/articles/${id}?populate=*`,
+                url: `http://localhost:7064/api/articles/${id}?populate=*`,
                 headers: {
                     "Content-Type": "application/json",
                 },

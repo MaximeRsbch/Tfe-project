@@ -14,7 +14,7 @@ export const useUsersStore = defineStore("users", {
         async login(password, email) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://10.0.2.2:3000/api/login",
+                url: "http://localhost:3000/api/login",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -34,7 +34,7 @@ export const useUsersStore = defineStore("users", {
         async create(password, email, username) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://10.0.2.2:3000/api/register",
+                url: "http://localhost:3000/api/register",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -53,7 +53,7 @@ export const useUsersStore = defineStore("users", {
         async fetchUsers() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://10.0.2.2:3000/api/users",
+                url: "http://localhost:3000/api/users",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -64,7 +64,7 @@ export const useUsersStore = defineStore("users", {
         async fetchUserById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://10.0.2.2:3000/api/users/${id}`,
+                url: `http://localhost:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
