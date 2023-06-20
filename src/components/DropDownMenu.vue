@@ -7,7 +7,8 @@ const router = useRouter();
 
 const logout = () => {
     localStorage.removeItem("savedToken");
-    router.push({ name: "login" });
+
+    window.location.reload();
 };
 </script>
 <template>

@@ -1,7 +1,7 @@
 <script setup>
 import "../scripts/Navbar.js";
 import { useRouter } from "vue-router";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import DropDownMenu from "./DropDownMenu.vue";
 import jwtDecode from "jwt-decode";
 
@@ -15,11 +15,17 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 // const decoded = () => {
 //     if (isConnect.value) {
 //         const tokenDecode = computed(() => jwtDecode(isConnect.value));
-//         console.log(tokenDecode.value);
+//         test.value = tokenDecode.value;
 //     }
 // };
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+// const tokenDecode = computed(() => {
+//     if (isConnect.value) {
+//         return jwtDecode(isConnect.value);
+//     }
+// });
 
 const router = useRouter();
 
@@ -67,13 +73,15 @@ const goToAdminPannel = () => {
 
                         <DropDownMenu v-if="isConnect" />
 
-                        <button
-                            @click="goToAdminPannel"
-                            class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
-                            v-if="tokenDecode.userID == 1"
-                        >
-                            Admin pannel
-                        </button>
+                        <div v-if="isConnect">
+                            <button
+                                @click="goToAdminPannel"
+                                v-if="tokenDecode.userID === 1"
+                                class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                            >
+                                Admin pannel
+                            </button>
+                        </div>
                     </ul>
                     <div
                         class="flex flex-col justify-center items-center gap-6 px-7 lg:hidden text-white"

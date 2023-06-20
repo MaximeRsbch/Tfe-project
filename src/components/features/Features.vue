@@ -17,13 +17,6 @@ onMounted(() => {
 const images = computed(() => imageStore.getImages);
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
-
-const decode = (token) => {
-    const payload = token.split(".")[1];
-    return JSON.parse(atob(payload));
-};
-
-console.log(decode(localStorage.getItem("savedToken")));
 </script>
 
 <template>
