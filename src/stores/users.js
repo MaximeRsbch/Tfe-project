@@ -61,15 +61,16 @@ export const useUsersStore = defineStore("users", {
                 this.usersDict = res.data.data;
             });
         },
-        async fetchUserById(id) {
+
+        async deleteUser(id) {
             const response = await CapacitorHttp.request({
-                method: "GET",
-                url: `http://localhost:3000/api/users/${id}`,
+                method: "DELETE",
+                url: `http://localhost:3000/api/delete/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                this.usersDict = res.data.data;
+                this.fetchUsers();
             });
         },
     },
