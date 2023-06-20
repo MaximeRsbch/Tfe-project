@@ -10,23 +10,25 @@ const links = [
     { label: "Features", href: "/features" },
 ];
 
-onMounted(() => {
-    decoded();
-});
-
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
-const decoded = () => {
-    if (isConnect.value) {
-        const test = jwtDecode(isConnect.value);
-        console.log(test);
-    }
-};
+// const decoded = () => {
+//     if (isConnect.value) {
+//         const tokenDecode = computed(() => jwtDecode(isConnect.value));
+//         console.log(tokenDecode.value);
+//     }
+// };
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const router = useRouter();
 
 const goToLogin = () => {
     router.push({ name: "login" });
+};
+
+const goToAdminPannel = () => {
+    router.push({ name: "adminPannel" });
 };
 </script>
 <template>
@@ -64,6 +66,14 @@ const goToLogin = () => {
                         </button>
 
                         <DropDownMenu v-if="isConnect" />
+
+                        <button
+                            @click="goToAdminPannel"
+                            class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                            v-if="tokenDecode.userID == 1"
+                        >
+                            Admin pannel
+                        </button>
                     </ul>
                     <div
                         class="flex flex-col justify-center items-center gap-6 px-7 lg:hidden text-white"
