@@ -62,6 +62,19 @@ export const useUsersStore = defineStore("users", {
             });
         },
 
+        async fetchUsersForComment() {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: "http://localhost:3000/api/users",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.usersDict = res.data.data;
+                console.log(this.usersDict);
+            });
+        },
+
         async deleteUser(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
@@ -87,6 +100,19 @@ export const useUsersStore = defineStore("users", {
             }).then((res) => {
                 this.fetchUsers();
                 console.log(res);
+            });
+        },
+
+        async fetchOneUser(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/oneuser/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.usersDict = res.data;
+                console.log(this.usersDict);
             });
         },
     },
