@@ -1,15 +1,20 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
+import { useCommentStore } from "../../stores/comment.js";
 import { computed, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
 
 const usersStore = useUsersStore();
+
+const commentStore = useCommentStore();
 
 onMounted(() => {
     usersStore.fetchUsers();
 });
 
 const users = computed(() => usersStore.getUsers);
+
+const canComment = ref(false);
 
 const deleteUsers = (id) => {
     Swal.fire({
@@ -37,14 +42,37 @@ const deleteUsers = (id) => {
         }
     });
 };
+
+const muteUsers = (id) => {
+    Swal.fire({
+        title: "Etes vous sure ?",
+        text: "Cet utilisateur sera mute !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oui, mute !",
+    }).then((result) => {
+        if (result.isConfirmed && id !== 1) {
+            Swal.fire("Mute", "Cet utilisateur a bien été mute.", "success");
+            usersStore.muteUser(id, canComment.value);
+        } else {
+            Swal.fire(
+                "Erreur",
+                "Vous ne pouvez pas mute cet utilisateur.",
+                "error"
+            );
+        }
+    });
+};
 </script>
 <template>
     <div>
         <h1 class="text-center pt-10 text-4xl">Admin panel</h1>
         <p class="text-center pb-10 text-2xl">
             Ici sont afficher tout les utilisateurs pour les modérer
+            {{ users }}
         </p>
-
         <div class="mt-4 flex flex-col container mx-auto">
             <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div
@@ -141,7 +169,10 @@ const deleteUsers = (id) => {
                                     <td
                                         class="whitespace-nowrap px-3 py-4 text-base"
                                     >
-                                        <button @click="" type="button">
+                                        <button
+                                            @click="muteUsers(user.id)"
+                                            type="button"
+                                        >
                                             <img
                                                 src="@/assets/img/mute.png"
                                                 alt="poubelleImg"

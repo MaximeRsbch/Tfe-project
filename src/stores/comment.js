@@ -4,7 +4,6 @@ import { CapacitorHttp } from "@capacitor/core";
 export const useCommentStore = defineStore("comment", {
     state: () => ({
         commentDict: {},
-        CanComment: true,
     }),
     getters: {
         getComments: (state) => Object.values(state.commentDict),
@@ -22,7 +21,6 @@ export const useCommentStore = defineStore("comment", {
                 },
             }).then((res) => {
                 this.commentDict = res.data;
-                CanComment;
             });
         },
         async recupComment() {

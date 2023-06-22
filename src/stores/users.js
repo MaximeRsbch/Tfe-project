@@ -73,5 +73,21 @@ export const useUsersStore = defineStore("users", {
                 this.fetchUsers();
             });
         },
+
+        async muteUser(id, canComment) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/mute/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    canComment,
+                },
+            }).then((res) => {
+                this.fetchUsers();
+                console.log(res);
+            });
+        },
     },
 });
