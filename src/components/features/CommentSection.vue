@@ -12,8 +12,6 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
-console.log(tokenDecode.value.userID);
-
 const id = computed(() => tokenDecode.value.userID);
 
 onMounted(() => {
@@ -42,8 +40,6 @@ async function createComment() {
 const comment = computed(() => commentStore.getComments);
 
 const user = computed(() => usersStore.getUsersById);
-
-console.log(usersStore.getUsersById);
 </script>
 <template>
     <div class="container mx-auto">

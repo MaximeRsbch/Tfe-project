@@ -7,8 +7,13 @@ const router = useRouter();
 
 const logout = () => {
     localStorage.removeItem("savedToken");
-
     window.location.reload();
+};
+
+const goToMyProfile = () => {
+    router.push({
+        name: "profil",
+    });
 };
 </script>
 <template>
@@ -45,6 +50,20 @@ const logout = () => {
                 class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
                 <div class="py-1">
+                    <MenuItem v-slot="{ active }">
+                        <button
+                            @click="goToMyProfile"
+                            type="button"
+                            :class="[
+                                active
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-700',
+                                'block w-full px-4 py-2 text-left text-sm',
+                            ]"
+                        >
+                            Profil
+                        </button>
+                    </MenuItem>
                     <MenuItem v-slot="{ active }">
                         <button
                             @click="logout"

@@ -71,7 +71,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.usersDict = res.data.data;
-                console.log(this.usersDict);
             });
         },
 
@@ -99,7 +98,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.fetchUsers();
-                console.log(res);
             });
         },
 
@@ -112,7 +110,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.usersDict = res.data;
-                console.log(this.usersDict);
             });
         },
     },

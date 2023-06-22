@@ -6,6 +6,7 @@ import LoginView from "../views/LoginView.vue";
 import RegistrationView from "../views/RegistrationView.vue";
 import FullFeatureView from "../views/FullFeaturesView.vue";
 import AdminView from "../views/AdminView.vue";
+import ProfilView from "../views/ProfilView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
             path: "/admin",
             name: "adminPannel",
             component: AdminView,
+        },
+        {
+            path: "/profil",
+            name: "profil",
+            component: ProfilView,
         },
     ],
 });
