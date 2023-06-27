@@ -11,7 +11,7 @@ export const useUsersStore = defineStore("users", {
         getUsersById: (state) => Object.values(state.usersDict),
     },
     actions: {
-        async login(password, email) {
+        async loginUser(password, email) {
             const response = await CapacitorHttp.request({
                 method: "POST",
                 url: "http://localhost:3000/api/login",
@@ -31,7 +31,7 @@ export const useUsersStore = defineStore("users", {
                 }
             });
         },
-        async create(password, email, username) {
+        async createUser(password, email, username) {
             const response = await CapacitorHttp.request({
                 method: "POST",
                 url: "http://localhost:3000/api/register",
@@ -110,6 +110,23 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.usersDict = res.data;
+            });
+        },
+
+        async modifyUser(id, username, email) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/modif/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    username,
+                    email,
+                },
+            }).then((res) => {
+                this.fetchUsers();
+                console.log(res);
             });
         },
     },

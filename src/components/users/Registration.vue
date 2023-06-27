@@ -16,6 +16,7 @@ const goToLogin = () => {
     router.push({ name: "login" });
 };
 
+//Fonction qui permet de s'inscrire (créé un user)
 async function createUsers() {
     if (!password.value || !email.value) {
         return Swal.fire({
@@ -31,7 +32,7 @@ async function createUsers() {
             text: "Veuillez renseigner un nom d'utilisateur !",
         });
     }
-    const body = await usersStore.create(
+    const body = await usersStore.createUser(
         password.value,
         email.value,
         username.value

@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useUsersStore } from "../../stores/users.js";
 import Swal from "sweetalert2";
 
@@ -14,6 +14,7 @@ const goToRegistration = () => {
 const email = ref("");
 const password = ref("");
 
+//Fonction qui permet de se connecter en recherchant l'user dans la bdd
 async function recupUser() {
     if (!password.value || !email.value) {
         return Swal.fire({
@@ -22,7 +23,7 @@ async function recupUser() {
             text: "Veuillez renseigner un mot de passe ou une adresse mail valide !",
         });
     }
-    const body = await usersStore.login(password.value, email.value);
+    const body = await usersStore.loginUser(password.value, email.value);
 }
 </script>
 

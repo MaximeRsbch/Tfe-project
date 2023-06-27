@@ -1,7 +1,7 @@
 <script setup>
 import "../scripts/Navbar.js";
 import { useRouter } from "vue-router";
-import { computed, onMounted, ref } from "vue";
+import { computed } from "vue";
 import DropDownMenu from "./DropDownMenu.vue";
 import jwtDecode from "jwt-decode";
 
@@ -12,20 +12,7 @@ const links = [
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
-// const decoded = () => {
-//     if (isConnect.value) {
-//         const tokenDecode = computed(() => jwtDecode(isConnect.value));
-//         test.value = tokenDecode.value;
-//     }
-// };
-
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
-
-// const tokenDecode = computed(() => {
-//     if (isConnect.value) {
-//         return jwtDecode(isConnect.value);
-//     }
-// });
 
 const router = useRouter();
 

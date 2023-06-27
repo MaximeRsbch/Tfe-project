@@ -1,7 +1,6 @@
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { onMounted, computed } from "vue";
-import { useRouter, RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 

@@ -2,16 +2,17 @@
 import { computed } from "vue";
 import Faq from "./Faq.vue";
 
-const isConnect = computed(() => localStorage.getItem("savedToken"));
+//Récupère le token de l'utilisateur connecté
+const isConnected = computed(() => localStorage.getItem("savedToken"));
 </script>
 <template>
     <div class="mx-auto container">
-        <div v-if="!isConnect">
+        <div v-if="!isConnected">
             <h2 class="flex justify-center items-center">
                 Veuillez vous connecter pour accéder à cette page !
             </h2>
         </div>
-        <div v-if="isConnect">
+        <div v-if="isConnected">
             <h1 class="text-center items-center pt-7 text-2xl">
                 Vous souhaitez nous contacter ? Remplissez ce formulaire
             </h1>

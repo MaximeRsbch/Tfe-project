@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import { CapacitorHttp } from "@capacitor/core";
 import LoadingSpinner from "../components/LoadingSpinner.vue";
 

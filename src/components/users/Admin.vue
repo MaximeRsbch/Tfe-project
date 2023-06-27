@@ -16,6 +16,7 @@ const users = computed(() => usersStore.getUsers);
 
 const canComment = ref(false);
 
+//Fonction qui permet de supprimer un utilisateur
 const deleteUsers = (id) => {
     Swal.fire({
         title: "Etes vous sure ?",
@@ -43,6 +44,7 @@ const deleteUsers = (id) => {
     });
 };
 
+//Fonction qui permet de mute un utilisateur
 const muteUsers = (id) => {
     Swal.fire({
         title: "Etes vous sure ?",
@@ -67,11 +69,10 @@ const muteUsers = (id) => {
 };
 </script>
 <template>
-    <div>
+    <div class="container mx-auto">
         <h1 class="text-center pt-10 text-4xl">Admin panel</h1>
         <p class="text-center pb-10 text-2xl">
             Ici sont afficher tout les utilisateurs pour les modérer
-            {{ users }}
         </p>
         <div class="mt-4 flex flex-col container mx-auto">
             <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -126,6 +127,7 @@ const muteUsers = (id) => {
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
+                                <!--Affiche les info de tous les users-->
                                 <tr
                                     v-for="user in users"
                                     :key="user.id"

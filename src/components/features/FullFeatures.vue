@@ -3,44 +3,23 @@ import { useImageStore } from "../../stores/image.js";
 import { onMounted, computed } from "vue";
 import { BASE_URL } from "../../common/config.js";
 import { useRoute } from "vue-router";
-import { ref } from "vue";
-import Swal from "sweetalert2";
 
 const imageStore = useImageStore();
 const route = useRoute();
 
 const id = route.params.id;
 
+//Récupère l'image spécifique à l'article ouvert
 const image = computed(() => imageStore.getImageById);
 
 onMounted(() => {
-    imageStore.imageById(id);
+    imageStore.recupImageById(id);
 });
-
-const commentContent = ref("");
-
-async function createComment() {
-    if (!commentContent.value) {
-        return Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Veuillez renseigner un commentaire !",
-        });
-    }
-    const body = await imageStore.comment(commentContent.value);
-    if (body) {
-        Swal.fire({
-            icon: "success",
-            title: "Commentaire ajouté !",
-            showConfirmButton: false,
-            timer: 1500,
-        });
-    }
-}
 </script>
 
 <template>
     <div class="mx-auto container px-4 md:px-10 lg:px-0">
+        <!--Récupère et affiche les informations de l'image spécifique-->
         <div v-for="data in image">
             <div v-for="attributes in data">
                 <div v-for="images in attributes.images">

@@ -9,7 +9,7 @@ export const useCommentStore = defineStore("comment", {
         getComments: (state) => Object.values(state.commentDict),
     },
     actions: {
-        async comment(content) {
+        async writeComment(content) {
             const response = await CapacitorHttp.request({
                 method: "POST",
                 url: "http://localhost:3000/api/comment",
@@ -23,12 +23,27 @@ export const useCommentStore = defineStore("comment", {
                 this.commentDict = res.data;
             });
         },
-        async recupComment() {
+        async recupAllComment() {
             const response = await CapacitorHttp.request({
                 method: "GET",
                 url: "http://localhost:3000/api/comments",
                 headers: {
                     "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.commentDict = res.data.data;
+            });
+        },
+
+        async deleteComment(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/deleteComment/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    id,
                 },
             }).then((res) => {
                 this.commentDict = res.data;

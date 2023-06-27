@@ -15,12 +15,13 @@ const tokenDecode = computed(() => jwtDecode(isConnect.value));
 const id = computed(() => tokenDecode.value.userID);
 
 onMounted(() => {
-    commentStore.recupComment();
+    commentStore.recupAllComment();
     usersStore.fetchOneUser(id.value);
 });
 
 const commentContent = ref("");
 
+//fonction qui permet de créer un commentaire
 async function createComment() {
     if (!commentContent.value) {
         return Swal.fire({
@@ -30,35 +31,50 @@ async function createComment() {
         });
     }
 
-    const body = await commentStore.comment(commentContent.value);
+    const body = await commentStore.writeComment(commentContent.value);
 
     if (commentContent.value) {
         window.location.reload();
     }
 }
 
+//Récupère tout les commentaires
 const comment = computed(() => commentStore.getComments);
 
 const user = computed(() => usersStore.getUsersById);
+
+//fonction qui permet de supprimer un commentaire
+const deleteComment = (id) => {
+    Swal.fire({
+        title: "Etes vous sure ?",
+        text: "Cet utilisateur sera définitivement supprimer !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oui, supprimer !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                "Supprimer",
+                "Cet utilisateur a bien été supprimer.",
+                "success"
+            );
+            commentStore.deleteComment(id);
+        } else {
+            Swal.fire(
+                "Erreur",
+                "Vous ne pouvez pas supprimer cet utilisateur.",
+                "error"
+            );
+        }
+    });
+};
 </script>
 <template>
     <div class="container mx-auto">
-        <div class="pt-20">
-            <div class="flex justify-center">
-                <div>
-                    <table class="">
-                        <div v-for="data in comment">
-                            <div v-for="getcomment in data">
-                                <tr class="border border-stone-500 rounded-xl">
-                                    {{
-                                        getcomment.content
-                                    }}
-                                </tr>
-                            </div>
-                        </div>
-                    </table>
-                </div>
-            </div>
+        <div class="">
+            <!-- Show all comment -->
             <div class="mt-4 flex flex-col container mx-auto">
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div
@@ -69,18 +85,37 @@ const user = computed(() => usersStore.getUsersById);
                         >
                             <table class="min-w-full divide-y divide-gray-300">
                                 <tbody
-                                    v-for="data in comment"
                                     class="divide-y divide-gray-200 bg-white"
                                 >
                                     <tr
-                                        v-for="getcomment in data"
-                                        class="cursor-pointer hover:bg-gray-100"
+                                        v-for="data in comment"
+                                        class="hover:bg-gray-100"
                                     >
+                                        <!--Récupère tout les commentaires et les affiches-->
                                         <td
-                                            class="whitespace-nowrap py-4 text-base font-medium text-gray-900 sm:pl-6"
+                                            class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
                                         >
-                                            {{ getcomment.content }}
+                                            {{ data.content }}
                                         </td>
+
+                                        <!--Vérif si c'est l'admin qui est bien connecter si c'est le cas il peut supprimer-->
+                                        <div v-if="tokenDecode.userID === 1">
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                <button
+                                                    @click="
+                                                        deleteComment(data.id)
+                                                    "
+                                                    type="button"
+                                                >
+                                                    <img
+                                                        src="@/assets/img/poubelle.png"
+                                                        alt="poubelleImg"
+                                                    />
+                                                </button>
+                                            </td>
+                                        </div>
                                     </tr>
                                 </tbody>
                             </table>
@@ -88,6 +123,7 @@ const user = computed(() => usersStore.getUsersById);
                     </div>
                 </div>
             </div>
+            <!-- Peut commenter si il est pas mute -->
             <div v-for="data in user">
                 <div v-if="data.canComment == true">
                     <div class="flex justify-center pt-10 pb-10">

@@ -10,7 +10,7 @@ export const useImageStore = defineStore("image", {
         getImageById: (state) => Object.values(state.imageDict),
     },
     actions: {
-        async image() {
+        async recupAllImage() {
             const response = await CapacitorHttp.request({
                 method: "GET",
                 url: "http://localhost:7064/api/articles?populate=*",
@@ -21,7 +21,7 @@ export const useImageStore = defineStore("image", {
                 this.imageDict = res.data;
             });
         },
-        async imageById(id) {
+        async recupImageById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
                 url: `http://localhost:7064/api/articles/${id}?populate=*`,

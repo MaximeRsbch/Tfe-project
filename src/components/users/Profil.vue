@@ -1,7 +1,6 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
 import { onMounted, computed, ref } from "vue";
-
 import jwtDecode from "jwt-decode";
 
 const usersStore = useUsersStore();
@@ -16,12 +15,24 @@ onMounted(() => {
     usersStore.fetchOneUser(id.value);
 });
 
+//Récupère l'utilisateurs connecter
 const user = computed(() => usersStore.getUsersById);
 
 // Modification des données de l'utilisateurs
 
-const username = ref("");
-const email = ref("");
+const username = ref();
+const email = ref();
+
+//A mieux réflechir parce que ça marche aps
+const modifUser = () => {
+    for (let i = 0; i < user.value.length; i++) {
+        if (user.value[i].id === id.value) {
+            username.value = user.value[i].username;
+            email.value = user.value[i].email;
+            usersStore.modifyUser(id.value, username.value, email.value);
+        }
+    }
+};
 </script>
 <template>
     <div>
@@ -37,7 +48,6 @@ const email = ref("");
                             <input
                                 class="block l rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
-                                v-model="username"
                                 :value="data.username"
                             />
                         </div>
@@ -48,12 +58,14 @@ const email = ref("");
                             <input
                                 class="block l rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
-                                v-model="email"
                                 :value="data.email"
                             />
                         </div>
                     </div>
                 </div>
+            </div>
+            <div>
+                <button @click="modifUser">Sauvegarder</button>
             </div>
         </div>
     </div>
