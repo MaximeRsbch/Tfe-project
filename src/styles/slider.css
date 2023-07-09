@@ -1,0 +1,50 @@
+.swiper-slide {
+    text-align: center;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    background-color: #8c8c8c;
+    border-radius: 999px;
+    padding: 30px;
+    z-index: 50;
+    position: absolute;
+    bottom: 0;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    color: white;
+}
+
+.swiper-button-prev {
+    left: 25% !important;
+    bottom: 0 !important;
+    top: 85% !important;
+}
+
+.swiper-button-next {
+    right: 25% !important;
+    bottom: 0 !important;
+    top: 85% !important;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 20px !important;
+}
+
+/* Hero Swiper */
+
+.swiper-slide img {
+    display: block;
+    margin: auto;
+    width: 100%;
+    z-index: 0;
+}
+
+.swiper-slide {
+    width: 390px;
+    height: auto;
+    padding: 0 15px;
+}

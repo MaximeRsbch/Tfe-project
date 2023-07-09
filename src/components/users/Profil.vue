@@ -1,9 +1,13 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
+import { useImageAttractionStore } from "../../stores/imageAttraction.js";
 import { onMounted, computed, ref } from "vue";
 import jwtDecode from "jwt-decode";
+import { BASE_URL } from "../../common/config.js";
 
 const usersStore = useUsersStore();
+
+const imageAttractionStore = useImageAttractionStore();
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -13,6 +17,7 @@ const id = computed(() => tokenDecode.value.userID);
 
 onMounted(() => {
     usersStore.fetchOneUser(id.value);
+    imageAttractionStore.recupAllImageAttraction();
 });
 
 //Récupère l'utilisateurs connecter
@@ -33,6 +38,8 @@ const modifUser = () => {
         }
     }
 };
+
+const image = computed(() => imageAttractionStore.getImagesAttraction);
 </script>
 <template>
     <div>
@@ -66,6 +73,27 @@ const modifUser = () => {
             </div>
             <div>
                 <button @click="modifUser">Sauvegarder</button>
+            </div>
+
+            //FAUT AFFICHER LES IMAGES DE PARC
+
+            <div class="pb-20" v-for="data in image">
+                <div v-for="attributes in data">
+                    <div v-for="images in attributes">
+                        <div v-for="datas in images">
+                            <div v-for="test in datas">
+                                <div v-for="attribute in test">
+                                    {{ attribute.url }}
+                                    <img
+                                        class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
+                                        :src="`${BASE_URL}${attribute.url}`"
+                                        alt=""
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

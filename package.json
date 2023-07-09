@@ -20,6 +20,7 @@
     "mapbox-gl": "^2.15.0",
     "pinia": "^2.0.36",
     "sweetalert2": "^11.7.5",
+    "swiper": "^10.0.4",
     "vue": "^3.3.2",
     "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.2.0"
