@@ -1,18 +1,22 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
-import { useCommentStore } from "../../stores/comment.js";
 import { computed, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
+import { BASE_URL } from "../../common/config.js";
+import { useImageAttractionStore } from "../../stores/imageAttraction.js";
+import "../../scripts/fslightbox.js";
 
 const usersStore = useUsersStore();
-
-const commentStore = useCommentStore();
+const imageAttractionStore = useImageAttractionStore();
 
 onMounted(() => {
     usersStore.fetchUsers();
+    imageAttractionStore.recupAllImageAttraction();
 });
 
 const users = computed(() => usersStore.getUsers);
+
+const image = computed(() => imageAttractionStore.getImagesAttraction);
 
 const canComment = ref(false);
 
@@ -187,6 +191,26 @@ const muteUsers = (id) => {
                     </div>
                 </div>
             </div>
+        </div>
+        <div>
+            <div v-for="data in image">
+                <div v-for="attribute in data.attributes">
+                    <div v-for="attraction in attribute.data">
+                        <a
+                            data-fslightbox="gallery"
+                            :href="attraction.attributes.url"
+                        >
+                            <img
+                                :src="`${BASE_URL}${attraction.attributes.url}`"
+                                alt="Image"
+                            />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a data-fslightbox href="">
+                <img src="" alt="Image" />
+            </a>
         </div>
     </div>
 </template>

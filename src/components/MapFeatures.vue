@@ -94,6 +94,7 @@ const removeResults = () => {
                         >
                             <i class="fa-sharp fa-solid fa-location-dot"></i>
                             <p class="text-xs">{{ result.place_name_fr }}</p>
+                            {{ result }}
                         </div>
                     </div>
                 </div>
@@ -108,6 +109,18 @@ const removeResults = () => {
                     ></i>
                     <!-- Ici faudra mettre les images du parc, avis, étoiles et bondée ou pas -->
                     <h1 class="text-lg">{{ selectedResult.text }}</h1>
+                    <div
+                        class="flex justify-center"
+                        v-if="selectedResult.text == 'Walibi Belgium'"
+                    >
+                        <a
+                            class="text-blue-500"
+                            href="https://www.walibi.be/fr"
+                            target="_blank"
+                        >
+                            Achetez vos tickets
+                        </a>
+                    </div>
 
                     <p class="text-xs mb-1">
                         {{ selectedResult.properties.address }},
