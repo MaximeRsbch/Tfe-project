@@ -113,10 +113,10 @@ export const useUsersStore = defineStore("users", {
             });
         },
 
-        async modifyUser(id, username, email) {
+        async updateUser(id, username, email) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/modif/${id}`,
+                url: `http://localhost:3000/api/user/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
