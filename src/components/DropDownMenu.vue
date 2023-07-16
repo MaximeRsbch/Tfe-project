@@ -7,6 +7,7 @@ const router = useRouter();
 const logout = () => {
     localStorage.removeItem("savedToken");
     window.location.reload();
+    window.location.href = "/login";
 };
 
 const goToMyProfile = () => {
