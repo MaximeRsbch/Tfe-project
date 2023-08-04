@@ -135,7 +135,7 @@ const deleteComment = (id) => {
                     </div>
                     <div class="flex justify-center pb-20">
                         <button
-                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl"
                             @click="createComment"
                         >
                             Créer un commentaire

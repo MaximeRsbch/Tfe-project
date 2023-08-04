@@ -35,7 +35,7 @@ const goToAdminPannel = () => {
                         id="logo"
                         src="assets/img/logo.png"
                         alt="Logo"
-                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-32 hidden lg:flex"
+                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-32 w-20"
                     />
                 </a>
                 <nav
@@ -76,6 +76,15 @@ const goToAdminPannel = () => {
                         <div
                             class="mt-14 flex flex-col gap-2 justify-center items-center lg:hidden md:text-lg"
                         >
+                            <div v-if="isConnect">
+                                <button
+                                    @click="goToAdminPannel"
+                                    v-if="tokenDecode.userID === 1"
+                                    class="bg-white text-stone-500 text-2xl px-5 py-2 rounded-xl"
+                                >
+                                    Admin pannel
+                                </button>
+                            </div>
                             <button
                                 v-if="!isConnect"
                                 @click="goToLogin"

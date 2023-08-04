@@ -20,7 +20,7 @@ const goToMyProfile = () => {
     <Menu as="div" class="relative inline-block text-left">
         <div>
             <MenuButton
-                class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                class="bg-white text-stone-500 md:text-lg md:px-5 md:py-2 flex rounded-xl text-2xl px-7 py-2"
             >
                 Compte
                 <svg
