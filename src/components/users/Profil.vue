@@ -1,6 +1,6 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
-import { onMounted, computed, ref } from "vue";
+import { onMounted, computed } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
 

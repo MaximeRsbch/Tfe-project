@@ -97,6 +97,10 @@ const deleteComment = (id) => {
                                         >
                                             {{ data.content }}
                                         </td>
+                                        <td>
+                                            Commentaire créé par :
+                                            <span class="">Anonyme</span>
+                                        </td>
 
                                         <!--Vérif si c'est l'admin qui est bien connecter si c'est le cas il peut supprimer-->
                                         <div v-if="tokenDecode.userID === 1">
