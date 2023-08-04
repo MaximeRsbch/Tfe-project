@@ -94,7 +94,6 @@ const removeResults = () => {
                         >
                             <i class="fa-sharp fa-solid fa-location-dot"></i>
                             <p class="text-xs">{{ result.place_name_fr }}</p>
-                            {{ result }}
                         </div>
                     </div>
                 </div>

@@ -87,7 +87,7 @@ const getLocErro = (err) => {
 const plotGeolocation = (coords) => {
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "../assets/map-marker-red.svg",
+        iconUrl: "assets/map-marker-red.svg",
         iconSize: [35, 35],
     });
 
@@ -114,7 +114,7 @@ const plotResult = (coords) => {
 
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "../assets/map-marker-blue.svg",
+        iconUrl: "assets/map-marker-blue.svg",
         iconSize: [35, 35],
     });
 
@@ -215,7 +215,7 @@ const showAttractionResults = ref(null);
 const plotInfo = () => {
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "../assets/img/marqueur-de-carte.png",
+        iconUrl: "assets/img/marqueur-de-carte.png",
         iconSize: [35, 35],
     });
 
@@ -368,19 +368,56 @@ const removeAttrResults = () => {
                     @click="removeAttrResults"
                     class="fa-regular fa-circle-xmark flex justify-end"
                 ></i>
-                <!-- Ici faudra mettre les images du parc, avis, étoiles et bondée ou pas -->
-                <div>
-                    <h1>
-                        Nom de l'attraction : {{ showAttractionResults.name }}
+                <!-- Ici faudra mettre les images du parc -->
+                <div class="text-center">
+                    <h1 class="text-4xl pb-4">
+                        {{ showAttractionResults.name }}
                     </h1>
-                    <p v-if="showAttractionResults.is_open == false">
-                        Attraction Fermer
+                    <p
+                        v-if="showAttractionResults.is_open == false"
+                        class="text-2xl"
+                    >
+                        Attraction <span class="text-red-500">Fermer</span>
                     </p>
-                    <p v-else>Attraction ouverte</p>
-                    <p>
-                        Temps d'attente :
-                        {{ showAttractionResults.wait_time }} minutes
+                    <p v-else class="text-2xl pb-5">
+                        Attraction <span class="text-green-500">ouverte</span>
                     </p>
+                    <div
+                        class="text-xl"
+                        v-if="showAttractionResults.wait_time >= 50"
+                    >
+                        <p>
+                            Temps d'attente :
+                            <span class="text-red-500">{{
+                                showAttractionResults.wait_time
+                            }}</span>
+                            minutes
+                        </p>
+                    </div>
+                    <div
+                        class="text-xl"
+                        v-if="showAttractionResults.wait_time >= 30"
+                    >
+                        <p>
+                            Temps d'attente :
+                            <span class="text-orange-400">{{
+                                showAttractionResults.wait_time
+                            }}</span>
+                            minutes
+                        </p>
+                    </div>
+                    <div
+                        class="text-xl"
+                        v-if="showAttractionResults.wait_time < 30"
+                    >
+                        <p>
+                            Temps d'attente :
+                            <span class="text-green-500">{{
+                                showAttractionResults.wait_time
+                            }}</span>
+                            minutes
+                        </p>
+                    </div>
                 </div>
                 <p class="text-xs mb-1"></p>
             </div>

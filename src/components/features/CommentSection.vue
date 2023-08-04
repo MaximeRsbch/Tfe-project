@@ -110,7 +110,7 @@ const deleteComment = (id) => {
                                                     type="button"
                                                 >
                                                     <img
-                                                        src="@/assets/img/poubelle.png"
+                                                        src="assets/img/poubelle.png"
                                                         alt="poubelleImg"
                                                     />
                                                 </button>

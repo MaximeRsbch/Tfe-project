@@ -4,7 +4,6 @@ import { computed, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../common/config.js";
 import { useImageAttractionStore } from "../../stores/imageAttraction.js";
-import "../../scripts/fslightbox.js";
 
 const usersStore = useUsersStore();
 const imageAttractionStore = useImageAttractionStore();
@@ -71,6 +70,8 @@ const muteUsers = (id) => {
         }
     });
 };
+
+const toggler = ref(false);
 </script>
 <template>
     <div class="container mx-auto">
@@ -167,7 +168,7 @@ const muteUsers = (id) => {
                                             type="button"
                                         >
                                             <img
-                                                src="@/assets/img/poubelle.png"
+                                                src="assets/img/poubelle.png"
                                                 alt="poubelleImg"
                                             />
                                         </button>
@@ -180,7 +181,7 @@ const muteUsers = (id) => {
                                             type="button"
                                         >
                                             <img
-                                                src="@/assets/img/mute.png"
+                                                src="assets/img/mute.png"
                                                 alt="poubelleImg"
                                             />
                                         </button>
@@ -191,26 +192,6 @@ const muteUsers = (id) => {
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div v-for="data in image">
-                <div v-for="attribute in data.attributes">
-                    <div v-for="attraction in attribute.data">
-                        <a
-                            data-fslightbox="gallery"
-                            :href="attraction.attributes.url"
-                        >
-                            <img
-                                :src="`${BASE_URL}${attraction.attributes.url}`"
-                                alt="Image"
-                            />
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <a data-fslightbox href="">
-                <img src="" alt="Image" />
-            </a>
         </div>
     </div>
 </template>

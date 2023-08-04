@@ -33,7 +33,7 @@ const updateUsers = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: "Oui, modifier !",
     }).then((result) => {
-        if (result.isConfirmed) {
+        if (result.isConfirmed && id !== 1) {
             Swal.fire(
                 "Modifier",
                 "Vos informations ont bien été modifiées.",
