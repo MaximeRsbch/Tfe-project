@@ -34,6 +34,9 @@ onMounted(() => {
     plotInfo();
     queuetime.fetchQueueTimeWalibi();
     queuetime.fetchQueueTimeEnergy();
+    queuetime.fetchQueueTimePlopsa();
+    queuetime.fetchQueueTimeBobbe();
+    queuetime.fetchQueueTimeBellewaerde();
 });
 
 const coords = ref(null);
@@ -147,6 +150,12 @@ const queuetimeWalibi = computed(() => queuetime.getQueueTimesWalibi);
 
 const queuetimeEnergy = computed(() => queuetime.getQueueTimesEnergy);
 
+const queuetimePlopsa = computed(() => queuetime.getQueueTimesPlopsa);
+
+const queuetimeBobbe = computed(() => queuetime.getQueueTimesBobbe);
+
+const queuetimeBellewaerde = computed(() => queuetime.getQueueTimesBellewaerde);
+
 const walibiLocation = [
     [
         "Vampire",
@@ -208,6 +217,136 @@ const energyLocation = [
     ],
 ];
 
+const plopsaLocation = [
+    ["anubis", 51.08195218023082, 2.5977898050843127, queuetimePlopsa.value[1]],
+    [
+        "Le Dragon",
+        51.07961827606858,
+        2.5976966680273104,
+        queuetimePlopsa.value[32],
+        //ici image de l'attraction avec lien vers strapi et tout la
+    ],
+    [
+        "superSplash",
+        51.08147105223425,
+        2.5987686815206654,
+        queuetimePlopsa.value[19],
+    ],
+
+    [
+        "the ride of happiness",
+        51.0810527386725,
+        2.5987687222263482,
+        queuetimePlopsa.value[44],
+    ],
+    [
+        "DinoSplash",
+        51.07939209915142,
+        2.5972908303152535,
+        queuetimePlopsa.value[7],
+    ],
+    [
+        "Flyer Garde de Nuit",
+        51.081339520702684,
+        2.595597911398172,
+        queuetimePlopsa.value[12],
+    ],
+    [
+        "K3 Roller Skater",
+        51.07998264624246,
+        2.596500900290202,
+        queuetimePlopsa.value[9],
+    ],
+];
+
+const bobbeLocation = [
+    [
+        "Bob express",
+        51.201516125046446,
+        4.906511646430337,
+        queuetimeBobbe.value[0],
+    ],
+    [
+        "Les buches",
+        51.20125394648134,
+        4.9051919996547815,
+        queuetimeBobbe.value[11],
+    ],
+    ["Typhoon", 51.19985563559918, 4.905610424242153, queuetimeBobbe.value[10]],
+    ["Fury", 51.20000353587284, 4.906951528688855, queuetimeBobbe.value[2]],
+    [
+        "Speedy bob",
+        51.19995131004791,
+        4.910451248158973,
+        queuetimeBobbe.value[7],
+    ],
+    ["El rio", 51.2002263369215, 4.9102916418521545, queuetimeBobbe.value[1]],
+
+    [
+        "Terra magma",
+        51.20198647001226,
+        4.908089073910253,
+        queuetimeBobbe.value[8],
+    ],
+    [
+        "Dream catcher",
+        51.201476438381526,
+        4.91191164663274,
+        queuetimeBobbe.value[9],
+    ],
+];
+
+const belleLocation = [
+    [
+        "Screaming eagle",
+        50.848556918900854,
+        2.946218842738849,
+        queuetimeBellewaerde.value[25],
+    ],
+    [
+        "Wakala",
+        50.84888797995825,
+        2.9477643053779836,
+        queuetimeBellewaerde.value[31],
+    ],
+    [
+        "Jungle Mission",
+        50.84728487699255,
+        2.95370341472658,
+        queuetimeBellewaerde.value[17],
+    ],
+    [
+        "River splash",
+        50.84745331644677,
+        2.955037296322738,
+        queuetimeBellewaerde.value[24],
+    ],
+    [
+        "El volador",
+        50.84754044006652,
+        2.956591958144248,
+        queuetimeBellewaerde.value[10],
+    ],
+    [
+        "Huracan",
+        50.84778438533629,
+        2.9569783238040315,
+        queuetimeBellewaerde.value[15],
+    ],
+    [
+        "Dawson duel",
+        50.84856216368863,
+        2.9470471551588653,
+        queuetimeBellewaerde.value[8],
+    ],
+    [
+        "Bangal rapid river",
+        50.848216694041774,
+        2.9508988072758235,
+        queuetimeBellewaerde.value[1],
+    ],
+];
+
 const attractionMarkers = ref(null);
 const showModalResults = ref(false);
 const showAttractionResults = ref(null);
@@ -226,6 +365,7 @@ const plotInfo = () => {
         })
         .addTo(map);
 
+    // create a marker with coords and custom icon for walibi
     for (var i = 0; i < walibiLocation.length; i++) {
         leaflet
             .marker([walibiLocation[i][1], walibiLocation[i][2]])
@@ -283,6 +423,7 @@ const plotInfo = () => {
             });
     }
 
+    // create a marker with coords and custom icon for energylandia
     for (var i = 0; i < energyLocation.length; i++) {
         leaflet
             .marker([energyLocation[i][1], energyLocation[i][2]])
@@ -330,6 +471,180 @@ const plotInfo = () => {
                     e.latlng.lng == 19.40847717246866
                 ) {
                     showAttractionResults.value = queuetimeEnergy.value[9];
+                }
+            });
+    }
+
+    // create a marker with coords and custom icon for plopsa
+    for (var i = 0; i < plopsaLocation.length; i++) {
+        leaflet
+            .marker([plopsaLocation[i][1], plopsaLocation[i][2]])
+            .addTo(map)
+            .on("click", function (e) {
+                showModalResults.value = true;
+                if (
+                    e.latlng.lat == 51.08195218023082 &&
+                    e.latlng.lng == 2.5977898050843127
+                ) {
+                    showAttractionResults.value = queuetimePlopsa.value[1];
+                }
+                if (
+                    e.latlng.lat == 51.07961827606858 &&
+                    e.latlng.lng == 2.5976966680273104
+                ) {
+                    showAttractionResults.value = queuetimePlopsa.value[32];
+                }
+                if (
+                    e.latlng.lat == 51.08147105223425 &&
+                    e.latlng.lng == 2.5987686815206654
+                ) {
+                    showAttractionResults.value = queuetimePlopsa.value[19];
+                }
+                if (
+                    e.latlng.lat == 51.0810527386725 &&
+                    e.latlng.lng == 2.5987687222263482
+                ) {
+                    showAttractionResults.value = queuetimePlopsa.value[44];
+                }
+                if (
+                    e.latlng.lat == 51.07939209915142 &&
+                    e.latlng.lng == 2.5972908303152535
+                ) {
+                    showAttractionResults.value = queuetimePlopsa.value[7];
+                }
+                if (
+                    e.latlng.lat == 51.081339520702684 &&
+                    e.latlng.lng == 2.595597911398172
+                ) {
+                    showAttractionResults.value = queuetimePlopsa.value[12];
+                }
+                if (
+                    e.latlng.lat == 51.07998264624246 &&
+                    e.latlng.lng == 2.596500900290202
+                ) {
+                    showAttractionResults.value = queuetimePlopsa.value[9];
+                }
+            });
+    }
+
+    // create a marker with coords and custom icon for bobbejaanland
+    for (var i = 0; i < bobbeLocation.length; i++) {
+        leaflet
+            .marker([bobbeLocation[i][1], bobbeLocation[i][2]])
+            .addTo(map)
+            .on("click", function (e) {
+                showModalResults.value = true;
+                if (
+                    e.latlng.lat == 51.201516125046446 &&
+                    e.latlng.lng == 4.906511646430337
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[0];
+                }
+                if (
+                    e.latlng.lat == 51.20125394648134 &&
+                    e.latlng.lng == 4.9051919996547815
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[11];
+                }
+                if (
+                    e.latlng.lat == 51.19985563559918 &&
+                    e.latlng.lng == 4.905610424242153
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[10];
+                }
+                if (
+                    e.latlng.lat == 51.20000353587284 &&
+                    e.latlng.lng == 4.906951528688855
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[2];
+                }
+                if (
+                    e.latlng.lat == 51.19995131004791 &&
+                    e.latlng.lng == 4.910451248158973
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[7];
+                }
+                if (
+                    e.latlng.lat == 51.2002263369215 &&
+                    e.latlng.lng == 4.9102916418521545
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[1];
+                }
+                if (
+                    e.latlng.lat == 51.20198647001226 &&
+                    e.latlng.lng == 4.908089073910253
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[8];
+                }
+                if (
+                    e.latlng.lat == 51.201476438381526 &&
+                    e.latlng.lng == 4.91191164663274
+                ) {
+                    showAttractionResults.value = queuetimeBobbe.value[9];
+                }
+            });
+    }
+
+    // create a marker with coords and custom icon for bellewaerde
+    for (var i = 0; i < belleLocation.length; i++) {
+        leaflet
+            .marker([belleLocation[i][1], belleLocation[i][2]])
+            .addTo(map)
+            .on("click", function (e) {
+                showModalResults.value = true;
+                if (
+                    e.latlng.lat == 50.848556918900854 &&
+                    e.latlng.lng == 2.946218842738849
+                ) {
+                    showAttractionResults.value =
+                        queuetimeBellewaerde.value[25];
+                }
+                if (
+                    e.latlng.lat == 50.84888797995825 &&
+                    e.latlng.lng == 2.9477643053779836
+                ) {
+                    showAttractionResults.value =
+                        queuetimeBellewaerde.value[31];
+                }
+                if (
+                    e.latlng.lat == 50.84728487699255 &&
+                    e.latlng.lng == 2.95370341472658
+                ) {
+                    showAttractionResults.value =
+                        queuetimeBellewaerde.value[17];
+                }
+                if (
+                    e.latlng.lat == 50.84745331644677 &&
+                    e.latlng.lng == 2.955037296322738
+                ) {
+                    showAttractionResults.value =
+                        queuetimeBellewaerde.value[24];
+                }
+                if (
+                    e.latlng.lat == 50.84754044006652 &&
+                    e.latlng.lng == 2.956591958144248
+                ) {
+                    showAttractionResults.value =
+                        queuetimeBellewaerde.value[10];
+                }
+                if (
+                    e.latlng.lat == 50.84778438533629 &&
+                    e.latlng.lng == 2.9569783238040315
+                ) {
+                    showAttractionResults.value =
+                        queuetimeBellewaerde.value[15];
+                }
+                if (
+                    e.latlng.lat == 50.84856216368863 &&
+                    e.latlng.lng == 2.9470471551588653
+                ) {
+                    showAttractionResults.value = queuetimeBellewaerde.value[8];
+                }
+                if (
+                    e.latlng.lat == 50.848216694041774 &&
+                    e.latlng.lng == 2.9508988072758235
+                ) {
+                    showAttractionResults.value = queuetimeBellewaerde.value[1];
                 }
             });
     }
