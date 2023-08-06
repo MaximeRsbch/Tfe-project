@@ -44,7 +44,6 @@ export const useUsersStore = defineStore("users", {
                     password,
                 },
             }).then((res) => {
-                console.log(res);
                 if (res.data.data) {
                     window.location.href = "/login";
                 }
@@ -126,7 +125,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.fetchUsers();
-                console.log(res);
             });
         },
     },

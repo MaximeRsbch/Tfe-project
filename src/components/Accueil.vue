@@ -5,8 +5,12 @@ import GeoErrorModal from "./GeoErrorModal.vue";
 import { Mapbox_API_KEY } from "../common/config.js";
 import MapFeatures from "./MapFeatures.vue";
 import { useQueueTimeStore } from "../stores/queuetime.js";
+import { useImageAttractionStore } from "../stores/imageAttraction.js";
+import { BASE_URL } from "../common/config.js";
 
 const queuetime = useQueueTimeStore();
+
+const imageAttraction = useImageAttractionStore();
 
 let map;
 
@@ -37,6 +41,7 @@ onMounted(() => {
     queuetime.fetchQueueTimePlopsa();
     queuetime.fetchQueueTimeBobbe();
     queuetime.fetchQueueTimeBellewaerde();
+    imageAttraction.recupAllImageAttraction();
 });
 
 const coords = ref(null);
@@ -44,6 +49,8 @@ const fetchCoords = ref(null);
 const geoMarker = ref(null);
 const geoError = ref(null);
 const geoErrorMsg = ref(null);
+
+const img = computed(() => imageAttraction.getImagesAttraction);
 
 const getGeoLocation = () => {
     if (coords.value) {
@@ -90,7 +97,7 @@ const getLocErro = (err) => {
 const plotGeolocation = (coords) => {
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "assets/map-marker-red.svg",
+        iconUrl: "assets/img/map-marker-red.svg",
         iconSize: [35, 35],
     });
 
@@ -117,7 +124,7 @@ const plotResult = (coords) => {
 
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "assets/map-marker-blue.svg",
+        iconUrl: "assets/img/map-marker-blue.svg",
         iconSize: [35, 35],
     });
 
@@ -159,11 +166,11 @@ const queuetimeBellewaerde = computed(() => queuetime.getQueueTimesBellewaerde);
 const walibiLocation = [
     [
         "Vampire",
-        50.69977661301508,
-        4.593864012988636,
+        50.702372411422445,
+        4.591857720201637,
         queuetimeWalibi.value[48],
     ],
-    ["Radja", 50.70230283921515, 4.591885596073698, queuetimeWalibi.value[37]],
+    ["Radja", 50.69985136317578, 4.593853283618328, queuetimeWalibi.value[37]],
     ["Loup", 50.700759712506, 4.590341917711024, queuetimeWalibi.value[50]],
     ["Cobra", 50.70049381391455, 4.593959463970398, queuetimeWalibi.value[11]],
     ["Pulsar", 50.69935099850555, 4.590583087541805, queuetimeWalibi.value[36]],
@@ -350,6 +357,7 @@ const belleLocation = [
 const attractionMarkers = ref(null);
 const showModalResults = ref(false);
 const showAttractionResults = ref(null);
+const showAttractionImage = ref(null);
 
 const plotInfo = () => {
     // create custom marker
@@ -372,53 +380,62 @@ const plotInfo = () => {
             .addTo(map)
             .on("click", function (e) {
                 showModalResults.value = true;
+
                 if (
-                    e.latlng.lat == 50.69977661301508 &&
-                    e.latlng.lng == 4.593864012988636
+                    e.latlng.lat == 50.702372411422445 &&
+                    e.latlng.lng == 4.591857720201637
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[48];
+                    showAttractionImage.value = img.value[7];
                 }
                 if (
-                    e.latlng.lat == 50.70230283921515 &&
-                    e.latlng.lng == 4.591885596073698
+                    e.latlng.lat == 50.69985136317578 &&
+                    e.latlng.lng == 4.593853283618328
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[37];
+                    showAttractionImage.value = img.value[3];
                 }
                 if (
                     e.latlng.lat == 50.700759712506 &&
                     e.latlng.lng == 4.590341917711024
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[50];
+                    showAttractionImage.value = img.value[6];
                 }
                 if (
                     e.latlng.lat == 50.70049381391455 &&
                     e.latlng.lng == 4.593959463970398
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[11];
+                    showAttractionImage.value = img.value[4];
                 }
                 if (
                     e.latlng.lat == 50.69935099850555 &&
                     e.latlng.lng == 4.590583087541805
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[36];
+                    showAttractionImage.value = img.value[0];
                 }
                 if (
                     e.latlng.lat == 50.699113379933955 &&
                     e.latlng.lng == 4.587394287601669
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[9];
+                    showAttractionImage.value = img.value[1];
                 }
                 if (
                     e.latlng.lat == 50.69883615674339 &&
                     e.latlng.lng == 4.588037406936669
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[12];
+                    showAttractionImage.value = img.value[2];
                 }
                 if (
                     e.latlng.lat == 50.697218045811205 &&
                     e.latlng.lng == 4.5853398787353274
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[25];
+                    showAttractionImage.value = img.value[5];
                 }
             });
     }
@@ -684,6 +701,17 @@ const removeAttrResults = () => {
                     class="fa-regular fa-circle-xmark flex justify-end"
                 ></i>
                 <!-- Ici faudra mettre les images du parc -->
+                <div v-for="data in showAttractionImage">
+                    <div v-for="attribute in data">
+                        <div v-for="info in attribute.data">
+                            <img
+                                class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
+                                :src="`${BASE_URL}${info.attributes.url}`"
+                                alt=""
+                            />
+                        </div>
+                    </div>
+                </div>
                 <div class="text-center">
                     <h1 class="text-4xl pb-4">
                         {{ showAttractionResults.name }}

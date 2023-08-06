@@ -7,8 +7,6 @@ export const useImageAttractionStore = defineStore("imageAttraction", {
     getters: {
         getImagesAttraction: (state) =>
             Object.values(state.imageAttractionDict),
-        getImageAttractionById: (state) =>
-            Object.values(state.imageAttractionDict),
     },
     actions: {
         async recupAllImageAttraction() {
@@ -20,18 +18,6 @@ export const useImageAttractionStore = defineStore("imageAttraction", {
                 },
             }).then((res) => {
                 this.imageAttractionDict = res.data.data;
-                console.log(this.imageAttractionDict);
-            });
-        },
-        async recupImageAttractionById(id) {
-            const response = await CapacitorHttp.request({
-                method: "GET",
-                url: `http://localhost:7064/api/attractions/${id}?populate=*`,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then((res) => {
-                this.imageAttractionDict = res.data;
             });
         },
     },
