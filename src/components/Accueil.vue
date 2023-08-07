@@ -231,7 +231,6 @@ const plopsaLocation = [
         51.07961827606858,
         2.5976966680273104,
         queuetimePlopsa.value[32],
-        //ici image de l'attraction avec lien vers strapi et tout la
     ],
     [
         "superSplash",
@@ -504,42 +503,49 @@ const plotInfo = () => {
                     e.latlng.lng == 2.5977898050843127
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[1];
+                    showAttractionImage.value = img.value[12];
                 }
                 if (
                     e.latlng.lat == 51.07961827606858 &&
                     e.latlng.lng == 2.5976966680273104
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[32];
+                    showAttractionImage.value = img.value[11];
                 }
                 if (
                     e.latlng.lat == 51.08147105223425 &&
                     e.latlng.lng == 2.5987686815206654
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[19];
+                    showAttractionImage.value = img.value[9];
                 }
                 if (
                     e.latlng.lat == 51.0810527386725 &&
                     e.latlng.lng == 2.5987687222263482
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[44];
+                    showAttractionImage.value = img.value[10];
                 }
                 if (
                     e.latlng.lat == 51.07939209915142 &&
                     e.latlng.lng == 2.5972908303152535
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[7];
+                    showAttractionImage.value = img.value[14];
                 }
                 if (
                     e.latlng.lat == 51.081339520702684 &&
                     e.latlng.lng == 2.595597911398172
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[12];
+                    showAttractionImage.value = img.value[8];
                 }
                 if (
                     e.latlng.lat == 51.07998264624246 &&
                     e.latlng.lng == 2.596500900290202
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[9];
+                    showAttractionImage.value = img.value[13];
                 }
             });
     }
@@ -556,48 +562,56 @@ const plotInfo = () => {
                     e.latlng.lng == 4.906511646430337
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[0];
+                    showAttractionImage.value = img.value[23];
                 }
                 if (
                     e.latlng.lat == 51.20125394648134 &&
                     e.latlng.lng == 4.9051919996547815
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[11];
+                    showAttractionImage.value = img.value[24];
                 }
                 if (
                     e.latlng.lat == 51.19985563559918 &&
                     e.latlng.lng == 4.905610424242153
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[10];
+                    showAttractionImage.value = img.value[25];
                 }
                 if (
                     e.latlng.lat == 51.20000353587284 &&
                     e.latlng.lng == 4.906951528688855
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[2];
+                    showAttractionImage.value = img.value[26];
                 }
                 if (
                     e.latlng.lat == 51.19995131004791 &&
                     e.latlng.lng == 4.910451248158973
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[7];
+                    showAttractionImage.value = img.value[27];
                 }
                 if (
                     e.latlng.lat == 51.2002263369215 &&
                     e.latlng.lng == 4.9102916418521545
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[1];
+                    showAttractionImage.value = img.value[28];
                 }
                 if (
                     e.latlng.lat == 51.20198647001226 &&
                     e.latlng.lng == 4.908089073910253
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[8];
+                    showAttractionImage.value = img.value[29];
                 }
                 if (
                     e.latlng.lat == 51.201476438381526 &&
                     e.latlng.lng == 4.91191164663274
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[9];
+                    showAttractionImage.value = img.value[30];
                 }
             });
     }
@@ -615,6 +629,7 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[25];
+                    showAttractionImage.value = img.value[21];
                 }
                 if (
                     e.latlng.lat == 50.84888797995825 &&
@@ -622,6 +637,7 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[31];
+                    showAttractionImage.value = img.value[17];
                 }
                 if (
                     e.latlng.lat == 50.84728487699255 &&
@@ -629,6 +645,7 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[17];
+                    showAttractionImage.value = img.value[22];
                 }
                 if (
                     e.latlng.lat == 50.84745331644677 &&
@@ -636,6 +653,7 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[24];
+                    showAttractionImage.value = img.value[20];
                 }
                 if (
                     e.latlng.lat == 50.84754044006652 &&
@@ -643,6 +661,7 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[10];
+                    showAttractionImage.value = img.value[18];
                 }
                 if (
                     e.latlng.lat == 50.84778438533629 &&
@@ -650,18 +669,21 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[15];
+                    showAttractionImage.value = img.value[16];
                 }
                 if (
                     e.latlng.lat == 50.84856216368863 &&
                     e.latlng.lng == 2.9470471551588653
                 ) {
                     showAttractionResults.value = queuetimeBellewaerde.value[8];
+                    showAttractionImage.value = img.value[19];
                 }
                 if (
                     e.latlng.lat == 50.848216694041774 &&
                     e.latlng.lng == 2.9508988072758235
                 ) {
                     showAttractionResults.value = queuetimeBellewaerde.value[1];
+                    showAttractionImage.value = img.value[15];
                 }
             });
     }
@@ -702,10 +724,10 @@ const removeAttrResults = () => {
                 ></i>
                 <!-- Ici faudra mettre les images du parc -->
                 <div v-for="data in showAttractionImage">
-                    <div v-for="attribute in data">
+                    <div class="grid grid-cols-2" v-for="attribute in data">
                         <div v-for="info in attribute.data">
                             <img
-                                class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
+                                class="sm:w-64 sm:h-40 object-cover rounded-lg w-28 h-28"
                                 :src="`${BASE_URL}${info.attributes.url}`"
                                 alt=""
                             />
