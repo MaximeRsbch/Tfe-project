@@ -12,11 +12,11 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
-const id = computed(() => tokenDecode.value.userID);
+const idUser = computed(() => tokenDecode.value.userID);
 
 onMounted(() => {
     commentStore.recupAllComment();
-    usersStore.fetchOneUser(id.value);
+    usersStore.fetchOneUser(idUser.value);
 });
 
 const commentContent = ref("");
@@ -46,25 +46,25 @@ const user = computed(() => usersStore.getUsersById);
 //fonction qui permet de supprimer un commentaire
 const deleteComment = (id) => {
     Swal.fire({
-        title: "Etes vous sure ?",
-        text: "Cet utilisateur sera définitivement supprimer !",
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
     }).then((result) => {
         if (result.isConfirmed) {
+            commentStore.deleteComment(id);
             Swal.fire(
-                "Supprimer",
-                "Cet utilisateur a bien été supprimer.",
+                "Supprimé !",
+                "Votre commentaire a bien été supprimé.",
                 "success"
             );
-            commentStore.deleteComment(id);
-        } else {
+            window.location.reload();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire(
-                "Erreur",
-                "Vous ne pouvez pas supprimer cet utilisateur.",
+                "Annulé",
+                "Votre commentaire n'a pas été supprimé :)",
                 "error"
             );
         }
@@ -107,6 +107,7 @@ const deleteComment = (id) => {
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
+                                                {{ data.id }}
                                                 <button
                                                     @click="
                                                         deleteComment(data.id)

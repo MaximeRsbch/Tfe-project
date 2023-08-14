@@ -359,20 +359,20 @@ const showAttractionResults = ref(null);
 const showAttractionImage = ref(null);
 
 const plotInfo = () => {
-    // create custom marker
+    // créé un marqueur
     const customMarker = leaflet.icon({
         iconUrl: "assets/img/marqueur-de-carte.png",
         iconSize: [35, 35],
     });
 
-    // create a marker with coords and custom icon
+    // Créé ce marqueur sur la carte
     attractionMarkers.value = leaflet
         .marker([50.69977661301508, 4.593864012988636], {
             icon: customMarker,
         })
         .addTo(map);
 
-    // create a marker with coords and custom icon for walibi
+    // création de chaque marqueur pour chaque attraction de walibi
     for (var i = 0; i < walibiLocation.length; i++) {
         leaflet
             .marker([walibiLocation[i][1], walibiLocation[i][2]])
@@ -439,7 +439,7 @@ const plotInfo = () => {
             });
     }
 
-    // create a marker with coords and custom icon for energylandia
+    // création de chaque marqueur pour chaque attraction de energylandia
     for (var i = 0; i < energyLocation.length; i++) {
         leaflet
             .marker([energyLocation[i][1], energyLocation[i][2]])
@@ -491,7 +491,7 @@ const plotInfo = () => {
             });
     }
 
-    // create a marker with coords and custom icon for plopsa
+    // création de chaque marqueur pour chaque attraction de plopsa
     for (var i = 0; i < plopsaLocation.length; i++) {
         leaflet
             .marker([plopsaLocation[i][1], plopsaLocation[i][2]])
@@ -550,7 +550,7 @@ const plotInfo = () => {
             });
     }
 
-    // create a marker with coords and custom icon for bobbejaanland
+    // création de chaque marqueur pour chaque attraction de bobbejaanland
     for (var i = 0; i < bobbeLocation.length; i++) {
         leaflet
             .marker([bobbeLocation[i][1], bobbeLocation[i][2]])
@@ -616,7 +616,7 @@ const plotInfo = () => {
             });
     }
 
-    // create a marker with coords and custom icon for bellewaerde
+    // création de chaque marqueur pour chaque attraction de bellewaerde
     for (var i = 0; i < belleLocation.length; i++) {
         leaflet
             .marker([belleLocation[i][1], belleLocation[i][2]])
@@ -729,7 +729,7 @@ const removeAttrResults = () => {
                             <img
                                 class="sm:w-64 sm:h-40 object-cover rounded-lg w-28 h-28"
                                 :src="`${BASE_URL}${info.attributes.url}`"
-                                alt=""
+                                alt="Image"
                             />
                         </div>
                     </div>

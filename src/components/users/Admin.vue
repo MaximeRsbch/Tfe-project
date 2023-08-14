@@ -15,8 +15,6 @@ onMounted(() => {
 
 const users = computed(() => usersStore.getUsers);
 
-const image = computed(() => imageAttractionStore.getImagesAttraction);
-
 const canComment = ref(false);
 
 //Fonction qui permet de supprimer un utilisateur
@@ -37,7 +35,13 @@ const deleteUsers = (id) => {
                 "success"
             );
             usersStore.deleteUser(id);
-        } else {
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                "Annulé",
+                "Votre commentaire n'a pas été supprimé :)",
+                "error"
+            );
+        } else if (id === 1) {
             Swal.fire(
                 "Erreur",
                 "Vous ne pouvez pas supprimer cet utilisateur.",
@@ -61,17 +65,21 @@ const muteUsers = (id) => {
         if (result.isConfirmed && id !== 1) {
             Swal.fire("Mute", "Cet utilisateur a bien été mute.", "success");
             usersStore.muteUser(id, canComment.value);
-        } else {
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                "Annulé",
+                "Votre commentaire n'a pas été supprimé :)",
+                "error"
+            );
+        } else if (id === 1) {
             Swal.fire(
                 "Erreur",
-                "Vous ne pouvez pas mute cet utilisateur.",
+                "Vous ne pouvez pas supprimer cet utilisateur.",
                 "error"
             );
         }
     });
 };
-
-const toggler = ref(false);
 </script>
 <template>
     <div class="container mx-auto">
