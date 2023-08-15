@@ -761,7 +761,10 @@ const removeAttrResults = () => {
                     </div>
                     <div
                         class="text-xl"
-                        v-if="showAttractionResults.wait_time >= 30"
+                        v-if="
+                            showAttractionResults.wait_time < 50 &&
+                            showAttractionResults.wait_time >= 30
+                        "
                     >
                         <p>
                             Temps d'attente :

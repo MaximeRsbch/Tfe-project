@@ -12,7 +12,7 @@ export const useReviewStore = defineStore("review", {
         async writeReview(rating, comment, userId) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/review",
+                url: "http://maximerossbach.be/api/review",
                 headers: {
                     "Content-Type": "application/json",
                 },

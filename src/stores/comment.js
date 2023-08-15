@@ -12,7 +12,7 @@ export const useCommentStore = defineStore("comment", {
         async writeComment(content) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/comment",
+                url: "http://maximerossbach.be/api/comment",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -26,7 +26,7 @@ export const useCommentStore = defineStore("comment", {
         async recupAllComment() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/comments",
+                url: "http://maximerossbach.be/api/comments",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -38,7 +38,7 @@ export const useCommentStore = defineStore("comment", {
         async deleteComment(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/deleteComment/${id}`,
+                url: `http://maximerossbach.be/api/deleteComment/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },

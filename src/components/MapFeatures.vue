@@ -32,7 +32,7 @@ const search = () => {
             });
             const getData = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/search/${searchQuery.value}?${params}`,
+                url: `http://maximerossbach.be/api/search/${searchQuery.value}?${params}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
