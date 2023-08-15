@@ -7,7 +7,7 @@ import jwtDecode from "jwt-decode";
 
 const links = [
     { label: "Accueil", href: "/" },
-    { label: "Features", href: "/features" },
+    { label: "Nouveautés", href: "/features" },
 ];
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));

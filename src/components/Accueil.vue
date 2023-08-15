@@ -12,6 +12,8 @@ const queuetime = useQueueTimeStore();
 
 const imageAttraction = useImageAttractionStore();
 
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
 let map;
 
 onMounted(() => {
@@ -723,7 +725,7 @@ const removeAttrResults = () => {
                     class="fa-regular fa-circle-xmark flex justify-end"
                 ></i>
                 <!-- Ici faudra mettre les images du parc -->
-                <div v-for="data in showAttractionImage">
+                <div v-if="isConnect" v-for="data in showAttractionImage">
                     <div class="grid grid-cols-2" v-for="attribute in data">
                         <div v-for="info in attribute.data">
                             <img
@@ -734,7 +736,7 @@ const removeAttrResults = () => {
                         </div>
                     </div>
                 </div>
-                <div class="text-center">
+                <div v-if="isConnect" class="text-center">
                     <h1 class="text-4xl pb-4">
                         {{ showAttractionResults.name }}
                     </h1>
@@ -786,6 +788,11 @@ const removeAttrResults = () => {
                             minutes
                         </p>
                     </div>
+                </div>
+                <div v-if="!isConnect">
+                    <h2 class="text-red-600">
+                        Connectez vous pour accéder à cette option
+                    </h2>
                 </div>
                 <p class="text-xs mb-1"></p>
             </div>

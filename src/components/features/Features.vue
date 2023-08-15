@@ -14,6 +14,7 @@ onMounted(() => {
 //Récupère toutes les images de strapi
 const images = computed(() => imageStore.getImages);
 
+//Verif si l'user est co ou non
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 </script>
 

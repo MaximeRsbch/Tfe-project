@@ -2,15 +2,11 @@
 import { useUsersStore } from "../../stores/users.js";
 import { computed, ref, onMounted } from "vue";
 import Swal from "sweetalert2";
-import { BASE_URL } from "../../common/config.js";
-import { useImageAttractionStore } from "../../stores/imageAttraction.js";
 
 const usersStore = useUsersStore();
-const imageAttractionStore = useImageAttractionStore();
 
 onMounted(() => {
     usersStore.fetchUsers();
-    imageAttractionStore.recupAllImageAttraction();
 });
 
 const users = computed(() => usersStore.getUsers);
@@ -38,7 +34,7 @@ const deleteUsers = (id) => {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire(
                 "Annulé",
-                "Votre commentaire n'a pas été supprimé :)",
+                "Cet utilisateur n'a pas été supprimé :)",
                 "error"
             );
         } else if (id === 1) {
@@ -68,7 +64,38 @@ const muteUsers = (id) => {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire(
                 "Annulé",
-                "Votre commentaire n'a pas été supprimé :)",
+                "Cet utilisateur n'a pas été muter :)",
+                "error"
+            );
+        } else if (id === 1) {
+            Swal.fire(
+                "Erreur",
+                "Vous ne pouvez pas supprimer cet utilisateur.",
+                "error"
+            );
+        }
+    });
+};
+
+//Fonction qui permet de unmute un utilisateur
+const unmuteUsers = (id) => {
+    Swal.fire({
+        title: "Etes vous sure ?",
+        text: "Cet utilisateur sera unmute !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oui, mute !",
+    }).then((result) => {
+        if (result.isConfirmed && id !== 1) {
+            Swal.fire("Mute", "Cet utilisateur a bien été unmute.", "success");
+            usersStore.muteUser(id, !canComment.value);
+            console.log(!canComment.value);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                "Annulé",
+                "Cet utilisateur n'a pas été démuter :)",
                 "error"
             );
         } else if (id === 1) {
@@ -190,7 +217,20 @@ const muteUsers = (id) => {
                                         >
                                             <img
                                                 src="assets/img/mute.png"
-                                                alt="poubelleImg"
+                                                alt="muteImg"
+                                            />
+                                        </button>
+                                    </td>
+                                    <td
+                                        class="whitespace-nowrap px-3 py-4 text-base"
+                                    >
+                                        <button
+                                            @click="unmuteUsers(user.id)"
+                                            type="button"
+                                        >
+                                            <img
+                                                src="assets/img/unmute.png"
+                                                alt="unmuteeImg"
                                             />
                                         </button>
                                     </td>

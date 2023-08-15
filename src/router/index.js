@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import FeaturesView from "../views/FeaturesView.vue";
-import ContactView from "../views/ContactView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegistrationView from "../views/RegistrationView.vue";
 import FullFeatureView from "../views/FullFeaturesView.vue";
@@ -26,11 +25,7 @@ const router = createRouter({
             name: "fullfeature",
             component: FullFeatureView,
         },
-        {
-            path: "/contact",
-            name: "contact",
-            component: ContactView,
-        },
+
         {
             path: "/login",
             name: "login",
