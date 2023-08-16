@@ -112,7 +112,7 @@ const unmuteUsers = (id) => {
     <div class="container mx-auto">
         <h1 class="text-center pt-10 text-4xl">Admin panel</h1>
         <p class="text-center pb-10 text-2xl">
-            Ici sont afficher tout les utilisateurs pour les modérer
+            Ici sont affichés tous les utilisateurs pour les modérer
         </p>
         <div class="mt-4 flex flex-col container mx-auto">
             <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -144,7 +144,7 @@ const unmuteUsers = (id) => {
                                         class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                     >
                                         <a class="group inline-flex text-base">
-                                            Username
+                                            Nom d'utilisateur
                                         </a>
                                     </th>
 

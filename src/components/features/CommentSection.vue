@@ -60,7 +60,9 @@ const deleteComment = (id) => {
                 "Votre commentaire a bien été supprimé.",
                 "success"
             );
-            window.location.reload();
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire(
                 "Annulé",
@@ -95,7 +97,15 @@ const deleteComment = (id) => {
                                         <td
                                             class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
                                         >
-                                            {{ data.content }}
+                                            <textarea
+                                                class="resize-none"
+                                                disabled
+                                                name=""
+                                                id=""
+                                                cols="50"
+                                                rows="3"
+                                                >{{ data.content }}</textarea
+                                            >
                                         </td>
                                         <td>
                                             Commentaire créé par :
@@ -107,7 +117,6 @@ const deleteComment = (id) => {
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                {{ data.id }}
                                                 <button
                                                     @click="
                                                         deleteComment(data.id)

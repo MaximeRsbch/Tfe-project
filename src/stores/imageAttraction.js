@@ -12,7 +12,7 @@ export const useImageAttractionStore = defineStore("imageAttraction", {
         async recupAllImageAttraction() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:7064/api/attractions?populate=*",
+                url: "http://maximerossbach.be:7064/api/attractions?populate=*",
                 headers: {
                     "Content-Type": "application/json",
                 },

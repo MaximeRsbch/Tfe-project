@@ -60,7 +60,9 @@ const updateUsers = () => {
                 <div v-if="data.id">
                     <div v-if="data.id == id">
                         <div>
-                            <h2 class="pb-2 text-center">Username :</h2>
+                            <h2 class="pb-2 text-center">
+                                Nom d'utilisateur :
+                            </h2>
                             <div class="flex justify-center">
                                 <input
                                     id="username"

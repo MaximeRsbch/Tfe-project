@@ -47,6 +47,7 @@ export const useCommentStore = defineStore("comment", {
                 },
             }).then((res) => {
                 this.commentDict = res.data;
+                console.log(res.data);
             });
         },
     },

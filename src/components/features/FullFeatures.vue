@@ -34,7 +34,7 @@ onMounted(() => {
                         {{ attributes.title }}
                     </h1>
                     <div class="flex justify-center">
-                        <p class="pt-4 max-w-3xl text-justify">
+                        <p class="pt-4 max-w-3xl text-justify pb-5">
                             {{ attributes.FullDescrib }}
                         </p>
                     </div>
