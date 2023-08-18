@@ -10,10 +10,10 @@ export const useImageStore = defineStore("image", {
         getImageById: (state) => Object.values(state.imageDict),
     },
     actions: {
-        async image() {
+        async recupAllImage() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://10.0.2.2:7064/api/articles?populate=*",
+                url: "https://maximerossbach.be:7064/api/articles?populate=*",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -21,10 +21,10 @@ export const useImageStore = defineStore("image", {
                 this.imageDict = res.data;
             });
         },
-        async imageById(id) {
+        async recupImageById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://10.0.2.2:7064/api/articles/${id}?populate=*`,
+                url: `https://maximerossbach.be:7064/api/articles/${id}?populate=*`,
                 headers: {
                     "Content-Type": "application/json",
                 },

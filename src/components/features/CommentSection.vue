@@ -1,16 +1,27 @@
 <script setup>
 import { useCommentStore } from "../../stores/comment.js";
+import { useUsersStore } from "../../stores/users.js";
 import { ref, onMounted, computed } from "vue";
 import Swal from "sweetalert2";
+import jwtDecode from "jwt-decode";
 
 const commentStore = useCommentStore();
+const usersStore = useUsersStore();
+
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+const idUser = computed(() => tokenDecode.value.userID);
 
 onMounted(() => {
-    commentStore.recupComment();
+    commentStore.recupAllComment();
+    usersStore.fetchOneUser(idUser.value);
 });
 
 const commentContent = ref("");
 
+//fonction qui permet de créer un commentaire
 async function createComment() {
     if (!commentContent.value) {
         return Swal.fire({
@@ -20,33 +31,52 @@ async function createComment() {
         });
     }
 
-    const body = await commentStore.comment(commentContent.value);
+    const body = await commentStore.writeComment(commentContent.value);
 
     if (commentContent.value) {
         window.location.reload();
     }
 }
 
+//Récupère tout les commentaires
 const comment = computed(() => commentStore.getComments);
+
+const user = computed(() => usersStore.getUsersById);
+
+//fonction qui permet de supprimer un commentaire
+const deleteComment = (id) => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            commentStore.deleteComment(id);
+            Swal.fire(
+                "Supprimé !",
+                "Votre commentaire a bien été supprimé.",
+                "success"
+            );
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                "Annulé",
+                "Votre commentaire n'a pas été supprimé :)",
+                "error"
+            );
+        }
+    });
+};
 </script>
 <template>
     <div class="container mx-auto">
-        <div class="pt-20">
-            <div class="flex justify-center">
-                <div>
-                    <table class="">
-                        <div v-for="data in comment">
-                            <div v-for="getcomment in data">
-                                <tr class="border border-stone-500 rounded-xl">
-                                    {{
-                                        getcomment.content
-                                    }}
-                                </tr>
-                            </div>
-                        </div>
-                    </table>
-                </div>
-            </div>
+        <div class="">
+            <!-- Show all comment -->
             <div class="mt-4 flex flex-col container mx-auto">
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div
@@ -57,18 +87,49 @@ const comment = computed(() => commentStore.getComments);
                         >
                             <table class="min-w-full divide-y divide-gray-300">
                                 <tbody
-                                    v-for="data in comment"
                                     class="divide-y divide-gray-200 bg-white"
                                 >
                                     <tr
-                                        v-for="getcomment in data"
-                                        class="cursor-pointer hover:bg-gray-100"
+                                        v-for="data in comment"
+                                        class="hover:bg-gray-100"
                                     >
+                                        <!--Récupère tout les commentaires et les affiches-->
                                         <td
-                                            class="whitespace-nowrap py-4 text-base font-medium text-gray-900 sm:pl-6"
+                                            class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
                                         >
-                                            {{ getcomment.content }}
+                                            <textarea
+                                                class="resize-none"
+                                                disabled
+                                                name=""
+                                                id=""
+                                                cols="50"
+                                                rows="3"
+                                                >{{ data.content }}</textarea
+                                            >
                                         </td>
+                                        <td>
+                                            Commentaire créé par :
+                                            <span class="">Anonyme</span>
+                                        </td>
+
+                                        <!--Vérif si c'est l'admin qui est bien connecter si c'est le cas il peut supprimer-->
+                                        <div v-if="tokenDecode.userID === 1">
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                <button
+                                                    @click="
+                                                        deleteComment(data.id)
+                                                    "
+                                                    type="button"
+                                                >
+                                                    <img
+                                                        src="/assets/img/poubelle.png"
+                                                        alt="poubelleImg"
+                                                    />
+                                                </button>
+                                            </td>
+                                        </div>
                                     </tr>
                                 </tbody>
                             </table>
@@ -76,20 +137,31 @@ const comment = computed(() => commentStore.getComments);
                     </div>
                 </div>
             </div>
-            <div class="flex justify-center pt-10 pb-10">
-                <textarea
-                    class="w-full h-40 border border-stone-500 pl-4"
-                    v-model="commentContent"
-                    placeholder="Enter your comment"
-                ></textarea>
-            </div>
-            <div class="flex justify-center pb-20">
-                <button
-                    class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl hidden lg:flex"
-                    @click="createComment"
-                >
-                    Créer un commentaire
-                </button>
+            <!-- Peut commenter si il est pas mute -->
+            <div v-for="data in user">
+                <div v-if="data.canComment == true">
+                    <div class="flex justify-center pt-10 pb-10">
+                        <textarea
+                            class="w-full h-40 border border-stone-500 pl-4"
+                            v-model="commentContent"
+                            placeholder="Enter your comment"
+                        ></textarea>
+                    </div>
+                    <div class="flex justify-center pb-20">
+                        <button
+                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl"
+                            @click="createComment"
+                        >
+                            Créer un commentaire
+                        </button>
+                    </div>
+                </div>
+                <div v-if="data.canComment == false">
+                    <h2 class="text-center pt-10 pb-10 text-red-600">
+                        Vous n'êtes pas en mesure de commenter. Contactez
+                        l'administrateur pour plus d'informations
+                    </h2>
+                </div>
             </div>
         </div>
     </div>

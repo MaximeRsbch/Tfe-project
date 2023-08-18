@@ -11,10 +11,10 @@ export const useUsersStore = defineStore("users", {
         getUsersById: (state) => Object.values(state.usersDict),
     },
     actions: {
-        async login(password, email) {
+        async loginUser(password, email) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://10.0.2.2:3000/api/login",
+                url: "https://maximerossbach.be/api/login",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -31,10 +31,10 @@ export const useUsersStore = defineStore("users", {
                 }
             });
         },
-        async create(password, email, username) {
+        async createUser(password, email, username) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://10.0.2.2:3000/api/register",
+                url: "https://maximerossbach.be/api/register",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -44,7 +44,6 @@ export const useUsersStore = defineStore("users", {
                     password,
                 },
             }).then((res) => {
-                console.log(res);
                 if (res.data.data) {
                     window.location.href = "/login";
                 }
@@ -53,7 +52,7 @@ export const useUsersStore = defineStore("users", {
         async fetchUsers() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://10.0.2.2:3000/api/users",
+                url: "https://maximerossbach.be/api/users",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -61,15 +60,71 @@ export const useUsersStore = defineStore("users", {
                 this.usersDict = res.data.data;
             });
         },
-        async fetchUserById(id) {
+
+        async fetchUsersForComment() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://10.0.2.2:3000/api/users/${id}`,
+                url: "https://maximerossbach.be/api/users",
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
                 this.usersDict = res.data.data;
+            });
+        },
+
+        async deleteUser(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `https://maximerossbach.be/api/delete/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.fetchUsers();
+            });
+        },
+
+        async muteUser(id, canComment) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `https://maximerossbach.be/api/mute/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    canComment,
+                },
+            }).then((res) => {
+                this.fetchUsers();
+            });
+        },
+
+        async fetchOneUser(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `https://maximerossbach.be/api/oneuser/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.usersDict = res.data;
+            });
+        },
+
+        async updateUser(id, username, email) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `https://maximerossbach.be/api/user/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    username,
+                    email,
+                },
+            }).then((res) => {
+                this.fetchUsers();
             });
         },
     },

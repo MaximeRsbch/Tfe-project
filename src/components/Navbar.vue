@@ -1,32 +1,27 @@
 <script setup>
 import "../scripts/Navbar.js";
 import { useRouter } from "vue-router";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import DropDownMenu from "./DropDownMenu.vue";
 import jwtDecode from "jwt-decode";
 
 const links = [
     { label: "Accueil", href: "/" },
-    { label: "Features", href: "/features" },
+    { label: "Nouveautés", href: "/features" },
 ];
-
-onMounted(() => {
-    decoded();
-});
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
-const decoded = () => {
-    if (isConnect.value) {
-        const test = jwtDecode(isConnect.value);
-        console.log(test);
-    }
-};
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const router = useRouter();
 
 const goToLogin = () => {
     router.push({ name: "login" });
+};
+
+const goToAdminPannel = () => {
+    router.push({ name: "adminPannel" });
 };
 </script>
 <template>
@@ -38,9 +33,9 @@ const goToLogin = () => {
                 <a href="/" class="h-full flex items-center">
                     <img
                         id="logo"
-                        src="../assets/img/logo.png"
+                        src="/assets/img/logo.png"
                         alt="Logo"
-                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-32 hidden lg:flex"
+                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-24 md:h-24 w-20 lg:w-full"
                     />
                 </a>
                 <nav
@@ -64,6 +59,16 @@ const goToLogin = () => {
                         </button>
 
                         <DropDownMenu v-if="isConnect" />
+
+                        <div v-if="isConnect">
+                            <button
+                                @click="goToAdminPannel"
+                                v-if="tokenDecode.userID === 1"
+                                class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                            >
+                                Admin pannel
+                            </button>
+                        </div>
                     </ul>
                     <div
                         class="flex flex-col justify-center items-center gap-6 px-7 lg:hidden text-white"
@@ -71,6 +76,15 @@ const goToLogin = () => {
                         <div
                             class="mt-14 flex flex-col gap-2 justify-center items-center lg:hidden md:text-lg"
                         >
+                            <div v-if="isConnect">
+                                <button
+                                    @click="goToAdminPannel"
+                                    v-if="tokenDecode.userID === 1"
+                                    class="bg-white text-stone-500 text-2xl px-5 py-2 rounded-xl"
+                                >
+                                    Admin pannel
+                                </button>
+                            </div>
                             <button
                                 v-if="!isConnect"
                                 @click="goToLogin"

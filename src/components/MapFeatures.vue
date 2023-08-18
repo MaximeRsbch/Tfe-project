@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import { CapacitorHttp } from "@capacitor/core";
 import LoadingSpinner from "../components/LoadingSpinner.vue";
 
@@ -33,13 +32,12 @@ const search = () => {
             });
             const getData = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/search/${searchQuery.value}?${params}`,
+                url: `https://maximerossbach.be/api/search/${searchQuery.value}?${params}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
             searchData.value = getData.data.features;
-            console.log(searchData.value);
         }
     }, 750);
 };
@@ -107,8 +105,46 @@ const removeResults = () => {
                         @click="removeResults"
                         class="fa-regular fa-circle-xmark flex justify-end"
                     ></i>
-                    <!-- Ici faudra mettre les images du parc, avis, étoiles et bondée ou pas -->
+
                     <h1 class="text-lg">{{ selectedResult.text }}</h1>
+                    <div class="flex justify-center">
+                        <!-- Acheter billets walibi -->
+                        <a
+                            v-if="selectedResult.text == 'Walibi Belgium'"
+                            class="text-blue-500"
+                            href="https://www.walibi.be/fr"
+                            target="_blank"
+                        >
+                            Achetez vos tickets
+                        </a>
+                        <!-- Acheter billets Plopsa -->
+                        <a
+                            v-if="selectedResult.text == 'Plopsaland'"
+                            class="text-blue-500"
+                            href="https://www.plopsalanddepanne.be/fr/tickets"
+                            target="_blank"
+                        >
+                            Achetez vos tickets
+                        </a>
+                        <!-- Acheter billets Bobbejaanland -->
+                        <a
+                            v-if="selectedResult.text == 'Bobbejaanland'"
+                            class="text-blue-500"
+                            href="https://www.bobbejaanland.be/tickets"
+                            target="_blank"
+                        >
+                            Achetez vos tickets
+                        </a>
+                        <!-- Acheter billets bellewaerde -->
+                        <a
+                            v-if="selectedResult.text == 'Bellewaerde'"
+                            class="text-blue-500"
+                            href="https://www.bellewaerde.be/park/nl/tickets"
+                            target="_blank"
+                        >
+                            Achetez vos tickets
+                        </a>
+                    </div>
 
                     <p class="text-xs mb-1">
                         {{ selectedResult.properties.address }},

@@ -9,10 +9,10 @@ export const useCommentStore = defineStore("comment", {
         getComments: (state) => Object.values(state.commentDict),
     },
     actions: {
-        async comment(content) {
+        async writeComment(content) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://10.0.2.2:3000/api/comment",
+                url: "https://maximerossbach.be/api/comment",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -23,15 +23,31 @@ export const useCommentStore = defineStore("comment", {
                 this.commentDict = res.data;
             });
         },
-        async recupComment() {
+        async recupAllComment() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://10.0.2.2:3000/api/comments",
+                url: "https://maximerossbach.be/api/comments",
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
+                this.commentDict = res.data.data;
+            });
+        },
+
+        async deleteComment(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `https://maximerossbach.be/api/deleteComment/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    id,
+                },
+            }).then((res) => {
                 this.commentDict = res.data;
+                console.log(res.data);
             });
         },
     },
