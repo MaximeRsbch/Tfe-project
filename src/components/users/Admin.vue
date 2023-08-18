@@ -115,7 +115,7 @@ const unmuteUsers = (id) => {
             Ici sont affichés tous les utilisateurs pour les modérer
         </p>
         <div class="mt-4 flex flex-col container mx-auto">
-            <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="overflow-x-auto lg:-mx-8 mx-2">
                 <div
                     class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
                 >
@@ -164,6 +164,30 @@ const unmuteUsers = (id) => {
                                             Role
                                         </a>
                                     </th>
+                                    <th
+                                        scope="col"
+                                        class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                    >
+                                        <a class="group inline-flex text-base">
+                                            Suppression user
+                                        </a>
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                    >
+                                        <a class="group inline-flex text-base">
+                                            Mute User
+                                        </a>
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                    >
+                                        <a class="group inline-flex text-base">
+                                            Unmute User
+                                        </a>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
@@ -203,7 +227,8 @@ const unmuteUsers = (id) => {
                                             type="button"
                                         >
                                             <img
-                                                src="assets/img/poubelle.png"
+                                                class="w-5 md:w-5 lg:w-full"
+                                                src="/assets/img/poubelle.png"
                                                 alt="poubelleImg"
                                             />
                                         </button>
@@ -216,7 +241,8 @@ const unmuteUsers = (id) => {
                                             type="button"
                                         >
                                             <img
-                                                src="assets/img/mute.png"
+                                                class="w-5 md:w-5 lg:w-full"
+                                                src="/assets/img/mute.png"
                                                 alt="muteImg"
                                             />
                                         </button>
@@ -229,7 +255,8 @@ const unmuteUsers = (id) => {
                                             type="button"
                                         >
                                             <img
-                                                src="assets/img/unmute.png"
+                                                class="w-5 md:w-5 lg:w-full"
+                                                src="/assets/img/unmute.png"
                                                 alt="unmuteeImg"
                                             />
                                         </button>

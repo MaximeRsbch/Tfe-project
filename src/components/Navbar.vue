@@ -33,9 +33,9 @@ const goToAdminPannel = () => {
                 <a href="/" class="h-full flex items-center">
                     <img
                         id="logo"
-                        src="assets/img/logo.png"
+                        src="/assets/img/logo.png"
                         alt="Logo"
-                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-32 w-20"
+                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-24 md:h-24 w-20 lg:w-full"
                     />
                 </a>
                 <nav

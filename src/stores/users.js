@@ -14,7 +14,7 @@ export const useUsersStore = defineStore("users", {
         async loginUser(password, email) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://maximerossbach.be/api/login",
+                url: "https://maximerossbach.be/api/login",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -34,7 +34,7 @@ export const useUsersStore = defineStore("users", {
         async createUser(password, email, username) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://maximerossbach.be/api/register",
+                url: "https://maximerossbach.be/api/register",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -52,7 +52,7 @@ export const useUsersStore = defineStore("users", {
         async fetchUsers() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://maximerossbach.be/api/users",
+                url: "https://maximerossbach.be/api/users",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -64,7 +64,7 @@ export const useUsersStore = defineStore("users", {
         async fetchUsersForComment() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://maximerossbach.be/api/users",
+                url: "https://maximerossbach.be/api/users",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -76,7 +76,7 @@ export const useUsersStore = defineStore("users", {
         async deleteUser(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://maximerossbach.be/api/delete/${id}`,
+                url: `https://maximerossbach.be/api/delete/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -88,7 +88,7 @@ export const useUsersStore = defineStore("users", {
         async muteUser(id, canComment) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://maximerossbach.be/api/mute/${id}`,
+                url: `https://maximerossbach.be/api/mute/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -103,7 +103,7 @@ export const useUsersStore = defineStore("users", {
         async fetchOneUser(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://maximerossbach.be/api/oneuser/${id}`,
+                url: `https://maximerossbach.be/api/oneuser/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -115,7 +115,7 @@ export const useUsersStore = defineStore("users", {
         async updateUser(id, username, email) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://maximerossbach.be/api/user/${id}`,
+                url: `https://maximerossbach.be/api/user/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },

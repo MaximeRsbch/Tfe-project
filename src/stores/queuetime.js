@@ -24,7 +24,7 @@ export const useQueueTimeStore = defineStore("queuetime", {
         async fetchQueueTimeWalibi() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://maximerossbach.be/api/queuetime/14",
+                url: "https://maximerossbach.be/api/queuetime/14",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -35,7 +35,7 @@ export const useQueueTimeStore = defineStore("queuetime", {
         async fetchQueueTimeEnergy() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://maximerossbach.be/api/queuetime/317",
+                url: "https://maximerossbach.be/api/queuetime/317",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -46,7 +46,7 @@ export const useQueueTimeStore = defineStore("queuetime", {
         async fetchQueueTimePlopsa() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://maximerossbach.be/api/queuetime/54",
+                url: "https://maximerossbach.be/api/queuetime/54",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -57,7 +57,7 @@ export const useQueueTimeStore = defineStore("queuetime", {
         async fetchQueueTimeBobbe() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://maximerossbach.be/api/queuetime/311",
+                url: "https://maximerossbach.be/api/queuetime/311",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -68,7 +68,7 @@ export const useQueueTimeStore = defineStore("queuetime", {
         async fetchQueueTimeBellewaerde() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://maximerossbach.be/api/queuetime/276",
+                url: "https://maximerossbach.be/api/queuetime/276",
                 headers: {
                     "Content-Type": "application/json",
                 },

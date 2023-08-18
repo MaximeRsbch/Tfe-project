@@ -99,7 +99,7 @@ const getLocErro = (err) => {
 const plotGeolocation = (coords) => {
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "assets/img/map-marker-red.svg",
+        iconUrl: "/assets/img/map-marker-red.svg",
         iconSize: [35, 35],
     });
 
@@ -126,7 +126,7 @@ const plotResult = (coords) => {
 
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "assets/img/map-marker-blue.svg",
+        iconUrl: "/assets/img/map-marker-blue.svg",
         iconSize: [35, 35],
     });
 
@@ -363,7 +363,7 @@ const showAttractionImage = ref(null);
 const plotInfo = () => {
     // créé un marqueur
     const customMarker = leaflet.icon({
-        iconUrl: "assets/img/marqueur-de-carte.png",
+        iconUrl: "/assets/img/marqueur-de-carte.png",
         iconSize: [35, 35],
     });
 
