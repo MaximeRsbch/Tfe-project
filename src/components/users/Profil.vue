@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 const usersStore = useUsersStore();
 
+//Empecher l'accès à la page si l'utilisateur n'est pas connecté
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
@@ -52,7 +53,7 @@ const updateUsers = () => {
 </script>
 <template>
     <div>
-        <div class="pt-16">
+        <div v-if="isConnect" class="pt-16">
             <h1 class="text-center text-4xl pb-10">
                 Information de votre compte :
             </h1>
@@ -94,6 +95,9 @@ const updateUsers = () => {
                     Sauvegarder
                 </button>
             </div>
+        </div>
+        <div v-if="!isConnect">
+            <h2>Veuillez-vous connecter pour accéder à cette page</h2>
         </div>
     </div>
 </template>

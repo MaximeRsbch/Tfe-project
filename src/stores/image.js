@@ -13,7 +13,7 @@ export const useImageStore = defineStore("image", {
         async recupAllImage() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be:7064/api/articles?populate=*",
+                url: "https://closetoschoolheh.com/api/articles?populate=*",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -24,7 +24,7 @@ export const useImageStore = defineStore("image", {
         async recupImageById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be:7064/api/articles/${id}?populate=*`,
+                url: `https://closetoschoolheh.com/api/articles/${id}?populate=*`,
                 headers: {
                     "Content-Type": "application/json",
                 },
