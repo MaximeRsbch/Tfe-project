@@ -11,7 +11,7 @@ const props = defineProps({
         <div
             class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
         >
-            <h1 class="text-lg mb-1">Erreur: {{ geoErrorMsg }}</h1>
+            <h1 class="text-lg mb-1">Erreur:</h1>
             <p class="text-sm mb-4">
                 Pour profiter au maximum de cette application, vérifier que
                 votre localisation soit activée

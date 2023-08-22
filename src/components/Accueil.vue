@@ -364,7 +364,7 @@ const plotInfo = () => {
     // créé un marqueur
     const customMarker = leaflet.icon({
         iconUrl: "/assets/img/marqueur-de-carte.png",
-        iconSize: [35, 35],
+        iconSize: [32, 32],
     });
 
     // Créé ce marqueur sur la carte
