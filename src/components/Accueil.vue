@@ -157,8 +157,6 @@ const removeResult = () => {
 
 const queuetimeWalibi = computed(() => queuetime.getQueueTimesWalibi);
 
-const queuetimeEnergy = computed(() => queuetime.getQueueTimesEnergy);
-
 const queuetimePlopsa = computed(() => queuetime.getQueueTimesPlopsa);
 
 const queuetimeBobbe = computed(() => queuetime.getQueueTimesBobbe);
@@ -188,41 +186,6 @@ const walibiLocation = [
         50.697218045811205,
         4.5853398787353274,
         queuetimeWalibi.value[25],
-    ],
-];
-
-const energyLocation = [
-    [
-        "hyperion",
-        50.00047086880883,
-        19.411556348514026,
-        queuetimeEnergy.value[19],
-    ],
-    ["atlantis", 50.0011398047901, 19.40886341052339, queuetimeEnergy.value[7]],
-    [
-        "anakonda",
-        50.001236351500275,
-        19.405644759612045,
-        queuetimeEnergy.value[12],
-    ],
-    [
-        "zadra",
-        50.001850108083175,
-        19.404046162956252,
-        queuetimeEnergy.value[51],
-    ],
-    [
-        "frida",
-        50.002201807760045,
-        19.401203021441635,
-        queuetimeEnergy.value[16],
-    ],
-    ["mayan", 50.001794939282796, 19.40606318423004, queuetimeEnergy.value[30]],
-    [
-        "boomerange",
-        50.001567367270106,
-        19.40847717246866,
-        queuetimeEnergy.value[9],
     ],
 ];
 
@@ -359,6 +322,9 @@ const attractionMarkers = ref(null);
 const showModalResults = ref(false);
 const showAttractionResults = ref(null);
 const showAttractionImage = ref(null);
+const showHeightAlone = ref(null);
+const showHeightWithAdult = ref(null);
+const showTypeAttraction = ref(null);
 
 const plotInfo = () => {
     // créé un marqueur
@@ -388,6 +354,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[48];
                     showAttractionImage.value = img.value[7];
+                    showHeightAlone.value = 130 + "cm";
+                    showHeightWithAdult.value = 130 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 50.69985136317578 &&
@@ -395,6 +364,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[37];
                     showAttractionImage.value = img.value[3];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 105 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 50.700759712506 &&
@@ -402,6 +374,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[50];
                     showAttractionImage.value = img.value[6];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 0 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 50.70049381391455 &&
@@ -409,6 +384,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[11];
                     showAttractionImage.value = img.value[4];
+                    showHeightAlone.value = 130 + "cm";
+                    showHeightWithAdult.value = 0 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 50.69935099850555 &&
@@ -416,6 +394,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[36];
                     showAttractionImage.value = img.value[0];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 0 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 50.699113379933955 &&
@@ -423,6 +404,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[9];
                     showAttractionImage.value = img.value[1];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 50.69883615674339 &&
@@ -430,6 +414,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[12];
                     showAttractionImage.value = img.value[2];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 0 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 50.697218045811205 &&
@@ -437,58 +424,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeWalibi.value[25];
                     showAttractionImage.value = img.value[5];
-                }
-            });
-    }
-
-    // création de chaque marqueur pour chaque attraction de energylandia
-    for (var i = 0; i < energyLocation.length; i++) {
-        leaflet
-            .marker([energyLocation[i][1], energyLocation[i][2]])
-            .addTo(map)
-            .on("click", function (e) {
-                showModalResults.value = true;
-                if (
-                    e.latlng.lat == 50.00047086880883 &&
-                    e.latlng.lng == 19.411556348514026
-                ) {
-                    showAttractionResults.value = queuetimeEnergy.value[19];
-                }
-                if (
-                    e.latlng.lat == 50.0011398047901 &&
-                    e.latlng.lng == 19.40886341052339
-                ) {
-                    showAttractionResults.value = queuetimeEnergy.value[7];
-                }
-                if (
-                    e.latlng.lat == 50.001236351500275 &&
-                    e.latlng.lng == 19.405644759612045
-                ) {
-                    showAttractionResults.value = queuetimeEnergy.value[12];
-                }
-                if (
-                    e.latlng.lat == 50.001850108083175 &&
-                    e.latlng.lng == 19.404046162956252
-                ) {
-                    showAttractionResults.value = queuetimeEnergy.value[51];
-                }
-                if (
-                    e.latlng.lat == 50.002201807760045 &&
-                    e.latlng.lng == 19.401203021441635
-                ) {
-                    showAttractionResults.value = queuetimeEnergy.value[16];
-                }
-                if (
-                    e.latlng.lat == 50.001794939282796 &&
-                    e.latlng.lng == 19.40606318423004
-                ) {
-                    showAttractionResults.value = queuetimeEnergy.value[30];
-                }
-                if (
-                    e.latlng.lat == 50.001567367270106 &&
-                    e.latlng.lng == 19.40847717246866
-                ) {
-                    showAttractionResults.value = queuetimeEnergy.value[9];
+                    showHeightAlone.value = 130 + "cm";
+                    showHeightWithAdult.value = 130 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
             });
     }
@@ -506,6 +444,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[1];
                     showAttractionImage.value = img.value[12];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 125 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 51.07961827606858 &&
@@ -513,6 +454,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[32];
                     showAttractionImage.value = img.value[11];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 96 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 51.08147105223425 &&
@@ -520,6 +464,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[19];
                     showAttractionImage.value = img.value[9];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 96 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 51.0810527386725 &&
@@ -527,6 +474,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[44];
                     showAttractionImage.value = img.value[10];
+                    showHeightAlone.value = 130 + "cm";
+                    showHeightWithAdult.value = 130 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 51.07939209915142 &&
@@ -534,6 +484,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[7];
                     showAttractionImage.value = img.value[14];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 51.081339520702684 &&
@@ -541,6 +494,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[12];
                     showAttractionImage.value = img.value[8];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 120 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 51.07998264624246 &&
@@ -548,6 +504,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimePlopsa.value[9];
                     showAttractionImage.value = img.value[13];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 90 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
             });
     }
@@ -565,6 +524,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[0];
                     showAttractionImage.value = img.value[23];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 120 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 51.20125394648134 &&
@@ -572,6 +534,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[11];
                     showAttractionImage.value = img.value[24];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 51.19985563559918 &&
@@ -579,6 +544,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[10];
                     showAttractionImage.value = img.value[25];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 125 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 51.20000353587284 &&
@@ -586,6 +554,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[2];
                     showAttractionImage.value = img.value[26];
+                    showHeightAlone.value = 130 + "cm";
+                    showHeightWithAdult.value = 0 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 51.19995131004791 &&
@@ -593,6 +564,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[7];
                     showAttractionImage.value = img.value[27];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 110 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 51.2002263369215 &&
@@ -600,6 +574,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[1];
                     showAttractionImage.value = img.value[28];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 120 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 51.20198647001226 &&
@@ -607,6 +584,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[8];
                     showAttractionImage.value = img.value[29];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 51.201476438381526 &&
@@ -614,6 +594,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBobbe.value[9];
                     showAttractionImage.value = img.value[30];
+                    showHeightAlone.value = 130 + "cm";
+                    showHeightWithAdult.value = 110 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
             });
     }
@@ -632,6 +615,9 @@ const plotInfo = () => {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[25];
                     showAttractionImage.value = img.value[21];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 0 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 50.84888797995825 &&
@@ -640,6 +626,9 @@ const plotInfo = () => {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[31];
                     showAttractionImage.value = img.value[17];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 50.84728487699255 &&
@@ -648,6 +637,9 @@ const plotInfo = () => {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[17];
                     showAttractionImage.value = img.value[22];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 120 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 50.84745331644677 &&
@@ -656,6 +648,9 @@ const plotInfo = () => {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[24];
                     showAttractionImage.value = img.value[20];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 90 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
                 if (
                     e.latlng.lat == 50.84754044006652 &&
@@ -664,6 +659,9 @@ const plotInfo = () => {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[10];
                     showAttractionImage.value = img.value[18];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 0 + "cm";
+                    showTypeAttraction.value = "Sensation";
                 }
                 if (
                     e.latlng.lat == 50.84778438533629 &&
@@ -672,6 +670,9 @@ const plotInfo = () => {
                     showAttractionResults.value =
                         queuetimeBellewaerde.value[15];
                     showAttractionImage.value = img.value[16];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 50.84856216368863 &&
@@ -679,6 +680,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBellewaerde.value[8];
                     showAttractionImage.value = img.value[19];
+                    showHeightAlone.value = 120 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Famille";
                 }
                 if (
                     e.latlng.lat == 50.848216694041774 &&
@@ -686,6 +690,9 @@ const plotInfo = () => {
                 ) {
                     showAttractionResults.value = queuetimeBellewaerde.value[1];
                     showAttractionImage.value = img.value[15];
+                    showHeightAlone.value = 140 + "cm";
+                    showHeightWithAdult.value = 100 + "cm";
+                    showTypeAttraction.value = "Splash";
                 }
             });
     }
@@ -724,7 +731,62 @@ const removeAttrResults = () => {
                     @click="removeAttrResults"
                     class="fa-regular fa-circle-xmark flex justify-end"
                 ></i>
-                <!-- Ici faudra mettre les images du parc -->
+
+                <!--Image pour quand c'est Sensation-->
+                <div
+                    v-if="showTypeAttraction == 'Sensation'"
+                    class="grid grid-cols-2"
+                >
+                    <div class="flex justify-end">
+                        <img
+                            class="w-12 h-12"
+                            src="/assets/img/sensation.png"
+                            alt="taille minimum seul"
+                        />
+                    </div>
+                    <div class="flex justify-start items-center">
+                        <p class="text-2xl">
+                            {{ showTypeAttraction }}
+                        </p>
+                    </div>
+                </div>
+                <!--Image pour quand c'est Famille-->
+                <div
+                    v-if="showTypeAttraction == 'Famille'"
+                    class="pt-3 grid grid-cols-2"
+                >
+                    <div class="flex justify-end">
+                        <img
+                            class="w-12 h-12"
+                            src="/assets/img/famille.png"
+                            alt="taille minimum seul"
+                        />
+                    </div>
+                    <div class="flex justify-start items-center">
+                        <p class="text-2xl">
+                            {{ showTypeAttraction }}
+                        </p>
+                    </div>
+                </div>
+                <!--Image pour quand c'est Splash-->
+                <div
+                    v-if="showTypeAttraction == 'Splash'"
+                    class="pt-3 grid grid-cols-2"
+                >
+                    <div class="flex justify-end">
+                        <img
+                            class="w-12 h-12"
+                            src="/assets/img/goutte-deau.png"
+                            alt="taille minimum seul"
+                        />
+                    </div>
+                    <div class="flex justify-start items-center">
+                        <p class="text-2xl">
+                            {{ showTypeAttraction }}
+                        </p>
+                    </div>
+                </div>
+                <!--Image du parc-->
                 <div v-if="isConnect" v-for="data in showAttractionImage">
                     <div class="grid grid-cols-2" v-for="attribute in data">
                         <div v-for="info in attribute.data">
@@ -737,9 +799,10 @@ const removeAttrResults = () => {
                     </div>
                 </div>
                 <div v-if="isConnect" class="text-center">
-                    <h1 class="text-4xl pb-4">
+                    <h1 class="text-4xl">
                         {{ showAttractionResults.name }}
                     </h1>
+
                     <p
                         v-if="showAttractionResults.is_open == false"
                         class="text-2xl"
@@ -750,7 +813,7 @@ const removeAttrResults = () => {
                         Attraction <span class="text-green-500">ouverte</span>
                     </p>
                     <div
-                        class="text-xl"
+                        class="text-2xl pt-3"
                         v-if="showAttractionResults.wait_time >= 50"
                     >
                         <p>
@@ -762,7 +825,7 @@ const removeAttrResults = () => {
                         </p>
                     </div>
                     <div
-                        class="text-xl"
+                        class="text-2xl pt-3"
                         v-if="
                             showAttractionResults.wait_time < 50 &&
                             showAttractionResults.wait_time >= 30
@@ -777,7 +840,7 @@ const removeAttrResults = () => {
                         </p>
                     </div>
                     <div
-                        class="text-xl"
+                        class="text-2xl pt-3"
                         v-if="showAttractionResults.wait_time < 30"
                     >
                         <p>
@@ -787,6 +850,37 @@ const removeAttrResults = () => {
                             }}</span>
                             minutes
                         </p>
+                    </div>
+                    <div class="pt-3 grid grid-cols-2">
+                        <div class="flex justify-end">
+                            <img
+                                class="w-20 h-20"
+                                src="/assets/img/seul.png"
+                                alt="taille minimum seul"
+                            />
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <p class="text-2xl">
+                                {{ showHeightAlone }}
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        v-if="showHeightWithAdult > 0"
+                        class="pt-3 grid grid-cols-2"
+                    >
+                        <div class="flex justify-end">
+                            <img
+                                class="w-20 h-20"
+                                src="/assets/img/accompgne.png"
+                                alt="taille minimum seul"
+                            />
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <p class="text-2xl">
+                                {{ showHeightWithAdult }}
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div v-if="!isConnect">

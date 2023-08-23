@@ -92,7 +92,6 @@ const unmuteUsers = (id) => {
         if (result.isConfirmed && id !== 1) {
             Swal.fire("Mute", "Cet utilisateur a bien été unmute.", "success");
             usersStore.muteUser(id, !canComment.value);
-            console.log(!canComment.value);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire(
                 "Annulé",
@@ -114,8 +113,6 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const id = computed(() => tokenDecode.value.userID);
-
-console.log(id.value);
 </script>
 <template>
     <div class="container mx-auto">

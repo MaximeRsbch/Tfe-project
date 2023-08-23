@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">project_tfe</string>
-    <string name="title_activity_main">project_tfe</string>
+    <string name="app_name">WatchUrPark</string>
+    <string name="title_activity_main">WatchUrpark</string>
     <string name="com.tfe.app">com.tfe.app</string>
     <string name="custom_url_scheme">com.tfe.app</string>
 </resources>
