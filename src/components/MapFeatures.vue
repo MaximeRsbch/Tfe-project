@@ -51,6 +51,12 @@ const removeResults = () => {
     selectedResult.value = null;
     emit("removeResult");
 };
+
+const goToPark = () => {
+    window.open(
+        `https://www.google.com/maps/dir/?api=1&destination=${selectedResult.value.geometry.coordinates[1]},${selectedResult.value.geometry.coordinates[0]}`
+    );
+};
 </script>
 <template>
     <div
@@ -153,6 +159,15 @@ const removeResults = () => {
                     <p class="text-xs">
                         {{ selectedResult.properties.category }}
                     </p>
+                    <div class="flex justify-center pt-4">
+                        <button
+                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                            target="_blank"
+                            @click="goToPark"
+                        >
+                            Démarrer la navigation
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,10 +2,12 @@
 import { useImageStore } from "../../stores/image.js";
 import { onMounted, computed } from "vue";
 import { BASE_URL } from "../../common/config.js";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const imageStore = useImageStore();
 const route = useRoute();
+
+const router = useRouter();
 
 const id = route.params.id;
 
@@ -15,10 +17,23 @@ const image = computed(() => imageStore.getImageById);
 onMounted(() => {
     imageStore.recupImageById(id);
 });
+
+const goToFeatures = () => {
+    router.push({ name: "features" });
+};
 </script>
 
 <template>
     <div class="mx-auto container px-4 md:px-10 lg:px-0">
+        <div class="mt-10 pl-4">
+            <button @click="goToFeatures">
+                <img
+                    src="/assets/img/fleche.png"
+                    alt="Retour aux articles"
+                    class="w-20 mr-2"
+                />
+            </button>
+        </div>
         <!--Récupère et affiche les informations de l'image spécifique-->
         <div v-for="data in image">
             <div v-for="attributes in data">

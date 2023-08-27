@@ -19,7 +19,7 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 </script>
 
 <template>
-    <div class="mx-auto container px-4 md:px-10 lg:px-0">
+    <div class="mx-auto container px-4 md:px-10 lg:px-4">
         <div v-if="!isConnect">
             <h1 class="flex justify-center items-center">
                 Veuillez vous connecter pour accéder à cette page !

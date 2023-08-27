@@ -78,7 +78,7 @@ const deleteComment = (id) => {
         <div class="">
             <!-- Show all comment -->
             <div class="mt-4 flex flex-col container mx-auto">
-                <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="-my-2 overflow-x-auto sm:-mx-2">
                     <div
                         class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
                     >
@@ -86,6 +86,42 @@ const deleteComment = (id) => {
                             class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
                         >
                             <table class="min-w-full divide-y divide-gray-300">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th
+                                            scope="col"
+                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900 md:hidden"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Commentaire
+                                            </a>
+                                        </th>
+
+                                        <th
+                                            scope="col"
+                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900 md:hidden"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Auteur
+                                            </a>
+                                        </th>
+
+                                        <th
+                                            scope="col"
+                                            class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Suppression commentaire
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
                                 <tbody
                                     class="divide-y divide-gray-200 bg-white"
                                 >
@@ -124,6 +160,7 @@ const deleteComment = (id) => {
                                                     type="button"
                                                 >
                                                     <img
+                                                        class="w-5 md:w-5 lg:w-full"
                                                         src="/assets/img/poubelle.png"
                                                         alt="poubelleImg"
                                                     />

@@ -66,7 +66,7 @@ const goToAdminPannel = () => {
                                 v-if="tokenDecode.userID === 1"
                                 class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
                             >
-                                Admin pannel
+                                Admin panel
                             </button>
                         </div>
                     </ul>

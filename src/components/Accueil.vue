@@ -10,6 +10,14 @@ import { BASE_URL } from "../common/config.js";
 
 const queuetime = useQueueTimeStore();
 
+const queuetimeWalibi = computed(() => queuetime.getQueueTimesWalibi);
+
+const queuetimePlopsa = computed(() => queuetime.getQueueTimesPlopsa);
+
+const queuetimeBobbe = computed(() => queuetime.getQueueTimesBobbe);
+
+const queuetimeBellewaerde = computed(() => queuetime.getQueueTimesBellewaerde);
+
 const imageAttraction = useImageAttractionStore();
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
@@ -39,7 +47,6 @@ onMounted(() => {
     getGeoLocation();
     plotInfo();
     queuetime.fetchQueueTimeWalibi();
-    queuetime.fetchQueueTimeEnergy();
     queuetime.fetchQueueTimePlopsa();
     queuetime.fetchQueueTimeBobbe();
     queuetime.fetchQueueTimeBellewaerde();
@@ -155,169 +162,6 @@ const removeResult = () => {
     map.removeLayer(resultMarker.value);
 };
 
-const queuetimeWalibi = computed(() => queuetime.getQueueTimesWalibi);
-
-const queuetimePlopsa = computed(() => queuetime.getQueueTimesPlopsa);
-
-const queuetimeBobbe = computed(() => queuetime.getQueueTimesBobbe);
-
-const queuetimeBellewaerde = computed(() => queuetime.getQueueTimesBellewaerde);
-
-const walibiLocation = [
-    [
-        "Vampire",
-        50.702372411422445,
-        4.591857720201637,
-        queuetimeWalibi.value[48],
-    ],
-    ["Radja", 50.69985136317578, 4.593853283618328, queuetimeWalibi.value[37]],
-    ["Loup", 50.700759712506, 4.590341917711024, queuetimeWalibi.value[50]],
-    ["Cobra", 50.70049381391455, 4.593959463970398, queuetimeWalibi.value[11]],
-    ["Pulsar", 50.69935099850555, 4.590583087541805, queuetimeWalibi.value[36]],
-    [
-        "Calamity",
-        50.699113379933955,
-        4.587394287601669,
-        queuetimeWalibi.value[9],
-    ],
-    ["Dalton", 50.69883615674339, 4.588037406936669, queuetimeWalibi.value[12]],
-    [
-        "Kondaa",
-        50.697218045811205,
-        4.5853398787353274,
-        queuetimeWalibi.value[25],
-    ],
-];
-
-const plopsaLocation = [
-    ["anubis", 51.08195218023082, 2.5977898050843127, queuetimePlopsa.value[1]],
-    [
-        "Le Dragon",
-        51.07961827606858,
-        2.5976966680273104,
-        queuetimePlopsa.value[32],
-    ],
-    [
-        "superSplash",
-        51.08147105223425,
-        2.5987686815206654,
-        queuetimePlopsa.value[19],
-    ],
-
-    [
-        "the ride of happiness",
-        51.0810527386725,
-        2.5987687222263482,
-        queuetimePlopsa.value[44],
-    ],
-    [
-        "DinoSplash",
-        51.07939209915142,
-        2.5972908303152535,
-        queuetimePlopsa.value[7],
-    ],
-    [
-        "Flyer Garde de Nuit",
-        51.081339520702684,
-        2.595597911398172,
-        queuetimePlopsa.value[12],
-    ],
-    [
-        "K3 Roller Skater",
-        51.07998264624246,
-        2.596500900290202,
-        queuetimePlopsa.value[9],
-    ],
-];
-
-const bobbeLocation = [
-    [
-        "Bob express",
-        51.201516125046446,
-        4.906511646430337,
-        queuetimeBobbe.value[0],
-    ],
-    [
-        "Les buches",
-        51.20125394648134,
-        4.9051919996547815,
-        queuetimeBobbe.value[11],
-    ],
-    ["Typhoon", 51.19985563559918, 4.905610424242153, queuetimeBobbe.value[10]],
-    ["Fury", 51.20000353587284, 4.906951528688855, queuetimeBobbe.value[2]],
-    [
-        "Speedy bob",
-        51.19995131004791,
-        4.910451248158973,
-        queuetimeBobbe.value[7],
-    ],
-    ["El rio", 51.2002263369215, 4.9102916418521545, queuetimeBobbe.value[1]],
-
-    [
-        "Terra magma",
-        51.20198647001226,
-        4.908089073910253,
-        queuetimeBobbe.value[8],
-    ],
-    [
-        "Dream catcher",
-        51.201476438381526,
-        4.91191164663274,
-        queuetimeBobbe.value[9],
-    ],
-];
-
-const belleLocation = [
-    [
-        "Screaming eagle",
-        50.848556918900854,
-        2.946218842738849,
-        queuetimeBellewaerde.value[25],
-    ],
-    [
-        "Wakala",
-        50.84888797995825,
-        2.9477643053779836,
-        queuetimeBellewaerde.value[31],
-    ],
-    [
-        "Jungle Mission",
-        50.84728487699255,
-        2.95370341472658,
-        queuetimeBellewaerde.value[17],
-    ],
-    [
-        "River splash",
-        50.84745331644677,
-        2.955037296322738,
-        queuetimeBellewaerde.value[24],
-    ],
-    [
-        "El volador",
-        50.84754044006652,
-        2.956591958144248,
-        queuetimeBellewaerde.value[10],
-    ],
-    [
-        "Huracan",
-        50.84778438533629,
-        2.9569783238040315,
-        queuetimeBellewaerde.value[15],
-    ],
-    [
-        "Dawson duel",
-        50.84856216368863,
-        2.9470471551588653,
-        queuetimeBellewaerde.value[8],
-    ],
-    [
-        "Bangal rapid river",
-        50.848216694041774,
-        2.9508988072758235,
-        queuetimeBellewaerde.value[1],
-    ],
-];
-
 const attractionMarkers = ref(null);
 const showModalResults = ref(false);
 const showAttractionResults = ref(null);
@@ -327,375 +171,390 @@ const showHeightWithAdult = ref(null);
 const showTypeAttraction = ref(null);
 
 const plotInfo = () => {
-    // créé un marqueur
-    const customMarker = leaflet.icon({
-        iconUrl: "/assets/img/marqueur-de-carte.png",
-        iconSize: [32, 32],
-    });
+    setTimeout(() => {
+        const walibiLocation = [
+            [
+                "Vampire",
+                50.702372411422445,
+                4.591857720201637,
+                48,
+                7,
+                130,
+                130,
+                "Sensation",
+            ],
+            [
+                "Radja",
+                50.69985136317578,
+                4.593853283618328,
+                37,
+                3,
+                140,
+                105,
+                "Splash",
+            ],
+            [
+                "Loup",
+                50.700759712506,
+                4.590341917711024,
+                50,
+                6,
+                120,
+                0,
+                "Sensation",
+            ],
+            [
+                "Cobra",
+                50.70049381391455,
+                4.593959463970398,
+                11,
+                4,
+                130,
+                0,
+                "Sensation",
+            ],
+            [
+                "Pulsar",
+                50.69935099850555,
+                4.590583087541805,
+                36,
+                0,
+                120,
+                0,
+                "Splash",
+            ],
+            [
+                "Calamity",
+                50.699113379933955,
+                4.587394287601669,
+                9,
+                1,
+                120,
+                100,
+                "Famille",
+            ],
+            [
+                "Dalton",
+                50.69883615674339,
+                4.588037406936669,
+                12,
+                2,
+                120,
+                0,
+                "Sensation",
+            ],
+            [
+                "Kondaa",
+                50.697218045811205,
+                4.5853398787353274,
+                25,
+                5,
+                130,
+                130,
+                "Sensation",
+            ],
+        ];
 
-    // Créé ce marqueur sur la carte
-    attractionMarkers.value = leaflet
-        .marker([50.69977661301508, 4.593864012988636], {
-            icon: customMarker,
-        })
-        .addTo(map);
+        const plopsaLocation = [
+            [
+                "anubis",
+                51.08195218023082,
+                2.5977898050843127,
+                1,
+                12,
+                140,
+                125,
+                "Sensation",
+            ],
+            [
+                "Le Dragon",
+                51.07961827606858,
+                2.5976966680273104,
+                32,
+                11,
+                120,
+                96,
+                "Sensation",
+            ],
+            [
+                "superSplash",
+                51.08147105223425,
+                2.5987686815206654,
+                19,
+                9,
+                120,
+                96,
+                "Splash",
+            ],
 
-    // création de chaque marqueur pour chaque attraction de walibi
-    for (var i = 0; i < walibiLocation.length; i++) {
-        leaflet
-            .marker([walibiLocation[i][1], walibiLocation[i][2]])
-            .addTo(map)
-            .on("click", function (e) {
-                showModalResults.value = true;
+            [
+                "the ride of happiness",
+                51.0810527386725,
+                2.5987687222263482,
+                44,
+                10,
+                130,
+                0,
+                "Sensation",
+            ],
+            [
+                "DinoSplash",
+                51.07939209915142,
+                2.5972908303152535,
+                7,
+                14,
+                120,
+                100,
+                "Splash",
+            ],
+            [
+                "Flyer Garde de Nuit",
+                51.081339520702684,
+                2.595597911398172,
+                12,
+                8,
+                140,
+                120,
+                "Sensation",
+            ],
+            [
+                "K3 Roller Skater",
+                51.07998264624246,
+                2.596500900290202,
+                9,
+                13,
+                120,
+                90,
+                "Famille",
+            ],
+        ];
 
-                if (
-                    e.latlng.lat == 50.702372411422445 &&
-                    e.latlng.lng == 4.591857720201637
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[48];
-                    showAttractionImage.value = img.value[7];
-                    showHeightAlone.value = 130 + "cm";
-                    showHeightWithAdult.value = 130 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 50.69985136317578 &&
-                    e.latlng.lng == 4.593853283618328
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[37];
-                    showAttractionImage.value = img.value[3];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 105 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 50.700759712506 &&
-                    e.latlng.lng == 4.590341917711024
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[50];
-                    showAttractionImage.value = img.value[6];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 0 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 50.70049381391455 &&
-                    e.latlng.lng == 4.593959463970398
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[11];
-                    showAttractionImage.value = img.value[4];
-                    showHeightAlone.value = 130 + "cm";
-                    showHeightWithAdult.value = 0 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 50.69935099850555 &&
-                    e.latlng.lng == 4.590583087541805
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[36];
-                    showAttractionImage.value = img.value[0];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 0 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 50.699113379933955 &&
-                    e.latlng.lng == 4.587394287601669
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[9];
-                    showAttractionImage.value = img.value[1];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 50.69883615674339 &&
-                    e.latlng.lng == 4.588037406936669
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[12];
-                    showAttractionImage.value = img.value[2];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 0 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 50.697218045811205 &&
-                    e.latlng.lng == 4.5853398787353274
-                ) {
-                    showAttractionResults.value = queuetimeWalibi.value[25];
-                    showAttractionImage.value = img.value[5];
-                    showHeightAlone.value = 130 + "cm";
-                    showHeightWithAdult.value = 130 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-            });
-    }
+        const bobbeLocation = [
+            [
+                "Bob express",
+                51.201516125046446,
+                4.906511646430337,
+                0,
+                23,
+                140,
+                120,
+                "Sensation",
+            ],
+            [
+                "Les buches",
+                51.20125394648134,
+                4.9051919996547815,
+                11,
+                24,
+                140,
+                100,
+                "Splash",
+            ],
+            [
+                "Typhoon",
+                51.19985563559918,
+                4.905610424242153,
+                10,
+                25,
+                140,
+                125,
+                "Sensation",
+            ],
+            [
+                "Fury",
+                51.20000353587284,
+                4.906951528688855,
+                2,
+                26,
+                130,
+                0,
+                "Sensation",
+            ],
+            [
+                "Speedy bob",
+                51.19995131004791,
+                4.910451248158973,
+                7,
+                27,
+                140,
+                110,
+                "Sensation",
+            ],
+            [
+                "El rio",
+                51.2002263369215,
+                4.9102916418521545,
+                1,
+                28,
+                140,
+                120,
+                "Splash",
+            ],
 
-    // création de chaque marqueur pour chaque attraction de plopsa
-    for (var i = 0; i < plopsaLocation.length; i++) {
-        leaflet
-            .marker([plopsaLocation[i][1], plopsaLocation[i][2]])
-            .addTo(map)
-            .on("click", function (e) {
-                showModalResults.value = true;
-                if (
-                    e.latlng.lat == 51.08195218023082 &&
-                    e.latlng.lng == 2.5977898050843127
-                ) {
-                    showAttractionResults.value = queuetimePlopsa.value[1];
-                    showAttractionImage.value = img.value[12];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 125 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 51.07961827606858 &&
-                    e.latlng.lng == 2.5976966680273104
-                ) {
-                    showAttractionResults.value = queuetimePlopsa.value[32];
-                    showAttractionImage.value = img.value[11];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 96 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 51.08147105223425 &&
-                    e.latlng.lng == 2.5987686815206654
-                ) {
-                    showAttractionResults.value = queuetimePlopsa.value[19];
-                    showAttractionImage.value = img.value[9];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 96 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 51.0810527386725 &&
-                    e.latlng.lng == 2.5987687222263482
-                ) {
-                    showAttractionResults.value = queuetimePlopsa.value[44];
-                    showAttractionImage.value = img.value[10];
-                    showHeightAlone.value = 130 + "cm";
-                    showHeightWithAdult.value = 130 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 51.07939209915142 &&
-                    e.latlng.lng == 2.5972908303152535
-                ) {
-                    showAttractionResults.value = queuetimePlopsa.value[7];
-                    showAttractionImage.value = img.value[14];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 51.081339520702684 &&
-                    e.latlng.lng == 2.595597911398172
-                ) {
-                    showAttractionResults.value = queuetimePlopsa.value[12];
-                    showAttractionImage.value = img.value[8];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 120 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 51.07998264624246 &&
-                    e.latlng.lng == 2.596500900290202
-                ) {
-                    showAttractionResults.value = queuetimePlopsa.value[9];
-                    showAttractionImage.value = img.value[13];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 90 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-            });
-    }
+            [
+                "Terra magma",
+                51.20198647001226,
+                4.908089073910253,
+                8,
+                29,
+                140,
+                100,
+                "Sensation",
+            ],
+            [
+                "Dream catcher",
+                51.201476438381526,
+                4.91191164663274,
+                9,
+                30,
+                130,
+                110,
+                "Sensation",
+            ],
+        ];
 
-    // création de chaque marqueur pour chaque attraction de bobbejaanland
-    for (var i = 0; i < bobbeLocation.length; i++) {
-        leaflet
-            .marker([bobbeLocation[i][1], bobbeLocation[i][2]])
-            .addTo(map)
-            .on("click", function (e) {
-                showModalResults.value = true;
-                if (
-                    e.latlng.lat == 51.201516125046446 &&
-                    e.latlng.lng == 4.906511646430337
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[0];
-                    showAttractionImage.value = img.value[23];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 120 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 51.20125394648134 &&
-                    e.latlng.lng == 4.9051919996547815
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[11];
-                    showAttractionImage.value = img.value[24];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 51.19985563559918 &&
-                    e.latlng.lng == 4.905610424242153
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[10];
-                    showAttractionImage.value = img.value[25];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 125 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 51.20000353587284 &&
-                    e.latlng.lng == 4.906951528688855
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[2];
-                    showAttractionImage.value = img.value[26];
-                    showHeightAlone.value = 130 + "cm";
-                    showHeightWithAdult.value = 0 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 51.19995131004791 &&
-                    e.latlng.lng == 4.910451248158973
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[7];
-                    showAttractionImage.value = img.value[27];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 110 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 51.2002263369215 &&
-                    e.latlng.lng == 4.9102916418521545
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[1];
-                    showAttractionImage.value = img.value[28];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 120 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 51.20198647001226 &&
-                    e.latlng.lng == 4.908089073910253
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[8];
-                    showAttractionImage.value = img.value[29];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 51.201476438381526 &&
-                    e.latlng.lng == 4.91191164663274
-                ) {
-                    showAttractionResults.value = queuetimeBobbe.value[9];
-                    showAttractionImage.value = img.value[30];
-                    showHeightAlone.value = 130 + "cm";
-                    showHeightWithAdult.value = 110 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-            });
-    }
+        const belleLocation = [
+            [
+                "Screaming eagle",
+                50.848556918900854,
+                2.946218842738849,
+                25,
+                21,
+                140,
+                0,
+                "Sensation",
+            ],
+            [
+                "Wakala",
+                50.84888797995825,
+                2.9477643053779836,
+                31,
+                17,
+                120,
+                100,
+                "Sensation",
+            ],
+            [
+                "Jungle Mission",
+                50.84728487699255,
+                2.95370341472658,
+                17,
+                22,
+                120,
+                120,
+                "Sensation",
+            ],
+            [
+                "River splash",
+                50.84745331644677,
+                2.955037296322738,
+                24,
+                20,
+                120,
+                90,
+                "Splash",
+            ],
+            [
+                "El volador",
+                50.84754044006652,
+                2.956591958144248,
+                10,
+                18,
+                120,
+                0,
+                "Sensation",
+            ],
+            [
+                "Huracan",
+                50.84778438533629,
+                2.9569783238040315,
+                15,
+                16,
+                120,
+                100,
+                "Sensation",
+            ],
+            [
+                "Dawson duel",
+                50.84856216368863,
+                2.9470471551588653,
+                8,
+                19,
+                120,
+                100,
+                "Sensation",
+            ],
+            [
+                "Bangal rapid river",
+                50.848216694041774,
+                2.9508988072758235,
+                1,
+                15,
+                140,
+                100,
+                "Splash",
+            ],
+        ];
 
-    // création de chaque marqueur pour chaque attraction de bellewaerde
-    for (var i = 0; i < belleLocation.length; i++) {
-        leaflet
-            .marker([belleLocation[i][1], belleLocation[i][2]])
-            .addTo(map)
-            .on("click", function (e) {
-                showModalResults.value = true;
-                if (
-                    e.latlng.lat == 50.848556918900854 &&
-                    e.latlng.lng == 2.946218842738849
-                ) {
-                    showAttractionResults.value =
-                        queuetimeBellewaerde.value[25];
-                    showAttractionImage.value = img.value[21];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 0 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 50.84888797995825 &&
-                    e.latlng.lng == 2.9477643053779836
-                ) {
-                    showAttractionResults.value =
-                        queuetimeBellewaerde.value[31];
-                    showAttractionImage.value = img.value[17];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 50.84728487699255 &&
-                    e.latlng.lng == 2.95370341472658
-                ) {
-                    showAttractionResults.value =
-                        queuetimeBellewaerde.value[17];
-                    showAttractionImage.value = img.value[22];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 120 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 50.84745331644677 &&
-                    e.latlng.lng == 2.955037296322738
-                ) {
-                    showAttractionResults.value =
-                        queuetimeBellewaerde.value[24];
-                    showAttractionImage.value = img.value[20];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 90 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-                if (
-                    e.latlng.lat == 50.84754044006652 &&
-                    e.latlng.lng == 2.956591958144248
-                ) {
-                    showAttractionResults.value =
-                        queuetimeBellewaerde.value[10];
-                    showAttractionImage.value = img.value[18];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 0 + "cm";
-                    showTypeAttraction.value = "Sensation";
-                }
-                if (
-                    e.latlng.lat == 50.84778438533629 &&
-                    e.latlng.lng == 2.9569783238040315
-                ) {
-                    showAttractionResults.value =
-                        queuetimeBellewaerde.value[15];
-                    showAttractionImage.value = img.value[16];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 50.84856216368863 &&
-                    e.latlng.lng == 2.9470471551588653
-                ) {
-                    showAttractionResults.value = queuetimeBellewaerde.value[8];
-                    showAttractionImage.value = img.value[19];
-                    showHeightAlone.value = 120 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Famille";
-                }
-                if (
-                    e.latlng.lat == 50.848216694041774 &&
-                    e.latlng.lng == 2.9508988072758235
-                ) {
-                    showAttractionResults.value = queuetimeBellewaerde.value[1];
-                    showAttractionImage.value = img.value[15];
-                    showHeightAlone.value = 140 + "cm";
-                    showHeightWithAdult.value = 100 + "cm";
-                    showTypeAttraction.value = "Splash";
-                }
-            });
-    }
+        const customMarker = leaflet.icon({
+            iconUrl: "/assets/img/marqueur-de-carte.png",
+            iconSize: [32, 32],
+        });
+
+        attractionMarkers.value = leaflet
+            .marker([50.69977661301508, 4.593864012988636], {
+                icon: customMarker,
+            })
+            .addTo(map);
+
+        const createAttractionMarker = (
+            attractions,
+            queuetimeArray,
+            imageArray
+        ) => {
+            for (const attraction of attractions) {
+                const [
+                    name,
+                    lat,
+                    lng,
+                    attractionIndex,
+                    imageIndex,
+                    heightAlone,
+                    heightWithAdult,
+                    type,
+                ] = attraction;
+                leaflet
+                    .marker([lat, lng])
+                    .addTo(map)
+                    .on("click", function (e) {
+                        showModalResults.value = true;
+                        showAttractionResults.value =
+                            queuetimeArray[attractionIndex];
+                        showAttractionImage.value = img.value[imageIndex];
+                        showHeightAlone.value = heightAlone + "cm";
+                        showHeightWithAdult.value = heightWithAdult + "cm";
+                        showTypeAttraction.value = type;
+                    });
+            }
+        };
+
+        createAttractionMarker(
+            walibiLocation,
+            queuetimeWalibi.value,
+            img.value
+        );
+        createAttractionMarker(
+            plopsaLocation,
+            queuetimePlopsa.value,
+            img.value
+        );
+        createAttractionMarker(bobbeLocation, queuetimeBobbe.value, img.value);
+        createAttractionMarker(
+            belleLocation,
+            queuetimeBellewaerde.value,
+            img.value
+        );
+    }, 500);
 };
 
 const removeAttrResults = () => {
@@ -722,7 +581,7 @@ const removeAttrResults = () => {
 
         <div
             v-if="showModalResults"
-            class="h-screen w-full absolute z-10 flex justify-center items-start pt-[125px] bg-black/50"
+            class="h-screen w-full absolute z-10 flex justify-center items-start pt-[40px] bg-black/50"
         >
             <div
                 class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
@@ -732,58 +591,60 @@ const removeAttrResults = () => {
                     class="fa-regular fa-circle-xmark flex justify-end"
                 ></i>
 
-                <!--Image pour quand c'est Sensation-->
-                <div
-                    v-if="showTypeAttraction == 'Sensation'"
-                    class="grid grid-cols-2"
-                >
-                    <div class="flex justify-end">
-                        <img
-                            class="w-12 h-12"
-                            src="/assets/img/sensation.png"
-                            alt="taille minimum seul"
-                        />
+                <div v-if="isConnect">
+                    <!--Image pour quand c'est Sensation-->
+                    <div
+                        v-if="showTypeAttraction == 'Sensation'"
+                        class="grid grid-cols-2 pb-3"
+                    >
+                        <div class="flex justify-end">
+                            <img
+                                class="w-12 h-12"
+                                src="/assets/img/sensation.png"
+                                alt="taille minimum seul"
+                            />
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <p class="text-2xl">
+                                {{ showTypeAttraction }}
+                            </p>
+                        </div>
                     </div>
-                    <div class="flex justify-start items-center">
-                        <p class="text-2xl">
-                            {{ showTypeAttraction }}
-                        </p>
+                    <!--Image pour quand c'est Famille-->
+                    <div
+                        v-if="showTypeAttraction == 'Famille'"
+                        class="pb-3 grid grid-cols-2"
+                    >
+                        <div class="flex justify-end">
+                            <img
+                                class="w-12 h-12"
+                                src="/assets/img/famille.png"
+                                alt="taille minimum seul"
+                            />
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <p class="text-2xl">
+                                {{ showTypeAttraction }}
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <!--Image pour quand c'est Famille-->
-                <div
-                    v-if="showTypeAttraction == 'Famille'"
-                    class="pt-3 grid grid-cols-2"
-                >
-                    <div class="flex justify-end">
-                        <img
-                            class="w-12 h-12"
-                            src="/assets/img/famille.png"
-                            alt="taille minimum seul"
-                        />
-                    </div>
-                    <div class="flex justify-start items-center">
-                        <p class="text-2xl">
-                            {{ showTypeAttraction }}
-                        </p>
-                    </div>
-                </div>
-                <!--Image pour quand c'est Splash-->
-                <div
-                    v-if="showTypeAttraction == 'Splash'"
-                    class="pt-3 grid grid-cols-2"
-                >
-                    <div class="flex justify-end">
-                        <img
-                            class="w-12 h-12"
-                            src="/assets/img/goutte-deau.png"
-                            alt="taille minimum seul"
-                        />
-                    </div>
-                    <div class="flex justify-start items-center">
-                        <p class="text-2xl">
-                            {{ showTypeAttraction }}
-                        </p>
+                    <!--Image pour quand c'est Splash-->
+                    <div
+                        v-if="showTypeAttraction == 'Splash'"
+                        class="grid grid-cols-2 pb-3"
+                    >
+                        <div class="flex justify-end">
+                            <img
+                                class="w-12 h-12"
+                                src="/assets/img/goutte-deau.png"
+                                alt="taille minimum seul"
+                            />
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <p class="text-2xl">
+                                {{ showTypeAttraction }}
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <!--Image du parc-->
@@ -807,7 +668,7 @@ const removeAttrResults = () => {
                         v-if="showAttractionResults.is_open == false"
                         class="text-2xl"
                     >
-                        Attraction <span class="text-red-500">Fermer</span>
+                        Attraction <span class="text-red-500">Fermée</span>
                     </p>
                     <p v-else class="text-2xl pb-5">
                         Attraction <span class="text-green-500">ouverte</span>
@@ -865,10 +726,7 @@ const removeAttrResults = () => {
                             </p>
                         </div>
                     </div>
-                    <div
-                        v-if="showHeightWithAdult > 0"
-                        class="pt-3 grid grid-cols-2"
-                    >
+                    <div class="pt-3 grid grid-cols-2">
                         <div class="flex justify-end">
                             <img
                                 class="w-20 h-20"
@@ -883,9 +741,10 @@ const removeAttrResults = () => {
                         </div>
                     </div>
                 </div>
+
                 <div v-if="!isConnect">
                     <h2 class="text-red-600">
-                        Connectez vous pour accéder à cette option
+                        Connectez vous pour accéder à cette option !
                     </h2>
                 </div>
                 <p class="text-xs mb-1"></p>

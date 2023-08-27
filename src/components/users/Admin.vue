@@ -122,7 +122,7 @@ const id = computed(() => tokenDecode.value.userID);
                 Ici sont affichés tous les utilisateurs pour les modérer
             </p>
             <div class="mt-4 flex flex-col container mx-auto">
-                <div class="overflow-x-auto lg:-mx-8 mx-2">
+                <div class="overflow-x-auto">
                     <div
                         class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
                     >

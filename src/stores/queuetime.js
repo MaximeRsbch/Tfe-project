@@ -4,7 +4,6 @@ import { CapacitorHttp } from "@capacitor/core";
 export const useQueueTimeStore = defineStore("queuetime", {
     state: () => ({
         queueTimeDictWalibi: {},
-        queueTimeDictEnergy: {},
         queueTimeDictPlopsa: {},
         queueTimeDictBobbe: {},
         queueTimeDictBellewaerde: {},
@@ -12,8 +11,6 @@ export const useQueueTimeStore = defineStore("queuetime", {
     getters: {
         getQueueTimesWalibi: (state) =>
             Object.values(state.queueTimeDictWalibi),
-        getQueueTimesEnergy: (state) =>
-            Object.values(state.queueTimeDictEnergy),
         getQueueTimesPlopsa: (state) =>
             Object.values(state.queueTimeDictPlopsa),
         getQueueTimesBobbe: (state) => Object.values(state.queueTimeDictBobbe),
@@ -22,27 +19,21 @@ export const useQueueTimeStore = defineStore("queuetime", {
     },
     actions: {
         async fetchQueueTimeWalibi() {
-            const response = await CapacitorHttp.request({
-                method: "GET",
-                url: "https://maximerossbach.be/api/queuetime/14",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then((res) => {
-                this.queueTimeDictWalibi = res.data.rides;
-            });
+            try {
+                const response = await CapacitorHttp.request({
+                    method: "GET",
+                    url: "https://maximerossbach.be/api/queuetime/14",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                this.queueTimeDictWalibi = response.data.rides;
+            } catch (error) {
+                console.error("Error fetching queue times for Walibi:", error);
+            }
         },
-        async fetchQueueTimeEnergy() {
-            const response = await CapacitorHttp.request({
-                method: "GET",
-                url: "https://maximerossbach.be/api/queuetime/317",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then((res) => {
-                this.queueTimeDictEnergy = res.data.rides;
-            });
-        },
+
         async fetchQueueTimePlopsa() {
             const response = await CapacitorHttp.request({
                 method: "GET",
