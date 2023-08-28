@@ -92,13 +92,6 @@ const goToAdminPannel = () => {
                             >
                                 Connexion
                             </button>
-                            <button
-                                v-if="isConnect"
-                                @click="logout"
-                                class="bg-white text-stone-500 text-2xl px-5 py-2 rounded-xl"
-                            >
-                                Logout
-                            </button>
                         </div>
                     </div>
                 </nav>

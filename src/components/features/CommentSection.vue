@@ -86,7 +86,7 @@ const deleteComment = (id) => {
                             class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
                         >
                             <table class="min-w-full divide-y divide-gray-300">
-                                <thead class="bg-gray-50">
+                                <thead v-if="idUser == 1" class="bg-gray-50">
                                     <tr>
                                         <th
                                             scope="col"

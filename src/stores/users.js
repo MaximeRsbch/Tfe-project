@@ -26,6 +26,7 @@ export const useUsersStore = defineStore("users", {
                 const token = res.data.token;
                 localStorage.setItem("savedToken", token);
                 axios.defaults.headers.common["Authorization"] = token;
+                this.usersDict = res.data;
                 if (res.data.data) {
                     window.location.href = "/features";
                 }

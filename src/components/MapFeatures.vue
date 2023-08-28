@@ -161,7 +161,7 @@ const goToPark = () => {
                     </p>
                     <div class="flex justify-center pt-4">
                         <button
-                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl"
                             target="_blank"
                             @click="goToPark"
                         >
