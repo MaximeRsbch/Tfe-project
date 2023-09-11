@@ -26,11 +26,13 @@ async function recupUser() {
 
     const body = await usersStore.loginUser(password.value, email.value);
     if (!body) {
-        return Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Veuillez renseigner un mot de passe ou une adresse mail valide !",
-        });
+        setTimeout(() => {
+            return Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Veuillez renseigner un mot de passe ou une adresse mail valide !",
+            });
+        }, 100);
     }
 }
 </script>
