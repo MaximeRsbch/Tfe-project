@@ -1,10 +1,10 @@
 <script setup>
-import { useImageStore } from "../../stores/image.js";
+// import { useImageStore } from "../../stores/image.js";
 import { onMounted, computed } from "vue";
 import { BASE_URL } from "../../common/config.js";
 import { useRoute, useRouter } from "vue-router";
 
-const imageStore = useImageStore();
+// const imageStore = useImageStore();
 const route = useRoute();
 
 const router = useRouter();
@@ -12,11 +12,11 @@ const router = useRouter();
 const id = route.params.id;
 
 //Récupère l'image spécifique à l'article ouvert
-const image = computed(() => imageStore.getImageById);
+// const image = computed(() => imageStore.getImageById);
 
-onMounted(() => {
-    imageStore.recupImageById(id);
-});
+// onMounted(() => {
+//     imageStore.recupImageById(id);
+// });
 
 const goToFeatures = () => {
     router.push({ name: "features" });

@@ -1,18 +1,18 @@
 <script setup>
 import { computed, onMounted } from "vue";
-import { useImageStore } from "../../stores/image.js";
+// import { useImageStore } from "../../stores/image.js";
 import { BASE_URL } from "../../common/config.js";
 import { RouterLink } from "vue-router";
-import CommentSection from "./CommentSection.vue";
+// import CommentSection from "./CommentSection.vue";
 
-const imageStore = useImageStore();
+// const imageStore = useImageStore();
 
-onMounted(() => {
-    imageStore.recupAllImage();
-});
+// onMounted(() => {
+//     imageStore.recupAllImage();
+// });
 
 //Récupère toutes les images de strapi
-const images = computed(() => imageStore.getImages);
+// const images = computed(() => imageStore.getImages);
 
 //Verif si l'user est co ou non
 const isConnect = computed(() => localStorage.getItem("savedToken"));
@@ -63,7 +63,7 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
                     </div>
                 </div>
             </div>
-            <CommentSection />
+            <!-- <CommentSection /> -->
         </div>
     </div>
 </template>

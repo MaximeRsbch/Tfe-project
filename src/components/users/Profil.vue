@@ -11,7 +11,7 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
-const id = computed(() => tokenDecode.value.userID);
+const id = computed(() => tokenDecode.value.id_user);
 
 onMounted(() => {
     usersStore.fetchOneUser(id.value);
