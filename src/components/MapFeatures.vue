@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { CapacitorHttp } from "@capacitor/core";
 import LoadingSpinner from "../components/LoadingSpinner.vue";
+import { useParcsStore } from "../stores/parcs.js";
 
 const props = defineProps({
     coords: Object,
@@ -32,19 +33,22 @@ const search = () => {
             });
             const getData = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/search/${searchQuery.value}?${params}`,
+                url: `http://localhost:3000/api/parcs/`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            searchData.value = getData.data.features;
+            searchData.value = getData.data;
         }
     }, 750);
 };
 
 const selectResult = (result) => {
     selectedResult.value = result;
-    emit("plotResult", result.geometry);
+    emit("plotResult", {
+        latitude: result.latitude,
+        longitude: result.longitude,
+    });
 };
 
 const removeResults = () => {
@@ -54,7 +58,7 @@ const removeResults = () => {
 
 const goToPark = () => {
     window.open(
-        `https://www.google.com/maps/dir/?api=1&destination=${selectedResult.value.geometry.coordinates[1]},${selectedResult.value.geometry.coordinates[0]}`
+        `https://www.google.com/maps/dir/?api=1&destination=${selectedResult.value.latitude},${selectedResult.value.longitude}`
     );
 };
 </script>
@@ -98,7 +102,7 @@ const goToPark = () => {
                             @click="selectResult(result)"
                         >
                             <i class="fa-sharp fa-solid fa-location-dot"></i>
-                            <p class="text-xs">{{ result.place_name_fr }}</p>
+                            <p class="text-xs">{{ result.nom }}</p>
                         </div>
                     </div>
                 </div>
@@ -112,52 +116,52 @@ const goToPark = () => {
                         class="fa-regular fa-circle-xmark flex justify-end"
                     ></i>
 
-                    <h1 class="text-lg">{{ selectedResult.text }}</h1>
-                    <div class="flex justify-center">
-                        <!-- Acheter billets walibi -->
+                    <h1 class="text-lg">{{ selectedResult.nom }}</h1>
+                    <!-- <div class="flex justify-center">
+                        Acheter billets walibi
                         <a
-                            v-if="selectedResult.text == 'Walibi Belgium'"
+                            v-if="selectedResult"
                             class="text-blue-500"
                             href="https://www.walibi.be/fr"
                             target="_blank"
                         >
                             Achetez vos tickets
                         </a>
-                        <!-- Acheter billets Plopsa -->
+                        Acheter billets Plopsa
                         <a
-                            v-if="selectedResult.text == 'Plopsaland'"
+                            v-if="selectedResult"
                             class="text-blue-500"
                             href="https://www.plopsalanddepanne.be/fr/tickets"
                             target="_blank"
                         >
                             Achetez vos tickets
                         </a>
-                        <!-- Acheter billets Bobbejaanland -->
+                        Acheter billets Bobbejaanland
                         <a
-                            v-if="selectedResult.text == 'Bobbejaanland'"
+                            v-if="selectedResult"
                             class="text-blue-500"
                             href="https://www.bobbejaanland.be/tickets"
                             target="_blank"
                         >
                             Achetez vos tickets
                         </a>
-                        <!-- Acheter billets bellewaerde -->
+                        Acheter billets bellewaerde
                         <a
-                            v-if="selectedResult.text == 'Bellewaerde'"
+                            v-if="selectedResult"
                             class="text-blue-500"
                             href="https://www.bellewaerde.be/park/nl/tickets"
                             target="_blank"
                         >
                             Achetez vos tickets
                         </a>
-                    </div>
+                    </div> -->
 
                     <p class="text-xs mb-1">
-                        {{ selectedResult.properties.address }},
-                        {{ selectedResult.city }}, {{ selectedResult.state }}
+                        {{ selectedResult.beginHour }},
+                        {{ selectedResult.endHour }},
                     </p>
                     <p class="text-xs">
-                        {{ selectedResult.properties.category }}
+                        {{ selectedResult.ticketPrice }}
                     </p>
                     <div class="flex justify-center pt-4">
                         <button

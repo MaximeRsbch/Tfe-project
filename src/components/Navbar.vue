@@ -70,6 +70,7 @@ const goToAdminPannel = () => {
                             </button>
                         </div>
                     </ul>
+
                     <div
                         class="flex flex-col justify-center items-center gap-6 px-7 lg:hidden text-white"
                     >

@@ -1,123 +1,84 @@
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
-import { useParcsStore } from "../../stores/parcs.js";
-import { useStore } from "vuex";
+import { computed, onMounted, ref } from "vue";
+import { useTypesStore } from "../../stores/types";
+import { useAttractionsStore } from "../../stores/attractions";
+import { useParcsStore } from "../../stores/parcs";
 
+const typesStore = useTypesStore();
+const attractionsStore = useAttractionsStore();
 const parcsStore = useParcsStore();
-const store = useStore();
 
 onMounted(() => {
-    parcsStore.fetchQueuetimeParc();
+    typesStore.fetchTypes();
+    parcsStore.fetchParcs();
 });
 
-const recupqueuetime = computed(() => parcsStore.getParcs);
+const recuptypes = computed(() => typesStore.getTypes);
+const recupparcs = computed(() => parcsStore.getParcs);
 
-const id = ref("");
-const nomparc = ref("");
-const ticket = ref("");
-const ouverture = ref("");
-const fermeture = ref("");
+const nomattraction = ref("");
+const tailminseul = ref("");
+const tailminaccomp = ref("");
 const latitude = ref("");
 const longitude = ref("");
-const legende = ref("");
+const description = ref("");
+const parcs = ref("");
+const types = ref("");
+const image = ref("");
 
-async function createParc() {
-    const body = await parcsStore.createParc(
-        (id.value = nomparc.value[0] + nomparc.value[1]),
-        nomparc.value,
-        ouverture.value,
-        fermeture.value,
+async function createAttraction() {
+    const body = await attractionsStore.createAttraction(
+        nomattraction.value,
+        tailminseul.value,
+        tailminaccomp.value,
         latitude.value,
         longitude.value,
-        ticket.value
+        description.value,
+        parcs.value,
+        types.value,
+        image.value
     );
-    store.dispatch("updateLocation", {
-        longitude: longitude.value,
-        latitude: latitude.value,
-        nomparc: nomparc.value,
-    });
-    // console.log(longitude.value);
-    // console.log(latitude.value);
-    // console.log(nomparc.value);
 }
 </script>
 
 <template>
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
         <h2 class="text-lg font-semibold text-gray-700">
-            Ajout d'un parc d'attraction
+            Ajout d'une attraction
         </h2>
 
-        <form @submit.prevent="createParc">
+        <form @submit.prevent="createAttraction">
+            <div class="pt-5">
+                <label class="text-gray-700" for="nomattraction"
+                    >Nom de l'attraction</label
+                >
+                <input
+                    id="nomattraction"
+                    v-model="nomattraction"
+                    type="text"
+                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                />
+            </div>
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                 <div>
-                    <label class="text-gray-700" for="id">Id du parc</label>
+                    <label class="text-gray-700" for="tailminseul"
+                        >Taille minimum seul</label
+                    >
                     <input
-                        v-if="nomparc == ''"
-                        id="id"
-                        value="Veuillez choisir un parc"
-                        disabled="disabled"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                    <input
-                        v-if="nomparc != ''"
-                        id="id"
-                        :value="nomparc[0] + nomparc[1]"
-                        disabled="disabled"
+                        id="tailminseul"
+                        v-model="tailminseul"
                         type="text"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
 
                 <div>
-                    <label class="text-gray-700" for="nomparc"
-                        >Nom du parc</label
-                    >
-
-                    <select
-                        id="nomparc"
-                        v-model="nomparc"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    >
-                        <option v-for="data in recupqueuetime">
-                            {{ data.id }}
-                            {{ data.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="ticket"
-                        >Prix du ticket</label
+                    <label class="text-gray-700" for="tailminaccomp"
+                        >Taille minimum accompagné</label
                     >
                     <input
-                        id="ticket"
-                        v-model="ticket"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="ouverture"
-                        >Heures d'ouverture</label
-                    >
-                    <input
-                        id="ouverture"
-                        v-model="ouverture"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="fermeture"
-                        >Heures de fermeture</label
-                    >
-                    <input
-                        id="fermeture"
-                        v-model="fermeture"
+                        id="tailminaaccomp"
+                        v-model="tailminaccomp"
                         type="text"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
@@ -139,30 +100,59 @@ async function createParc() {
                     >
                     <input
                         id="longitude"
-                        @change="test"
                         v-model="longitude"
                         type="text"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
+
+                <div>
+                    <label class="text-gray-700" for="types">Types</label>
+
+                    <select
+                        id="types"
+                        v-model="types"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    >
+                        <option v-for="data in recuptypes">
+                            {{ data.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-gray-700" for="parcs">Parcs</label>
+
+                    <select
+                        id="types"
+                        v-model="parcs"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    >
+                        <option v-for="data in recupparcs">
+                            {{ data.nom }}
+                        </option>
+                    </select>
+                </div>
             </div>
 
-            <!-- <div class="pt-10">
-                <label class="text-gray-700" for="legende">Légendes</label>
+            <div class="pt-10">
+                <label class="text-gray-700" for="description"
+                    >Description</label
+                >
 
                 <textarea
-                    id="legende"
-                    v-model="legende"
+                    id="description"
+                    v-model="description"
                     rows="5"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                 />
-            </div> -->
+            </div>
 
-            <!-- <div class="col-span-full">
+            <div class="col-span-full pt-10">
                 <label
                     for="cover-photo"
                     class="block text-sm font-medium leading-6 text-gray-900"
-                    >Image du parc</label
+                    >Image de l'attraction</label
                 >
                 <div
                     class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
@@ -200,14 +190,14 @@ async function createParc() {
                         </p>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
             <div class="flex justify-end mt-6">
                 <button
                     type="submit"
                     class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
                 >
-                    Ajouter le parc
+                    Ajouter l'attraction
                 </button>
             </div>
         </form>

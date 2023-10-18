@@ -24,7 +24,7 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 const token = res.data.token;
-                console.log(token);
+
                 localStorage.setItem("savedToken", token);
                 axios.defaults.headers.common["Authorization"] = token;
                 this.usersDict = res.data;
@@ -61,7 +61,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.usersDict = res.data.data;
-                console.log(this.usersDict);
             });
         },
 
@@ -102,7 +101,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.usersDict = res.data;
-                console.log(this.usersDict);
             });
         },
 

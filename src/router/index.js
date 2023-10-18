@@ -6,6 +6,8 @@ import RegistrationView from "../views/RegistrationView.vue";
 import FullFeatureView from "../views/FullFeaturesView.vue";
 import AdminView from "../views/AdminView.vue";
 import ProfilView from "../views/ProfilView.vue";
+import ParcsFormView from "../views/ParcsFormView.vue";
+import AttractionsFormView from "../views/AttractionsFormView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +47,16 @@ const router = createRouter({
             path: "/profil",
             name: "profil",
             component: ProfilView,
+        },
+        {
+            path: "/parcsform",
+            name: "parcsform",
+            component: ParcsFormView,
+        },
+        {
+            path: "/attractionform",
+            name: "attractionform",
+            component: AttractionsFormView,
         },
     ],
 });
