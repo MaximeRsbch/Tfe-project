@@ -1,8 +1,9 @@
 <script setup>
-import "../scripts/Navbar.js";
+import "../../scripts/Navbar.js";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
-import DropDownMenu from "./DropDownMenu.vue";
+import DropDownMenuCompte from "./DropDownMenuCompte.vue";
+import DropDownMenuAdmin from "./DropDownMenuAdmin.vue";
 import jwtDecode from "jwt-decode";
 
 const links = [
@@ -60,16 +61,10 @@ const goToAdminPannel = () => {
                             Connexion
                         </button>
 
-                        <DropDownMenu v-if="isConnect" />
+                        <DropDownMenuCompte v-if="isConnect" />
 
                         <div v-if="isConnect">
-                            <button
-                                @click="goToAdminPannel"
-                                v-if="role === 'admin'"
-                                class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
-                            >
-                                Admin panel
-                            </button>
+                            <DropDownMenuAdmin v-if="role === 'admin'" />
                         </div>
                     </ul>
 

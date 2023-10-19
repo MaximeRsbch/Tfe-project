@@ -4,10 +4,12 @@ import FeaturesView from "../views/FeaturesView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegistrationView from "../views/RegistrationView.vue";
 import FullFeatureView from "../views/FullFeaturesView.vue";
-import AdminView from "../views/AdminView.vue";
+import GestionUsersView from "../views/GestionUsersView.vue";
 import ProfilView from "../views/ProfilView.vue";
 import ParcsFormView from "../views/ParcsFormView.vue";
 import AttractionsFormView from "../views/AttractionsFormView.vue";
+import GestionParcsView from "../views/GestionParcsView.vue";
+import GestionAttractionsView from "../views/GestionAttractionsView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,9 +41,19 @@ const router = createRouter({
             component: RegistrationView,
         },
         {
-            path: "/admin",
-            name: "adminPannel",
-            component: AdminView,
+            path: "/users",
+            name: "users",
+            component: GestionUsersView,
+        },
+        {
+            path: "/parcs",
+            name: "parcs",
+            component: GestionParcsView,
+        },
+        {
+            path: "/attractions",
+            name: "attractions",
+            component: GestionAttractionsView,
         },
         {
             path: "/profil",
