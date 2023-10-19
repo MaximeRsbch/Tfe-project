@@ -112,11 +112,11 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
-const id = computed(() => tokenDecode.value.userID);
+const role = tokenDecode.value.role;
 </script>
 <template>
     <div class="container mx-auto">
-        <div v-if="id === 1">
+        <div v-if="role === 'admin'">
             <h1 class="text-center pt-10 text-4xl">Admin panel</h1>
             <p class="text-center pb-10 text-2xl">
                 Ici sont affichés tous les utilisateurs pour les modérer
@@ -290,7 +290,7 @@ const id = computed(() => tokenDecode.value.userID);
                 </div>
             </div>
         </div>
-        <div v-if="id !== 1">
+        <div v-if="role !== 'admin'">
             <h2>
                 Bien essayer, vous êtes pas connecter pour accéder à cette page
             </h2>

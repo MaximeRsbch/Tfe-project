@@ -70,9 +70,12 @@ export const useUsersStore = defineStore("users", {
                 url: `http://localhost:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
                 },
             }).then((res) => {
                 this.fetchUsers();
+                console.log(res);
             });
         },
 
@@ -82,6 +85,8 @@ export const useUsersStore = defineStore("users", {
                 url: `http://localhost:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
                 },
                 data: {
                     username,
@@ -104,19 +109,22 @@ export const useUsersStore = defineStore("users", {
             });
         },
 
-        // async muteUser(id, canComment) {
-        //     const response = await CapacitorHttp.request({
-        //         method: "PUT",
-        //         url: `http://localhost:3000/api/mute/${id}`,
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         data: {
-        //             canComment,
-        //         },
-        //     }).then((res) => {
-        //         this.fetchUsers();
-        //     });
-        // },
+        async muteUser(id, canComment) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/users/mute/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    canComment,
+                },
+            }).then((res) => {
+                this.fetchUsers();
+                console.log(res);
+            });
+        },
     },
 });

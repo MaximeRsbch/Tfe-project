@@ -14,6 +14,8 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
+const role = tokenDecode.value.role;
+
 const router = useRouter();
 
 const goToLogin = () => {
@@ -63,7 +65,7 @@ const goToAdminPannel = () => {
                         <div v-if="isConnect">
                             <button
                                 @click="goToAdminPannel"
-                                v-if="tokenDecode.userID === 1"
+                                v-if="role === 'admin'"
                                 class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
                             >
                                 Admin panel
