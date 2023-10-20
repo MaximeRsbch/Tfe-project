@@ -3,6 +3,7 @@ import { useUsersStore } from "../../stores/users.js";
 import { computed, ref, onMounted } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
+import "../../style/GestionUsers.css";
 
 const usersStore = useUsersStore();
 
@@ -108,6 +109,31 @@ const unmuteUsers = (id) => {
     });
 };
 
+const giveRoleModo = (id) => {
+    Swal.fire({
+        title: "Etes vous sure ?",
+        text: "Cet utilisateur sera modo !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oui, modo !",
+    }).then((result) => {
+        if (result.isConfirmed && id !== 1) {
+            Swal.fire("Modo", "Cet utilisateur a bien été modo.", "success");
+            usersStore.changRole(id, role === "modo" ? "user" : "modo");
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Annulé", "Cet utilisateur n'a pas été modo :)", "error");
+        } else if (id === 1) {
+            Swal.fire(
+                "Erreur",
+                "Vous ne pouvez pas supprimer cet utilisateur.",
+                "error"
+            );
+        }
+    });
+};
+
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
@@ -116,8 +142,8 @@ const role = tokenDecode.value.role;
 </script>
 <template>
     <div class="container mx-auto">
-        <div v-if="role === 'admin'">
-            <h1 class="text-center pt-10 text-4xl">Admin panel</h1>
+        <div v-if="role === 'admin' || role === 'modo'">
+            <h1 class="text-center pt-10 text-4xl">Gestion des utilisateurs</h1>
             <p class="text-center pb-10 text-2xl">
                 Ici sont affichés tous les utilisateurs pour les modérer
             </p>
@@ -178,6 +204,7 @@ const role = tokenDecode.value.role;
                                             </a>
                                         </th>
                                         <th
+                                            v-if="role === 'admin'"
                                             scope="col"
                                             class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -188,6 +215,29 @@ const role = tokenDecode.value.role;
                                             </a>
                                         </th>
                                         <th
+                                            v-if="role === 'admin'"
+                                            scope="col"
+                                            class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Donner le role Modo
+                                            </a>
+                                        </th>
+                                        <th
+                                            v-if="role === 'admin'"
+                                            scope="col"
+                                            class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Donner le role ModoParc
+                                            </a>
+                                        </th>
+                                        <th
+                                            v-if="role === 'modo'"
                                             scope="col"
                                             class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -198,6 +248,7 @@ const role = tokenDecode.value.role;
                                             </a>
                                         </th>
                                         <th
+                                            v-if="role === 'modo'"
                                             scope="col"
                                             class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -241,20 +292,74 @@ const role = tokenDecode.value.role;
                                             {{ user.role }}
                                         </td>
                                         <td
+                                            v-if="role === 'admin'"
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             <button
                                                 @click="deleteUsers(user.id)"
                                                 type="button"
                                             >
-                                                <img
-                                                    class="w-5 md:w-5 lg:w-full"
-                                                    src="/assets/img/poubelle.png"
-                                                    alt="poubelleImg"
-                                                />
+                                                <div class="image-container">
+                                                    <img
+                                                        class="w-5 md:w-5 lg:w-full"
+                                                        src="/assets/img/poubelle.png"
+                                                        alt="poubelleImg"
+                                                    />
+                                                    <div class="tooltip">
+                                                        Supprimer utilisateurs
+                                                    </div>
+                                                </div>
                                             </button>
                                         </td>
                                         <td
+                                            v-if="role === 'admin'"
+                                            class="whitespace-nowrap py-4 text-base"
+                                        >
+                                            <button
+                                                @click="
+                                                    giveRoleModo(
+                                                        user.id,
+                                                        role === 'modo'
+                                                    )
+                                                "
+                                                type="button"
+                                            >
+                                                <div class="image-container">
+                                                    <img
+                                                        class="w-5 md:w-5 lg:w-full"
+                                                        src="/assets/img/modo.png"
+                                                        alt="modoImg"
+                                                    />
+                                                    <div class="tooltip">
+                                                        Donner role Modo
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </td>
+                                        <td
+                                            v-if="role === 'admin'"
+                                            class="whitespace-nowrap py-4 text-base"
+                                        >
+                                            <button
+                                                @click="
+                                                    giveRoleModoParc(user.id)
+                                                "
+                                                type="button"
+                                            >
+                                                <div class="image-container">
+                                                    <img
+                                                        class="w-5 md:w-5 lg:w-full"
+                                                        src="/assets/img/modoP.png"
+                                                        alt="modoPImg"
+                                                    />
+                                                    <div class="tooltip">
+                                                        Donner role ModoP
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </td>
+                                        <td
+                                            v-if="role === 'modo'"
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             <button
@@ -269,6 +374,7 @@ const role = tokenDecode.value.role;
                                             </button>
                                         </td>
                                         <td
+                                            v-if="role === 'modo'"
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             <button

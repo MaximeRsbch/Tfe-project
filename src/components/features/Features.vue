@@ -37,7 +37,7 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
                     {{ data.title }}
                 </h2>
                 <div class="flex justify-center">
-                    <p class="pt-4 max-w-3xl text-justify">
+                    <p class="pt-4 max-w-3xl text-justify truncate">
                         {{ data.content }}
                     </p>
                 </div>

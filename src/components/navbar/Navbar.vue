@@ -13,9 +13,13 @@ const links = [
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
-const tokenDecode = computed(() => jwtDecode(isConnect.value));
-
-const role = tokenDecode.value.role;
+const role = computed(() => {
+    if (isConnect.value) {
+        const token = localStorage.getItem("savedToken");
+        const decoded = jwtDecode(token);
+        return decoded.role;
+    }
+});
 
 const router = useRouter();
 
@@ -63,7 +67,7 @@ const goToAdminPannel = () => {
 
                         <DropDownMenuCompte v-if="isConnect" />
 
-                        <div v-if="isConnect">
+                        <div>
                             <DropDownMenuAdmin v-if="role === 'admin'" />
                         </div>
                     </ul>
@@ -74,10 +78,9 @@ const goToAdminPannel = () => {
                         <div
                             class="mt-14 flex flex-col gap-2 justify-center items-center lg:hidden md:text-lg"
                         >
-                            <div v-if="isConnect">
+                            <div>
                                 <button
                                     @click="goToAdminPannel"
-                                    v-if="tokenDecode.userID === 1"
                                     class="bg-white text-stone-500 text-2xl px-5 py-2 rounded-xl"
                                 >
                                     Admin pannel

@@ -126,5 +126,23 @@ export const useUsersStore = defineStore("users", {
                 console.log(res);
             });
         },
+
+        async changRole(id, role) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/users/role/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    role,
+                },
+            }).then((res) => {
+                this.fetchUsers();
+                console.log(res);
+            });
+        },
     },
 });
