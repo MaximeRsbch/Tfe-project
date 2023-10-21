@@ -1,10 +1,8 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
 import { useParcsStore } from "../../stores/parcs.js";
-import { useStore } from "vuex";
 
 const parcsStore = useParcsStore();
-const store = useStore();
 
 onMounted(() => {
     parcsStore.fetchQueuetimeParc();
@@ -31,14 +29,6 @@ async function createParc() {
         longitude.value,
         ticket.value
     );
-    store.dispatch("updateLocation", {
-        longitude: longitude.value,
-        latitude: latitude.value,
-        nomparc: nomparc.value,
-    });
-    // console.log(longitude.value);
-    // console.log(latitude.value);
-    // console.log(nomparc.value);
 }
 </script>
 
