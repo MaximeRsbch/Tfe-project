@@ -270,7 +270,7 @@ const role = tokenDecode.value.role;
                                         class="hover:bg-gray-100"
                                     >
                                         <td
-                                            class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
+                                            class="whitespace-nowrap py-4 px-3 text-base"
                                         >
                                             {{ user.id }}
                                         </td>
@@ -338,7 +338,7 @@ const role = tokenDecode.value.role;
                                         </td>
                                         <td
                                             v-if="role === 'admin'"
-                                            class="whitespace-nowrap py-4 text-base"
+                                            class="whitespace-nowrap py-4 pr-5 text-base"
                                         >
                                             <button
                                                 @click="

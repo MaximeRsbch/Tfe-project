@@ -8,7 +8,7 @@ export const useParcsStore = defineStore("parcs", {
 
     getters: {
         getParcs: (state) => Object.values(state.parcsdict),
-        getParcsById: (state) => Object.values(state.parcsdict),
+        getParcsById: (state) => (id) => state.parcsdict[id],
     },
 
     actions: {
@@ -16,6 +16,31 @@ export const useParcsStore = defineStore("parcs", {
             const response = await CapacitorHttp.request({
                 method: "GET",
                 url: "http://localhost:3000/api/parcs/",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.parcsdict = res.data.data;
+                console.log(res.data.data);
+            });
+        },
+
+        async fetchParcById(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/parcs/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.parcsdict = res.data;
+            });
+        },
+
+        async fetchQueuetimeParc() {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: "http://localhost:3000/api/parcs/all/queuetime",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -53,17 +78,49 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
-                console.log(res.data);
-                console.log(localStorage.getItem("savedToken"));
             });
         },
 
-        async fetchQueuetimeParc() {
+        async deleteParc(id) {
             const response = await CapacitorHttp.request({
-                method: "GET",
-                url: "http://localhost:3000/api/parcs/all/queuetime",
+                method: "DELETE",
+                url: `http://localhost:3000/api/parcs/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.parcsdict = res.data;
+            });
+        },
+
+        async updateParc(
+            id,
+            nom,
+            beginHour,
+            endHour,
+            latitude,
+            longitude,
+            ticketPrice
+        ) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/parcs/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    id,
+                    nom,
+                    beginHour,
+                    endHour,
+                    latitude,
+                    longitude,
+                    ticketPrice,
                 },
             }).then((res) => {
                 this.parcsdict = res.data;

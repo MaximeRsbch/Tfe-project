@@ -10,6 +10,7 @@ import ParcsFormView from "../views/ParcsFormView.vue";
 import AttractionsFormView from "../views/AttractionsFormView.vue";
 import GestionParcsView from "../views/GestionParcsView.vue";
 import GestionAttractionsView from "../views/GestionAttractionsView.vue";
+import ModifParcsView from "../views/ModifParcsView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,6 +50,11 @@ const router = createRouter({
             path: "/parcs",
             name: "parcs",
             component: GestionParcsView,
+        },
+        {
+            path: "/parcs/:id",
+            name: "modifParcs",
+            component: ModifParcsView,
         },
         {
             path: "/attractions",
