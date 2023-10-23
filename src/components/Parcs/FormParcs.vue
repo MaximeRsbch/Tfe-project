@@ -1,10 +1,36 @@
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import leaflet from "leaflet";
+import { Mapbox_API_KEY } from "../../common/config.js";
+import { ref, onMounted, computed } from "vue";
 import { useParcsStore } from "../../stores/parcs.js";
+import MapSearchParc from "./MapSearchParc.vue";
 
 const parcsStore = useParcsStore();
 
+let map;
+
 onMounted(() => {
+    map = leaflet.map("map").setView([50.7001368, 4.5873087], 10);
+
+    //add tile layer
+    leaflet
+        .tileLayer(
+            `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
+
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                id: "mapbox/streets-v11",
+                tileSize: 512,
+                zoomOffset: -1,
+            }
+        )
+        .addTo(map);
+
+    map.on("click", function (e) {
+        console.log(e.latlng);
+    });
     parcsStore.fetchQueuetimeParc();
 });
 
@@ -30,6 +56,106 @@ async function createParc() {
         ticket.value
     );
 }
+
+const coords = ref(null);
+const fetchCoords = ref(null);
+const geoMarker = ref(null);
+
+// const img = computed(() => imageAttraction.getImagesAttraction);
+
+const getGeoLocation = () => {
+    if (coords.value) {
+        coords.value = null;
+        sessionStorage.removeItem("coords");
+        map.removeLayer(geoMarker.value);
+        return;
+    }
+    // check session storage for coords
+    if (sessionStorage.getItem("coords")) {
+        coords.value = JSON.parse(sessionStorage.getItem("coords"));
+        plotGeolocation(coords.value);
+        return;
+    }
+
+    fetchCoords.value = true;
+    navigator.geolocation.getCurrentPosition(setCoords, getLocErro);
+};
+
+const setCoords = (pos) => {
+    // stop fetching coords
+    fetchCoords.value = null;
+
+    // set coords in session storage
+    const setSessionCoords = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+    };
+
+    sessionStorage.setItem("coords", JSON.stringify(setSessionCoords));
+
+    //set ref coords value
+    coords.value = setSessionCoords;
+
+    plotGeolocation(coords.value);
+};
+
+const plotGeolocation = (coords) => {
+    // create custom marker
+    const customMarker = leaflet.icon({
+        iconUrl: "/assets/img/map-marker-red.svg",
+        iconSize: [35, 35],
+    });
+
+    // create a marker with coords and custom icon
+    geoMarker.value = leaflet
+        .marker([coords.lat, coords.lng], { icon: customMarker })
+        .addTo(map);
+
+    //set map view to the current location
+    map.setView([coords.lat, coords.lng], 10);
+};
+
+const resultMarker = ref(null);
+const plotResult = (coords) => {
+    // check to see if resultMarker has value
+    if (resultMarker.value) {
+        map.removeLayer(resultMarker.value);
+    }
+
+    // create custom marker
+    const customMarker = leaflet.icon({
+        iconUrl: "/assets/img/map-marker-blue.svg",
+        iconSize: [35, 35],
+    });
+
+    // create a marker with coords and custom icon
+    resultMarker.value = leaflet
+        .marker([coords.coordinates[1], coords.coordinates[0]], {
+            icon: customMarker,
+        })
+        .addTo(map);
+
+    //set map view to the current location
+    map.setView([coords.coordinates[1], coords.coordinates[0]], 17);
+    console.log(coords.coordinates[1], coords.coordinates[0]);
+
+    latitude.value = coords.coordinates[1];
+    longitude.value = coords.coordinates[0];
+
+    closeSearchResults();
+};
+
+const searchResults = ref(null);
+const toggleSearchResults = () => {
+    searchResults.value = !searchResults.value;
+};
+const closeSearchResults = () => {
+    searchResults.value = null;
+};
+
+const removeResult = () => {
+    map.removeLayer(resultMarker.value);
+};
 </script>
 
 <template>
@@ -112,7 +238,23 @@ async function createParc() {
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
+            </div>
 
+            <MapSearchParc
+                @getGeolocation="getGeoLocation"
+                @plotResult="plotResult"
+                @toggleSearchResults="toggleSearchResults"
+                @removeResult="removeResult"
+                :coords="coords"
+                :fetchCoords="fetchCoords"
+                :searchResults="searchResults"
+            />
+
+            <div class="pt-10">
+                <div id="map" class="h-96 w-full z-[1]"></div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                 <div>
                     <label class="text-gray-700" for="latitude">Latitude</label>
                     <input

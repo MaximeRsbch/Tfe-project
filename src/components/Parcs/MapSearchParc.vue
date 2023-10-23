@@ -1,8 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { CapacitorHttp } from "@capacitor/core";
-import LoadingSpinner from "../components/LoadingSpinner.vue";
-import { useParcsStore } from "../stores/parcs.js";
+import LoadingSpinner from "../LoadingSpinner.vue";
 
 const props = defineProps({
     coords: Object,
@@ -33,38 +32,25 @@ const search = () => {
             });
             const getData = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/parcs/`,
+                url: `http://localhost:3000/api/mapbox/${searchQuery.value}?${params}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            searchData.value = getData.data.data;
+            searchData.value = getData.data.features;
         }
     }, 750);
 };
 
 const selectResult = (result) => {
     selectedResult.value = result;
-    emit("plotResult", {
-        latitude: result.latitude,
-        longitude: result.longitude,
-    });
-};
-
-const removeResults = () => {
-    selectedResult.value = null;
-    emit("removeResult");
-};
-
-const goToPark = () => {
-    window.open(
-        `https://www.google.com/maps/dir/?api=1&destination=${selectedResult.value.latitude},${selectedResult.value.longitude}`
-    );
+    console.log(result);
+    emit("plotResult", result.geometry);
 };
 </script>
 <template>
     <div
-        class="w-full md:w-auto absolute md:top-[40px] md:left-[60px] z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
+        class="w-full md:w-auto absolute md:top-[580px] md:left-[200px] z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
     >
         <!-- Search-->
         <div class="relative flex-1 md:min-w-[350px]">
@@ -102,12 +88,12 @@ const goToPark = () => {
                             @click="selectResult(result)"
                         >
                             <i class="fa-sharp fa-solid fa-location-dot"></i>
-                            <p class="text-xs">{{ result.nom }}</p>
+                            <p class="text-xs">{{ result.place_name_fr }}</p>
                         </div>
                     </div>
                 </div>
                 <!-- Selected Search Result -->
-                <div
+                <!-- <div
                     v-if="selectedResult"
                     class="mt-2 px-4 py-3 bg-white rounded-md"
                 >
@@ -115,64 +101,7 @@ const goToPark = () => {
                         @click="removeResults"
                         class="fa-regular fa-circle-xmark flex justify-end"
                     ></i>
-
-                    <h1 class="text-lg">{{ selectedResult.nom }}</h1>
-                    <!-- <div class="flex justify-center">
-                        Acheter billets walibi
-                        <a
-                            v-if="selectedResult"
-                            class="text-blue-500"
-                            href="https://www.walibi.be/fr"
-                            target="_blank"
-                        >
-                            Achetez vos tickets
-                        </a>
-                        Acheter billets Plopsa
-                        <a
-                            v-if="selectedResult"
-                            class="text-blue-500"
-                            href="https://www.plopsalanddepanne.be/fr/tickets"
-                            target="_blank"
-                        >
-                            Achetez vos tickets
-                        </a>
-                        Acheter billets Bobbejaanland
-                        <a
-                            v-if="selectedResult"
-                            class="text-blue-500"
-                            href="https://www.bobbejaanland.be/tickets"
-                            target="_blank"
-                        >
-                            Achetez vos tickets
-                        </a>
-                        Acheter billets bellewaerde
-                        <a
-                            v-if="selectedResult"
-                            class="text-blue-500"
-                            href="https://www.bellewaerde.be/park/nl/tickets"
-                            target="_blank"
-                        >
-                            Achetez vos tickets
-                        </a>
-                    </div> -->
-
-                    <p class="text-xs mb-1">
-                        {{ selectedResult.beginHour }},
-                        {{ selectedResult.endHour }},
-                    </p>
-                    <p class="text-xs">
-                        {{ selectedResult.ticketPrice }}
-                    </p>
-                    <div class="flex justify-center pt-4">
-                        <button
-                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl"
-                            target="_blank"
-                            @click="goToPark"
-                        >
-                            Démarrer la navigation
-                        </button>
-                    </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- Geolocation-->
