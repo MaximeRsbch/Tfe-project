@@ -1,6 +1,6 @@
 <script setup>
 import { useArticlesStore } from "../../stores/articles.js";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { BASE_URL } from "../../common/config.js";
 import { useRoute, useRouter } from "vue-router";
 
@@ -12,11 +12,23 @@ const router = useRouter();
 const id = route.params.id;
 
 //Récupère l'image spécifique à l'article ouvert
-const articles = computed(() => articlesStore.getArticlesById);
 
 onMounted(() => {
+    articlesStore.fetchArticleComments(id);
     articlesStore.fetchArticleById(id);
 });
+
+const articles = ref("");
+
+setTimeout(() => {
+    const article = computed(() => articlesStore.getArticlesById);
+
+    for (let i = 0; i < article.value.length; i++) {
+        if (article.value[i].id == id) {
+            articles.value = article.value[i];
+        }
+    }
+}, 200);
 
 const goToFeatures = () => {
     router.push({ name: "features" });
@@ -34,21 +46,22 @@ const goToFeatures = () => {
                 />
             </button>
         </div>
-        <!--Récupère et affiche les informations de l'image spécifique-->
-        <div v-for="data in articles">
+
+        <!-- Récupère et affiche les informations de l'image spécifique-->
+        <div>
             <img
                 class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
-                :src="`${BASE_URL}${data.img_url}`"
+                :src="`${BASE_URL}${articles.img_url}`"
                 alt=""
             />
 
             <div>
                 <h1 class="text-center text-4xl pt-4">
-                    {{ data.title }}
+                    {{ articles.title }}
                 </h1>
                 <div class="flex justify-center">
-                    <p class="pt-4 max-w-3xl text-justify pb-5">
-                        {{ data.content }}
+                    <p class="pt-4 max-w-5xl text-center pb-5">
+                        {{ articles.content }}
                     </p>
                 </div>
             </div>
