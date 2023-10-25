@@ -55,18 +55,5 @@ export const useAttractionsStore = defineStore("attractions", {
                 console.log(res.data);
             });
         },
-
-        async fetchAttractionQueuetime(id) {
-            const response = await CapacitorHttp.request({
-                method: "GET",
-                url: `http://localhost:3000/api/attractions/${id}/queuetime`,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then((res) => {
-                this.attractionsDict = res.data;
-                console.log(res.data);
-            });
-        },
     },
 });
