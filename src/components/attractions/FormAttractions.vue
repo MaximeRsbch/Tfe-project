@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useTypesStore } from "../../stores/types";
 import { useAttractionsStore } from "../../stores/attractions";
 import { useParcsStore } from "../../stores/parcs";
@@ -8,6 +8,7 @@ const typesStore = useTypesStore();
 const attractionsStore = useAttractionsStore();
 const parcsStore = useParcsStore();
 
+const id = ref("");
 onMounted(() => {
     typesStore.fetchTypes();
     parcsStore.fetchParcs();
@@ -48,18 +49,34 @@ async function createAttraction() {
         </h2>
 
         <form @submit.prevent="createAttraction">
-            <div class="pt-5">
-                <label class="text-gray-700" for="nomattraction"
-                    >Nom de l'attraction</label
-                >
-                <input
-                    id="nomattraction"
-                    v-model="nomattraction"
-                    type="text"
-                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                />
-            </div>
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div class="pt-5">
+                    <label class="text-gray-700" for="id">id</label>
+
+                    <input
+                        id="id"
+                        v-model="id"
+                        type="text"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    />
+                </div>
+
+                <div class="pt-5">
+                    <label class="text-gray-700" for="nomattraction"
+                        >Nom de l'attraction</label
+                    >
+
+                    <select
+                        id="nomattraction"
+                        v-model="nomattraction"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    >
+                        <option v-for="data in recuptypes">
+                            {{ data.name }}
+                        </option>
+                    </select>
+                </div>
+
                 <div>
                     <label class="text-gray-700" for="tailminseul"
                         >Taille minimum seul</label

@@ -186,6 +186,8 @@ const removeResult = () => {
                     />
                 </div>
 
+                {{ id }}
+
                 <div>
                     <label class="text-gray-700" for="nomparc"
                         >Nom du parc</label
