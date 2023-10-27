@@ -35,6 +35,27 @@ export const useArticlesStore = defineStore("articles", {
             });
         },
 
+        async createArticles(title, content, img) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: `http://localhost:3000/api/articles/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    title,
+                    content,
+                    img,
+                },
+            }).then((res) => {
+                this.articlesDict = res.data;
+                console.log(this.articlesDict);
+            });
+        },
+
         async fetchArticleComments(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",

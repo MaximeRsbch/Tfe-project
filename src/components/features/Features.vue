@@ -3,8 +3,11 @@ import { computed, onMounted } from "vue";
 import { useArticlesStore } from "../../stores/articles.js";
 import { BASE_URL } from "../../common/config.js";
 import { RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
 
 const articlesStore = useArticlesStore();
+
+const router = useRouter();
 
 onMounted(() => {
     articlesStore.fetchArticles();
@@ -25,35 +28,49 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
             </h1>
         </div>
         <div v-if="isConnect">
-            <!--Récupère toutes les informations des articles et je les affiche-->
-            <div v-for="data in articles" class="pt-10">
-                <img
-                    class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
-                    :src="`${BASE_URL}${data.img_url}`"
-                    alt=""
-                />
-
-                <h2 class="text-center text-4xl pt-4">
-                    {{ data.title }}
-                </h2>
-                <div class="flex justify-center">
-                    <p class="pt-4 max-w-3xl text-justify truncate">
-                        {{ data.content }}
-                    </p>
-                </div>
-
-                <div class="text-center pt-4 text-blue-500">
-                    <!-- Permet d'ouvrir la page d'un article spécifique-->
-                    <RouterLink
-                        v-if="data.id !== undefined"
-                        v-bind:to="{
-                            name: 'fullfeature',
-                            params: {
-                                id: data.id,
-                            },
-                        }"
-                        >Cliquez ici pour voir l'article complet</RouterLink
+            <div class="text-center pt-20" v-if="articles == 0">
+                <h2 class="text-4xl">Aucun article n'est disponible</h2>
+                <div class="pt-10">
+                    <button
+                        class="bg-stone-500 text-white text-2xl px-5 py-2 rounded-xl"
                     >
+                        <RouterLink :to="{ name: 'addArticles' }"
+                            >Ajouter un article</RouterLink
+                        >
+                    </button>
+                </div>
+            </div>
+            <!--Récupère toutes les informations des articles et je les affiche-->
+            <div v-if="articles !== 0" v-for="data in articles" class="pt-10">
+                <div>
+                    <img
+                        class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
+                        :src="`${BASE_URL}${data.img_url}`"
+                        alt=""
+                    />
+
+                    <h2 class="text-center text-4xl pt-4">
+                        {{ data.title }}
+                    </h2>
+                    <div class="flex justify-center">
+                        <p class="pt-4 max-w-3xl text-justify truncate">
+                            {{ data.content }}
+                        </p>
+                    </div>
+
+                    <div class="text-center pt-4 text-blue-500">
+                        <!-- Permet d'ouvrir la page d'un article spécifique-->
+                        <RouterLink
+                            v-if="data.id !== undefined"
+                            v-bind:to="{
+                                name: 'fullfeature',
+                                params: {
+                                    id: data.id,
+                                },
+                            }"
+                            >Cliquez ici pour voir l'article complet</RouterLink
+                        >
+                    </div>
                 </div>
             </div>
         </div>
