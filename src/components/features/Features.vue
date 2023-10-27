@@ -4,6 +4,7 @@ import { useArticlesStore } from "../../stores/articles.js";
 import { BASE_URL } from "../../common/config.js";
 import { RouterLink } from "vue-router";
 import { useRouter } from "vue-router";
+import "../../style/gestionUsers.css";
 
 const articlesStore = useArticlesStore();
 
@@ -42,6 +43,18 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
             </div>
             <!--Récupère toutes les informations des articles et je les affiche-->
             <div v-if="articles !== 0" v-for="data in articles" class="pt-10">
+                <div class="flex justify-end">
+                    <button>
+                        <div class="image-container">
+                            <img
+                                src="/assets/img/addBtn.png"
+                                class="w-5 md:w-5 lg:w-full"
+                                alt=""
+                            />
+                            <div class="tooltip">Ajouter un article</div>
+                        </div>
+                    </button>
+                </div>
                 <div>
                     <img
                         class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
