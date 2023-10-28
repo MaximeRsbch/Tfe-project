@@ -21,6 +21,12 @@ const goToAttractions = () => {
         name: "attractions",
     });
 };
+
+const goToArticles = () => {
+    router.push({
+        name: "articles",
+    });
+};
 </script>
 <template>
     <Menu as="div" class="relative inline-block text-left">
@@ -96,6 +102,20 @@ const goToAttractions = () => {
                             ]"
                         >
                             Gestion attractions
+                        </button>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                        <button
+                            @click="goToArticles"
+                            type="button"
+                            :class="[
+                                active
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-700',
+                                'block w-full px-4 py-2 text-left text-sm',
+                            ]"
+                        >
+                            Gestion articles
                         </button>
                     </MenuItem>
                 </div>

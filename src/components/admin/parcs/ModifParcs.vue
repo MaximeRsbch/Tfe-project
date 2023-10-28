@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useParcsStore } from "../../stores/parcs.js";
+import { useParcsStore } from "../../../stores/parcs.js";
 import { useRoute } from "vue-router";
 
 const parcsStore = useParcsStore();

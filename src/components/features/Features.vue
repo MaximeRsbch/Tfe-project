@@ -4,7 +4,7 @@ import { useArticlesStore } from "../../stores/articles.js";
 import { BASE_URL } from "../../common/config.js";
 import { RouterLink } from "vue-router";
 import { useRouter } from "vue-router";
-import "../../style/gestionUsers.css";
+import "../../style/BulleTexte.css";
 
 const articlesStore = useArticlesStore();
 

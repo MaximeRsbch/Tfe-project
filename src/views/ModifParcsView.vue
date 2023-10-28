@@ -1,5 +1,5 @@
 <script setup>
-import ModifParcs from "../components/admin/ModifParcs.vue";
+import ModifParcs from "../components/admin/parcs/ModifParcs.vue";
 </script>
 
 <template>

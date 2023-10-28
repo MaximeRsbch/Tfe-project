@@ -2,59 +2,35 @@
 import { computed, ref, onMounted } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
-import { useParcsStore } from "../../stores/parcs.js";
-import "../../style/GestionUsers.css";
+import { useAttractionsStore } from "../../../stores/attractions.js";
+import "../../../style/BulleTexte.css";
 
-const parcsStore = useParcsStore();
+const attractionsStore = useAttractionsStore();
 
 onMounted(() => {
-    parcsStore.fetchParcs();
+    attractionsStore.fetchAttractions();
 });
 
-const parcs = computed(() => parcsStore.getParcs);
+const attractions = computed(() => attractionsStore.getAttractions);
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
-
-const deleteParc = (id) => {
-    Swal.fire({
-        title: "Êtes-vous sûr ?",
-        text: "Vous ne pourrez pas revenir en arrière !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Oui, supprimer !",
-        cancelButtonText: "Non, annuler !",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                "Supprimé !",
-                "Votre parc a bien été supprimé.",
-                "success"
-            );
-            if (parcsStore.deleteParc(id)) {
-                setTimeout(() => {
-                    window.location.reload();
-                }, 700);
-            }
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire("Annulé", "Votre parc n'a pas été supprimé :)", "error");
-        }
-    });
-};
 </script>
 <template>
     <div class="container mx-auto">
-        <div v-if="parcs.length === 0" class="text-center text-5xl pt-10">
-            <h2>Aucun parc n'a encore été créée !</h2>
+        <div v-if="attractions.length === 0" class="text-center text-5xl pt-10">
+            <h2>Aucune attractions n'a encore été créée !</h2>
         </div>
         <div v-if="role === 'admin' || role === 'modo'">
-            <div v-if="parcs.length > 0">
-                <h1 class="text-center pt-10 text-4xl">Gestion des parcs</h1>
+            <div v-if="attractions.length > 0">
+                <h1 class="text-center pt-10 text-4xl">
+                    Gestion des attractions
+                </h1>
                 <p class="text-center pb-10 text-2xl">
-                    Ici sont affichés tous les parcs pour les gérer
+                    Ici sont affichés tous les attractions pour les gérer
                 </p>
 
                 <div class="mt-4 flex flex-col container mx-auto">
@@ -91,7 +67,7 @@ const deleteParc = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Nom du parc
+                                                    Nom de l'attraction
                                                 </a>
                                             </th>
 
@@ -102,7 +78,7 @@ const deleteParc = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Prix du ticket
+                                                    Description
                                                 </a>
                                             </th>
                                             <th
@@ -112,7 +88,7 @@ const deleteParc = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Heures d'ouverture
+                                                    Parcs de référence
                                                 </a>
                                             </th>
                                             <th
@@ -122,7 +98,7 @@ const deleteParc = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Heures de fermeture
+                                                    Type de référence
                                                 </a>
                                             </th>
                                             <th
@@ -133,7 +109,7 @@ const deleteParc = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Suppression parc
+                                                    Suppression attraction
                                                 </a>
                                             </th>
                                             <th
@@ -144,7 +120,7 @@ const deleteParc = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Modifier parc
+                                                    Modifier attraction
                                                 </a>
                                             </th>
                                         </tr>
@@ -154,45 +130,49 @@ const deleteParc = (id) => {
                                     >
                                         <!--Affiche les info de tous les users-->
                                         <tr
-                                            v-for="parc in parcs"
-                                            :key="parc.id"
+                                            v-for="attraction in attractions"
+                                            :key="attraction.id"
                                             class="hover:bg-gray-100"
                                         >
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
                                             >
-                                                {{ parc.id }}
+                                                {{ attraction.id }}
                                             </td>
                                             <div>
                                                 <td
                                                     class="whitespace-nowrap px-3 py-4 text-base"
                                                 >
-                                                    {{ parc.nom }}
+                                                    {{ attraction.nom }}
                                                 </td>
                                             </div>
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                {{ parc.ticketPrice }}
+                                                <textarea
+                                                    disabled
+                                                    rows="3"
+                                                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                                    >{{
+                                                        attraction.description
+                                                    }}</textarea
+                                                >
                                             </td>
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                {{ parc.beginHour }}
+                                                {{ attraction.ref_parc }}
                                             </td>
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                {{ parc.endHour }}
+                                                {{ attraction.ref_type }}
                                             </td>
                                             <td
                                                 v-if="role === 'admin'"
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                <button
-                                                    @click="deleteParc(parc.id)"
-                                                    type="button"
-                                                >
+                                                <button @click="" type="button">
                                                     <div
                                                         class="image-container"
                                                     >
@@ -202,7 +182,8 @@ const deleteParc = (id) => {
                                                             alt="poubelleImg"
                                                         />
                                                         <div class="tooltip">
-                                                            Supprimer Parcs
+                                                            Supprimer
+                                                            attractions
                                                         </div>
                                                     </div>
                                                 </button>
@@ -215,27 +196,14 @@ const deleteParc = (id) => {
                                                     <div
                                                         class="image-container"
                                                     >
-                                                        <RouterLink
-                                                            v-if="
-                                                                parc.id !==
-                                                                undefined
-                                                            "
-                                                            v-bind:to="{
-                                                                name: 'modifParcs',
-                                                                params: {
-                                                                    id: parc.id,
-                                                                },
-                                                            }"
-                                                        >
-                                                            <img
-                                                                class="w-5 md:w-5 lg:w-full"
-                                                                src="/assets/img/modif.png"
-                                                                alt="modoPImg"
-                                                            />
-                                                        </RouterLink>
+                                                        <img
+                                                            class="w-5 md:w-5 lg:w-full"
+                                                            src="/assets/img/modif.png"
+                                                            alt="modoPImg"
+                                                        />
 
                                                         <div class="tooltip">
-                                                            Modifier parc
+                                                            Modifier Attractions
                                                         </div>
                                                     </div>
                                                 </button>

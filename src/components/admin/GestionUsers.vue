@@ -3,7 +3,7 @@ import { useUsersStore } from "../../stores/users.js";
 import { computed, ref, onMounted } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
-import "../../style/GestionUsers.css";
+import "../../style/BulleTexte.css";
 
 const usersStore = useUsersStore();
 
