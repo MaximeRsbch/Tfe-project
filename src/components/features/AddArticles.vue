@@ -77,13 +77,15 @@ const createArticle = async () => {
                 />
             </div>
 
-            <input
-                id="image"
-                type="file"
-                ref="imageInput"
-                @change="saveImageToConstant"
-                class="block w-full mt-2"
-            />
+            <div class="pt-10">
+                <input
+                    id="image"
+                    type="file"
+                    ref="imageInput"
+                    @change="saveImageToConstant"
+                    class="block w-full mt-2"
+                />
+            </div>
 
             <div class="flex justify-end mt-6">
                 <button

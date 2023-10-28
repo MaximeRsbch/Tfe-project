@@ -4,7 +4,7 @@ import AddArticles from "../components/features/AddArticles.vue";
 
 <template>
     <div>
-        <div>
+        <div class="pt-10">
             <AddArticles />
         </div>
     </div>
