@@ -67,5 +67,39 @@ export const useArticlesStore = defineStore("articles", {
                 this.commentsDict = res.data;
             });
         },
+
+        async deleteArticle(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/articles/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.articlesDict = res.data;
+            });
+        },
+
+        async updateArticle(id, title, content, img_url) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/articles/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    title,
+                    content,
+                    img_url,
+                },
+            }).then((res) => {
+                this.articlesDict = res.data;
+                console.log(this.articlesDict);
+            });
+        },
     },
 });

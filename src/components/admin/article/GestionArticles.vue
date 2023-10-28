@@ -17,6 +17,10 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
+
+const deleteArticle = (id) => {
+    articlesStore.deleteArticle(id);
+};
 </script>
 <template>
     <div class="container mx-auto">
@@ -145,7 +149,9 @@ const role = tokenDecode.value.role;
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             <button
-                                                @click="deleteUsers(user.id)"
+                                                @click="
+                                                    deleteArticle(article.id)
+                                                "
                                                 type="button"
                                             >
                                                 <div class="image-container">
@@ -166,11 +172,24 @@ const role = tokenDecode.value.role;
                                         >
                                             <button type="button">
                                                 <div class="image-container">
-                                                    <img
-                                                        class="w-5 md:w-5 lg:w-full"
-                                                        src="/assets/img/modif.png"
-                                                        alt="modoPImg"
-                                                    />
+                                                    <RouterLink
+                                                        v-if="
+                                                            article.id !==
+                                                            undefined
+                                                        "
+                                                        v-bind:to="{
+                                                            name: 'modifArticle',
+                                                            params: {
+                                                                id: article.id,
+                                                            },
+                                                        }"
+                                                    >
+                                                        <img
+                                                            class="w-5 md:w-5 lg:w-full"
+                                                            src="/assets/img/modif.png"
+                                                            alt="modoPImg"
+                                                        />
+                                                    </RouterLink>
 
                                                     <div class="tooltip">
                                                         Modifier article
