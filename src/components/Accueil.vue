@@ -33,10 +33,6 @@ onMounted(() => {
         )
         .addTo(map);
 
-    map.on("click", function (e) {
-        console.log(e.latlng);
-    });
-
     getGeoLocation();
     parcstore.fetchParcs();
     plotInfoParc();
