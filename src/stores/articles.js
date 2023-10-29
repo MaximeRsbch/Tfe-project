@@ -70,6 +70,25 @@ export const useArticlesStore = defineStore("articles", {
             });
         },
 
+        async createArticleComments(content, ref_user, ref_article) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: `http://localhost:3000/api/commentsart/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    content,
+                    ref_user,
+                    ref_article,
+                },
+            }).then((res) => {
+                this.commentsDict = res.data;
+            });
+        },
+
         async deleteArticle(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",

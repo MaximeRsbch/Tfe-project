@@ -18,30 +18,6 @@ const goToLogin = () => {
 
 //Fonction qui permet de s'inscrire (créé un user)
 async function createUsers() {
-    // const isContainsUppercase = /^(?=.*[A-Z])/;
-    // if (!isContainsUppercase.test(password.value)) {
-    //     console.log("Password must have at least one Uppercase Character.");
-    // }
-
-    // const isContainsLowercase = /^(?=.*[a-z])/;
-    // if (!isContainsLowercase.test(password.value)) {
-    //     console.log("Password must have at least one Lowercase Character.");
-    // }
-
-    // const isContainsNumber = /^(?=.*[0-9])/;
-    // if (!isContainsNumber.test(password.value)) {
-    //     console.log("Password must contain at least one Digit.");
-    // }
-
-    // const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹])/;
-    // if (!isContainsSymbol.test(password.value)) {
-    //     console.log("Password must contain at least one Special Symbol.");
-    // }
-
-    // const isValidLength = /^.{10,16}$/;
-    // if (!isValidLength.test(password.value)) {
-    //     console.log("Password must be 10-16 Characters Long.");
-
     let regex =
         /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/;
 
