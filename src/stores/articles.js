@@ -9,6 +9,7 @@ export const useArticlesStore = defineStore("articles", {
     getters: {
         getArticles: (state) => Object.values(state.articlesDict),
         getArticlesById: (state) => Object.values(state.articlesDict),
+        getArticleComments: (state) => Object.values(state.commentsDict),
     },
     actions: {
         async fetchArticles() {
@@ -64,7 +65,8 @@ export const useArticlesStore = defineStore("articles", {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                this.commentsDict = res.data;
+                this.commentsDict = res.data.data;
+                console.log(this.commentsDict);
             });
         },
 

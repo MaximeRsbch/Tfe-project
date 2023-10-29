@@ -46,50 +46,73 @@ const goToArticleForm = () => {
                 </div>
             </div>
             <!--Récupère toutes les informations des articles et je les affiche-->
-            <div v-if="articles !== 0">
-                <div class="flex justify-end pt-10">
-                    <button @click="goToArticleForm">
-                        <div class="image-container">
-                            <img
-                                src="/assets/img/addBtn.png"
-                                class="w-5 md:w-5 lg:w-full"
-                                alt=""
-                            />
-                            <div class="tooltip">Ajouter un article</div>
-                        </div>
-                    </button>
-                </div>
-                <div v-for="data in articles">
-                    <div>
+        </div>
+    </div>
+    <div class="container px-6 pt-10 mx-auto">
+        <div class="text-center">
+            <h1
+                class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl"
+            >
+                Page de nouveautés
+            </h1>
+
+            <p class="max-w-lg mx-auto mt-4 text-gray-500">
+                Vous pouvez voir ici toutes les nouvelles attractions qui vont
+                sortir
+            </p>
+        </div>
+
+        <div v-if="articles !== 0">
+            <div class="flex justify-end">
+                <button @click="goToArticleForm">
+                    <div class="image-container">
                         <img
-                            class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
-                            :src="`${BASE_URL}${data.img_url}`"
+                            src="/assets/img/addBtn.png"
+                            class="w-5 md:w-5 lg:w-full"
                             alt=""
                         />
+                        <div class="tooltip">Ajouter un article</div>
+                    </div>
+                </button>
+            </div>
+        </div>
 
-                        <h2 class="text-center text-4xl pt-4">
-                            {{ data.title }}
-                        </h2>
-                        <div class="flex justify-center">
-                            <p class="pt-4 max-w-3xl text-justify truncate">
-                                {{ data.content }}
-                            </p>
-                        </div>
+        <div class="grid grid-cols-1 gap-8 mt-8 mb-10 lg:grid-cols-2">
+            <div v-for="data in articles">
+                <img
+                    class="relative z-10 object-cover w-full rounded-md h-96"
+                    src="https://images.unsplash.com/photo-1644018335954-ab54c83e007f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                    alt=""
+                />
 
-                        <div class="text-center pt-4 text-blue-500">
-                            <!-- Permet d'ouvrir la page d'un article spécifique-->
-                            <RouterLink
-                                v-if="data.id !== undefined"
-                                v-bind:to="{
-                                    name: 'fullfeature',
-                                    params: {
-                                        id: data.id,
-                                    },
-                                }"
-                                >Cliquez ici pour voir l'article
-                                complet</RouterLink
-                            >
-                        </div>
+                <div
+                    class="relative z-20 max-w-lg p-6 mx-auto -mt-20 bg-gray-400 rounded-md shadow"
+                >
+                    <a
+                        href="#"
+                        class="font-semibold text-gray-800 hover:underline md:text-xl"
+                    >
+                        {{ data.title }}
+                    </a>
+
+                    <p class="mt-3 text-sm text-gray-500 md:text-sm">
+                        {{ data.content }}
+                    </p>
+
+                    <div class="text-center pt-4 text-blue-500">
+                        <!-- Permet d'ouvrir la page d'un article spécifique-->
+                        <RouterLink
+                            v-if="data.id !== undefined"
+                            v-bind:to="{
+                                name: 'fullfeature',
+                                params: {
+                                    id: data.id,
+                                },
+                            }"
+                            ><p class="mt-3 text-sm text-blue-500">
+                                Cliquez ici pour voir l'article complet
+                            </p></RouterLink
+                        >
                     </div>
                 </div>
             </div>

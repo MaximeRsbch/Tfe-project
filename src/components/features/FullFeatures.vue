@@ -1,10 +1,12 @@
 <script setup>
 import { useArticlesStore } from "../../stores/articles.js";
+import { useUsersStore } from "../../stores/users.js";
 import { onMounted, computed, ref } from "vue";
 import { BASE_URL } from "../../common/config.js";
 import { useRoute, useRouter } from "vue-router";
 
 const articlesStore = useArticlesStore();
+const usersStore = useUsersStore();
 const route = useRoute();
 
 const router = useRouter();
@@ -13,11 +15,17 @@ const id = route.params.id;
 
 //Récupère l'image spécifique à l'article ouvert
 
-onMounted(() => {
-    articlesStore.fetchArticleComments(id);
-    articlesStore.fetchArticleById(id);
-});
+const articleCom = ref("");
 
+setTimeout(() => {
+    const articleCommentaire = computed(() => articlesStore.getArticleComments);
+
+    for (let i = 0; i < articleCommentaire.value.length; i++) {
+        if (articleCommentaire.value[i].id == id) {
+            articleCom.value = articleCommentaire.value[i];
+        }
+    }
+}, 200);
 const articles = ref("");
 
 setTimeout(() => {
@@ -29,6 +37,14 @@ setTimeout(() => {
         }
     }
 }, 200);
+
+onMounted(() => {
+    articlesStore.fetchArticleComments(id);
+    articlesStore.fetchArticleById(id);
+    usersStore.fetchOneUser(articleCom.value);
+});
+
+const user = computed(() => usersStore.getUsers);
 
 const goToFeatures = () => {
     router.push({ name: "features" });
@@ -63,6 +79,21 @@ const goToFeatures = () => {
                     <p class="pt-4 max-w-5xl text-center pb-5">
                         {{ articles.content }}
                     </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <h2>Espace commentaire</h2>
+            </div>
+            <div>
+                {{ articleCom.content }}
+
+                <div v-for="data in user">
+                    <div v-for="users in data">
+                        {{ users.username }}
+                    </div>
                 </div>
             </div>
         </div>
