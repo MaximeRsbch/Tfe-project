@@ -89,6 +89,21 @@ export const useArticlesStore = defineStore("articles", {
             });
         },
 
+        async deleteArticleComments(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/commentsart/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.commentsDict = res.data;
+                console.log(res);
+            });
+        },
+
         async deleteArticle(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",

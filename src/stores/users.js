@@ -105,7 +105,7 @@ export const useUsersStore = defineStore("users", {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                this.usersDict = res.data.data;
+                this.usersDict = res.data;
             });
         },
 

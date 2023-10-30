@@ -1,6 +1,9 @@
 <script setup>
 import { useArticlesStore } from "../../stores/articles.js";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const articlesStore = useArticlesStore();
 
@@ -42,9 +45,22 @@ const createArticle = async () => {
         img.value
     );
 };
+
+const goToFeatures = () => {
+    router.push({ name: "features" });
+};
 </script>
 
 <template>
+    <div class="pl-4">
+        <button @click="goToFeatures">
+            <img
+                src="/assets/img/fleche.png"
+                alt="Retour aux articles"
+                class="w-20 mr-2"
+            />
+        </button>
+    </div>
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
         <h2 class="text-lg font-semibold text-gray-700">Ajout d'un article</h2>
 

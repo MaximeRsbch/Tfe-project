@@ -2,8 +2,8 @@
 import { computed, onMounted } from "vue";
 import { useArticlesStore } from "../../stores/articles.js";
 import { BASE_URL } from "../../common/config.js";
-import { RouterLink } from "vue-router";
-import { useRouter } from "vue-router";
+import jwtDecode from "jwt-decode";
+import { RouterLink, useRouter } from "vue-router";
 import "../../style/BulleTexte.css";
 
 const articlesStore = useArticlesStore();
@@ -23,6 +23,10 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 const goToArticleForm = () => {
     router.push({ name: "addArticles" });
 };
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+const role = tokenDecode.value.role;
 </script>
 
 <template>
@@ -35,7 +39,7 @@ const goToArticleForm = () => {
         <div v-if="isConnect">
             <div class="text-center pt-20" v-if="articles == 0">
                 <h2 class="text-4xl">Aucun article n'est disponible</h2>
-                <div class="pt-10">
+                <div v-if="role === 'admin'" class="pt-10">
                     <button
                         class="bg-stone-500 text-white text-2xl px-5 py-2 rounded-xl"
                     >
@@ -63,12 +67,12 @@ const goToArticleForm = () => {
         </div>
 
         <div v-if="articles !== 0">
-            <div class="flex justify-end">
+            <div v-if="role === 'admin'" class="flex justify-end">
                 <button @click="goToArticleForm">
                     <div class="image-container">
                         <img
                             src="/assets/img/addBtn.png"
-                            class="w-5 md:w-5 lg:w-full"
+                            class="w-full md:w-5 lg:w-full"
                             alt=""
                         />
                         <div class="tooltip">Ajouter un article</div>
@@ -77,7 +81,7 @@ const goToArticleForm = () => {
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-8 mt-8 mb-10 lg:grid-cols-2">
+        <div class="grid grid-cols-1 gap-8 md:mt-8 mb-10 lg:grid-cols-2">
             <div v-for="data in articles">
                 <img
                     class="relative z-10 object-cover w-full rounded-md h-96"
@@ -86,20 +90,20 @@ const goToArticleForm = () => {
                 />
 
                 <div
-                    class="relative z-20 max-w-lg p-6 mx-auto -mt-20 bg-gray-400 rounded-md shadow"
+                    class="relative z-20 max-w-lg p-6 mx-auto -mt-20 bg-[#344d59] rounded-md shadow"
                 >
                     <a
                         href="#"
-                        class="font-semibold text-gray-800 hover:underline md:text-xl"
+                        class="font-semibold text-white hover:underline md:text-xl"
                     >
                         {{ data.title }}
                     </a>
 
-                    <p class="mt-3 text-sm text-gray-500 md:text-sm">
+                    <p class="mt-3 text-sm text-white md:text-sm truncate">
                         {{ data.content }}
                     </p>
 
-                    <div class="text-center pt-4 text-blue-500">
+                    <div class="text-center pt-4 text-blue-300">
                         <!-- Permet d'ouvrir la page d'un article spécifique-->
                         <RouterLink
                             v-if="data.id !== undefined"
@@ -109,7 +113,7 @@ const goToArticleForm = () => {
                                     id: data.id,
                                 },
                             }"
-                            ><p class="mt-3 text-sm text-blue-500">
+                            ><p class="mt-3 text-sm text-blue-300">
                                 Cliquez ici pour voir l'article complet
                             </p></RouterLink
                         >

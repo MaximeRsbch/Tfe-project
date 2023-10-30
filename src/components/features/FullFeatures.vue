@@ -84,6 +84,10 @@ async function addComment() {
         router.go();
     }
 }
+
+async function deleteComment(id) {
+    const body = await articlesStore.deleteArticleComments(id);
+}
 </script>
 
 <template>
@@ -99,7 +103,7 @@ async function addComment() {
         </div>
 
         <!-- Récupère et affiche les informations de l'image spécifique-->
-        <div>
+        <div class="mx-auto container max-w-4xl">
             <img
                 class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
                 :src="`${BASE_URL}${articles.img_url}`"
@@ -128,12 +132,14 @@ async function addComment() {
                     v-for="test in articleCommentaire"
                 >
                     <div v-for="data in user">
-                        <h3
-                            v-if="data.id == test.ref_user"
-                            class="text-l font-semibold"
-                        >
-                            {{ data.username }}
-                        </h3>
+                        <div v-for="donne in data">
+                            <h3
+                                v-if="donne.id == test.ref_user"
+                                class="text-l font-semibold"
+                            >
+                                {{ donne.username }}
+                            </h3>
+                        </div>
                     </div>
                     <div class="flex justify-start mt-2">
                         {{ test.content }}
@@ -142,7 +148,16 @@ async function addComment() {
                         <div>
                             {{ test.createdAt }}
                         </div>
-                        <button>Delete</button>
+                        <div>
+                            <button
+                                @click="deleteComment(test.id)"
+                                class="bg-[#344D59] text-white rounded-md px-4 py-1"
+                            >
+                                Delete
+                            </button>
+
+                            <button class="ml-4">Report</button>
+                        </div>
                     </div>
                     <div class="relative pt-10">
                         <div
