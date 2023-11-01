@@ -60,7 +60,7 @@ const goToAdminPannel = () => {
                         <button
                             v-if="!isConnect"
                             @click="goToLogin"
-                            class="bg-white text-stone-500 text-lg px-5 py-2 rounded-xl hidden lg:flex"
+                            class="bg-white text-[#344d59] text-lg px-5 py-2 rounded-xl hidden lg:flex"
                         >
                             Connexion
                         </button>
@@ -81,7 +81,7 @@ const goToAdminPannel = () => {
                             <div>
                                 <button
                                     @click="goToAdminPannel"
-                                    class="bg-white text-stone-500 text-2xl px-5 py-2 rounded-xl"
+                                    class="bg-white text-[#344d59] text-2xl px-5 py-2 rounded-xl"
                                 >
                                     Admin pannel
                                 </button>
@@ -89,7 +89,7 @@ const goToAdminPannel = () => {
                             <button
                                 v-if="!isConnect"
                                 @click="goToLogin"
-                                class="bg-white text-stone-500 text-2xl px-5 py-2 rounded-xl"
+                                class="bg-white text-[#344d59] text-2xl px-5 py-2 rounded-xl"
                             >
                                 Connexion
                             </button>

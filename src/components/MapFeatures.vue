@@ -175,6 +175,7 @@ const goToPark = () => {
                 </div>
             </div>
         </div>
+
         <!-- Geolocation-->
         <div class="pt-10">
             <div

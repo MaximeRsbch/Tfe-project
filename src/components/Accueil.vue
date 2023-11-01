@@ -6,6 +6,9 @@ import { Mapbox_API_KEY } from "../common/config.js";
 import MapFeatures from "./MapFeatures.vue";
 import { BASE_URL } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const parcstore = useParcsStore();
 
@@ -192,6 +195,10 @@ const plotInfoParc = () => {
 const removeAttrResults = () => {
     showModalResults.value = false;
 };
+
+const goToAddParc = () => {
+    router.push("/parcsform");
+};
 </script>
 
 <template>
@@ -211,6 +218,21 @@ const removeAttrResults = () => {
             :fetchCoords="fetchCoords"
             :searchResults="searchResults"
         />
+
+        <div class="z-[2] absolute top-10 md:left-[1400px]">
+            <div class="">
+                <button
+                    @click="goToAddParc"
+                    class="bg-white px-3 py-2 text-white rounded-md"
+                >
+                    <img
+                        src="/assets/img/add-icon.png"
+                        class="w-full lg:w-full"
+                        alt=""
+                    />
+                </button>
+            </div>
+        </div>
 
         <div
             v-if="showModalResults"
