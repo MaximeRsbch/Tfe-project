@@ -1,15 +1,40 @@
 <script setup>
+import leaflet from "leaflet";
+import { Mapbox_API_KEY } from "../../common/config.js";
 import { computed, onMounted, ref, watch } from "vue";
 import { useTypesStore } from "../../stores/types";
-import { useAttractionsStore } from "../../stores/attractions";
 import { useParcsStore } from "../../stores/parcs";
+import MapSearchAttraction from "./MapSearchAttraction.vue";
 
 const typesStore = useTypesStore();
-const attractionsStore = useAttractionsStore();
 const parcsStore = useParcsStore();
 
-const id = ref("");
+let map;
+
 onMounted(() => {
+    map = leaflet.map("map").setView([50.7001368, 4.5873087], 10);
+
+    //add tile layer
+    leaflet
+        .tileLayer(
+            `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
+
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                id: "mapbox/streets-v11",
+                tileSize: 512,
+                zoomOffset: -1,
+            }
+        )
+        .addTo(map);
+    map.on("click", (e) => {
+        console.log(e.latlng.lat);
+        latitude.value = e.latlng.lat;
+        longitude.value = e.latlng.lng;
+    });
+
     typesStore.fetchTypes();
     parcsStore.fetchParcs();
 });
@@ -25,21 +50,100 @@ const longitude = ref("");
 const description = ref("");
 const parcs = ref("");
 const types = ref("");
-const image = ref("");
 
-async function createAttraction() {
-    const body = await attractionsStore.createAttraction(
-        nomattraction.value,
-        tailminseul.value,
-        tailminaccomp.value,
-        latitude.value,
-        longitude.value,
-        description.value,
-        parcs.value,
-        types.value,
-        image.value
-    );
-}
+const coords = ref(null);
+const fetchCoords = ref(null);
+const geoMarker = ref(null);
+
+const getGeoLocation = () => {
+    if (coords.value) {
+        coords.value = null;
+        sessionStorage.removeItem("coords");
+        map.removeLayer(geoMarker.value);
+        return;
+    }
+    // check session storage for coords
+    if (sessionStorage.getItem("coords")) {
+        coords.value = JSON.parse(sessionStorage.getItem("coords"));
+        plotGeolocation(coords.value);
+        return;
+    }
+
+    fetchCoords.value = true;
+    navigator.geolocation.getCurrentPosition(setCoords, getLocErro);
+};
+
+const setCoords = (pos) => {
+    // stop fetching coords
+    fetchCoords.value = null;
+
+    // set coords in session storage
+    const setSessionCoords = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+    };
+
+    sessionStorage.setItem("coords", JSON.stringify(setSessionCoords));
+
+    //set ref coords value
+    coords.value = setSessionCoords;
+
+    plotGeolocation(coords.value);
+};
+
+const plotGeolocation = (coords) => {
+    // create custom marker
+    const customMarker = leaflet.icon({
+        iconUrl: "/assets/img/map-marker-red.svg",
+        iconSize: [35, 35],
+    });
+
+    // create a marker with coords and custom icon
+    geoMarker.value = leaflet
+        .marker([coords.lat, coords.lng], { icon: customMarker })
+        .addTo(map);
+
+    //set map view to the current location
+    map.setView([coords.lat, coords.lng], 10);
+};
+
+const resultMarker = ref(null);
+const plotResult = (coords) => {
+    // check to see if resultMarker has value
+    if (resultMarker.value) {
+        map.removeLayer(resultMarker.value);
+    }
+
+    // create custom marker
+    const customMarker = leaflet.icon({
+        iconUrl: "/assets/img/map-marker-blue.svg",
+        iconSize: [35, 35],
+    });
+
+    // create a marker with coords and custom icon
+    resultMarker.value = leaflet
+        .marker([coords.coordinates[1], coords.coordinates[0]], {
+            icon: customMarker,
+        })
+        .addTo(map);
+
+    //set map view to the current location
+    map.setView([coords.coordinates[1], coords.coordinates[0]], 17);
+
+    closeSearchResults();
+};
+
+const searchResults = ref(null);
+const toggleSearchResults = () => {
+    searchResults.value = !searchResults.value;
+};
+const closeSearchResults = () => {
+    searchResults.value = null;
+};
+
+const removeResult = () => {
+    map.removeLayer(resultMarker.value);
+};
 </script>
 
 <template>
@@ -48,35 +152,23 @@ async function createAttraction() {
             Ajout d'une attraction
         </h2>
 
-        <form @submit.prevent="createAttraction">
+        <form>
+            <div class="pt-5">
+                <label class="text-gray-700" for="nomattraction"
+                    >Nom de l'attraction</label
+                >
+
+                <select
+                    name="selectAttraction"
+                    v-model="nomattraction"
+                    id="nomattraction"
+                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                >
+                    <option></option>
+                </select>
+            </div>
+
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div class="pt-5">
-                    <label class="text-gray-700" for="id">id</label>
-
-                    <input
-                        id="id"
-                        v-model="id"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div class="pt-5">
-                    <label class="text-gray-700" for="nomattraction"
-                        >Nom de l'attraction</label
-                    >
-
-                    <select
-                        id="nomattraction"
-                        v-model="nomattraction"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    >
-                        <option v-for="data in recuptypes">
-                            {{ data.name }}
-                        </option>
-                    </select>
-                </div>
-
                 <div>
                     <label class="text-gray-700" for="tailminseul"
                         >Taille minimum seul</label
@@ -102,6 +194,52 @@ async function createAttraction() {
                 </div>
 
                 <div>
+                    <label class="text-gray-700" for="types">Types</label>
+
+                    <select
+                        name="selectTypes"
+                        id="types"
+                        v-model="types"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    >
+                        <option v-for="data in recuptypes">
+                            {{ data.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-gray-700" for="parcs">Parcs</label>
+
+                    <select
+                        name="selectParcs"
+                        id="types"
+                        v-model="parcs"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    >
+                        <option v-for="data in recupparcs">
+                            {{ data.nom }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <MapSearchAttraction
+                @getGeolocation="getGeoLocation"
+                @plotResult="plotResult"
+                @toggleSearchResults="toggleSearchResults"
+                @removeResult="removeResult"
+                :coords="coords"
+                :fetchCoords="fetchCoords"
+                :searchResults="searchResults"
+            />
+
+            <div class="pt-10">
+                <div id="map" class="h-96 w-full z-[1]"></div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div>
                     <label class="text-gray-700" for="latitude">Latitude</label>
                     <input
                         id="latitude"
@@ -122,34 +260,6 @@ async function createAttraction() {
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
-
-                <div>
-                    <label class="text-gray-700" for="types">Types</label>
-
-                    <select
-                        id="types"
-                        v-model="types"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    >
-                        <option v-for="data in recuptypes">
-                            {{ data.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="parcs">Parcs</label>
-
-                    <select
-                        id="types"
-                        v-model="parcs"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    >
-                        <option v-for="data in recupparcs">
-                            {{ data.nom }}
-                        </option>
-                    </select>
-                </div>
             </div>
 
             <div class="pt-10">
@@ -163,50 +273,6 @@ async function createAttraction() {
                     rows="5"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                 />
-            </div>
-
-            <div class="col-span-full pt-10">
-                <label
-                    for="cover-photo"
-                    class="block text-sm font-medium leading-6 text-gray-900"
-                    >Image de l'attraction</label
-                >
-                <div
-                    class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
-                >
-                    <div class="text-center">
-                        <svg
-                            class="mx-auto h-12 w-12 text-gray-300"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                        <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                            <label
-                                for="file-upload"
-                                class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                            >
-                                <span>Upload un fichier</span>
-                                <input
-                                    id="file-upload"
-                                    name="file-upload"
-                                    type="file"
-                                    class="sr-only"
-                                />
-                            </label>
-                            <p class="pl-1">ou glisser</p>
-                        </div>
-                        <p class="text-xs leading-5 text-gray-600">
-                            PNG, JPG, GIF up to 10MB
-                        </p>
-                    </div>
-                </div>
             </div>
 
             <div class="flex justify-end mt-6">
