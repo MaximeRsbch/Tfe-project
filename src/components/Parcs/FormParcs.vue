@@ -28,9 +28,6 @@ onMounted(() => {
         )
         .addTo(map);
 
-    map.on("click", function (e) {
-        console.log(e.latlng);
-    });
     parcsStore.fetchQueuetimeParc();
 });
 
@@ -45,9 +42,19 @@ const latitude = ref("");
 const longitude = ref("");
 const legende = ref("");
 
+const ChangeNomParc = () => {
+    var idParc =
+        document.getElementById("nomparc").options[
+            document.getElementById("nomparc").selectedIndex
+        ].id;
+
+    console.log(idParc);
+    id.value = idParc;
+};
+
 async function createParc() {
     const body = await parcsStore.createParc(
-        (id.value = nomparc.value[0] + nomparc.value[1]),
+        id.value,
         nomparc.value,
         ouverture.value,
         fermeture.value,
@@ -169,7 +176,7 @@ const removeResult = () => {
                 <div>
                     <label class="text-gray-700" for="id">Id du parc</label>
                     <input
-                        v-if="nomparc == ''"
+                        v-if="id == ''"
                         id="id"
                         value="Veuillez choisir un parc"
                         disabled="disabled"
@@ -178,16 +185,14 @@ const removeResult = () => {
                     />
 
                     <input
-                        v-if="nomparc != ''"
+                        v-if="id != ''"
                         id="id"
-                        :value="nomparc[0] + nomparc[1]"
+                        v-model="id"
                         disabled="disabled"
                         type="text"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
-
-                {{ id }}
 
                 <div>
                     <label class="text-gray-700" for="nomparc"
@@ -195,12 +200,12 @@ const removeResult = () => {
                     >
 
                     <select
+                        @change="ChangeNomParc($event.target.value)"
                         id="nomparc"
                         v-model="nomparc"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     >
-                        <option v-for="data in recupqueuetime">
-                            {{ data.id }}
+                        <option v-for="data in recupqueuetime" :id="data.id">
                             {{ data.name }}
                         </option>
                     </select>
