@@ -4,10 +4,12 @@ import { Mapbox_API_KEY } from "../../common/config.js";
 import { computed, onMounted, ref, watch } from "vue";
 import { useTypesStore } from "../../stores/types";
 import { useParcsStore } from "../../stores/parcs";
+import { useAttractionsStore } from "../../stores/attractions";
 import MapSearchAttraction from "./MapSearchAttraction.vue";
 
 const typesStore = useTypesStore();
 const parcsStore = useParcsStore();
+const attractionsStore = useAttractionsStore();
 
 let map;
 
@@ -42,14 +44,17 @@ onMounted(() => {
 const recuptypes = computed(() => typesStore.getTypes);
 const recupparcs = computed(() => parcsStore.getParcs);
 
-const nomattraction = ref("");
-const tailminseul = ref("");
-const tailminaccomp = ref("");
+const id = ref("");
+const nom = ref("");
+const minHeight = ref("");
+const maxHeight = ref("");
 const latitude = ref("");
 const longitude = ref("");
 const description = ref("");
-const parcs = ref("");
-const types = ref("");
+const id_type = ref("");
+const ref_type = ref("");
+const id_parc = ref("");
+const ref_parc = ref("");
 
 const coords = ref(null);
 const fetchCoords = ref(null);
@@ -144,6 +149,57 @@ const closeSearchResults = () => {
 const removeResult = () => {
     map.removeLayer(resultMarker.value);
 };
+
+function changeTypeValue() {
+    const idType =
+        document.getElementById("ref_type").options[
+            document.getElementById("ref_type").selectedIndex
+        ].id;
+    id_type.value = idType;
+    console.log(id_type.value);
+    console.log(ref_type.value);
+    console.log(idType);
+}
+
+const attractions = ref(null);
+
+function changeParcValue() {
+    //recup l'id du choix du parc
+    const idParc =
+        document.getElementById("ref_parc").options[
+            document.getElementById("ref_parc").selectedIndex
+        ].id;
+    id_parc.value = idParc;
+    //on recherche l'id des attractions grace à l'id du parc
+    attractionsStore.fetchAttractionsQueuetimes(id_parc.value);
+    //ensuite on recup les attractions
+    setTimeout(() => {
+        const getAttractions = computed(() => attractionsStore.getAttractions);
+        attractions.value = getAttractions.value;
+    }, 3000);
+}
+
+function changeAttractionValue() {
+    const idAttraction =
+        document.getElementById("nom").options[
+            document.getElementById("nom").selectedIndex
+        ].id;
+    id.value = idAttraction;
+}
+
+const createAttraction = () => {
+    attractionsStore.createAttraction(
+        id.value,
+        nom.value,
+        minHeight.value,
+        maxHeight.value,
+        latitude.value,
+        longitude.value,
+        description.value,
+        id_type.value,
+        id_parc.value
+    );
+};
 </script>
 
 <template>
@@ -152,73 +208,86 @@ const removeResult = () => {
             Ajout d'une attraction
         </h2>
 
-        <form>
+        <form @submit.prevent="createAttraction">
             <div class="pt-5">
-                <label class="text-gray-700" for="nomattraction"
+                <label class="text-gray-700" for="nom"
                     >Nom de l'attraction</label
                 >
 
                 <select
+                    @change="changeAttractionValue"
                     name="selectAttraction"
-                    v-model="nomattraction"
-                    id="nomattraction"
+                    v-model="nom"
+                    id="nom"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                 >
-                    <option></option>
+                    <option
+                        v-for="dataAttraction in attractions"
+                        :id="dataAttraction.id"
+                    >
+                        {{ dataAttraction.name }}
+                    </option>
                 </select>
             </div>
-
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                 <div>
-                    <label class="text-gray-700" for="tailminseul"
+                    <label class="text-gray-700" for="minHeight"
                         >Taille minimum seul</label
                     >
                     <input
-                        id="tailminseul"
-                        v-model="tailminseul"
+                        id="minHeight"
+                        v-model="minHeight"
                         type="text"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
 
                 <div>
-                    <label class="text-gray-700" for="tailminaccomp"
+                    <label class="text-gray-700" for="maxHeight"
                         >Taille minimum accompagné</label
                     >
                     <input
                         id="tailminaaccomp"
-                        v-model="tailminaccomp"
+                        v-model="maxHeight"
                         type="text"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
 
                 <div>
-                    <label class="text-gray-700" for="types">Types</label>
+                    <label class="text-gray-700" for="ref_type">Types</label>
 
                     <select
+                        @change="changeTypeValue"
                         name="selectTypes"
-                        id="types"
-                        v-model="types"
+                        id="ref_type"
+                        v-model="ref_type"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     >
-                        <option v-for="data in recuptypes">
-                            {{ data.name }}
+                        <option
+                            v-for="dataType in recuptypes"
+                            :id="dataType.id"
+                        >
+                            {{ dataType.name }}
                         </option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="text-gray-700" for="parcs">Parcs</label>
+                    <label class="text-gray-700" for="ref_parc">Parcs</label>
 
                     <select
+                        @change="changeParcValue"
                         name="selectParcs"
-                        id="types"
-                        v-model="parcs"
+                        id="ref_parc"
+                        v-model="ref_parc"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     >
-                        <option v-for="data in recupparcs">
-                            {{ data.nom }}
+                        <option
+                            v-for="dataParc in recupparcs"
+                            :id="dataParc.id"
+                        >
+                            {{ dataParc.nom }}
                         </option>
                     </select>
                 </div>
