@@ -17,6 +17,8 @@ onMounted(() => {
 //Récupère toutes les informations des articles
 const articles = computed(() => articlesStore.getArticles);
 
+console.log(articles.value);
+
 //Verif si l'user est co ou non
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -37,11 +39,11 @@ const role = tokenDecode.value.role;
             </h1>
         </div>
         <div v-if="isConnect">
-            <div class="text-center pt-20" v-if="articles == 0">
+            <div class="text-center pt-20" v-if="articles.length == 0">
                 <h2 class="text-4xl">Aucun article n'est disponible</h2>
                 <div v-if="role === 'admin'" class="pt-10">
                     <button
-                        class="bg-stone-500 text-white text-2xl px-5 py-2 rounded-xl"
+                        class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
                     >
                         <RouterLink :to="{ name: 'addArticles' }"
                             >Ajouter un article</RouterLink
@@ -52,7 +54,7 @@ const role = tokenDecode.value.role;
             <!--Récupère toutes les informations des articles et je les affiche-->
         </div>
     </div>
-    <div class="container px-6 pt-10 mx-auto">
+    <div v-if="articles.length !== 0" class="container px-6 pt-10 mx-auto">
         <div class="text-center">
             <h1
                 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl"
@@ -66,7 +68,7 @@ const role = tokenDecode.value.role;
             </p>
         </div>
 
-        <div v-if="articles !== 0">
+        <div>
             <div v-if="role === 'admin'" class="flex justify-end">
                 <button @click="goToArticleForm">
                     <div class="image-container">

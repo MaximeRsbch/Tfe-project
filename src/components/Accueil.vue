@@ -162,6 +162,7 @@ const showParcName = ref(null);
 const showParcPrice = ref(null);
 const showParcBeginHour = ref(null);
 const showParcEndHour = ref(null);
+const showParcLegende = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
@@ -180,6 +181,7 @@ const plotInfoParc = () => {
                     showParcPrice.value = parc.ticketPrice;
                     showParcBeginHour.value = parc.beginHour;
                     showParcEndHour.value = parc.endHour;
+                    showParcLegende.value = parc.legende;
 
                     //Pour attraction
                     // showAttractionResults.value = parc.nomparc;
@@ -304,6 +306,7 @@ const goToAddParc = () => {
                     <p class="text-2xl">{{ showParcPrice }}</p>
                     <p class="text-2xl">{{ showParcBeginHour }}</p>
                     <p class="text-2xl">{{ showParcEndHour }}</p>
+                    <p class="text-2xl">{{ showParcLegende }}</p>
 
                     <!-- <p class="text-2xl">
                         Attraction <span class="text-red-500">Fermée</span>

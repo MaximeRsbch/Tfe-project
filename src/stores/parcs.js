@@ -55,7 +55,8 @@ export const useParcsStore = defineStore("parcs", {
             endHour,
             latitude,
             longitude,
-            ticketPrice
+            ticketPrice,
+            legende
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
@@ -74,9 +75,11 @@ export const useParcsStore = defineStore("parcs", {
                     latitude,
                     longitude,
                     ticketPrice,
+                    legende,
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
+                console.log(this.parcsdict);
             });
         },
 
