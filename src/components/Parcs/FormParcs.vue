@@ -60,7 +60,8 @@ async function createParc() {
         fermeture.value,
         latitude.value,
         longitude.value,
-        ticket.value
+        ticket.value,
+        legende.value
     );
 }
 
@@ -284,6 +285,17 @@ const removeResult = () => {
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
+            </div>
+
+            <div class="pt-10">
+                <label class="text-gray-700" for="legende">Légendes</label>
+
+                <textarea
+                    id="legende"
+                    v-model="legende"
+                    rows="5"
+                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                />
             </div>
 
             <div class="flex justify-end mt-6">
