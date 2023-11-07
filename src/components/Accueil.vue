@@ -6,11 +6,13 @@ import { Mapbox_API_KEY } from "../common/config.js";
 import MapFeatures from "./MapFeatures.vue";
 import { BASE_URL } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
+import { useAttractionsStore } from "../stores/attractions.js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 const parcstore = useParcsStore();
+const attractionstore = useAttractionsStore();
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -38,10 +40,13 @@ onMounted(() => {
 
     getGeoLocation();
     parcstore.fetchParcs();
+    attractionstore.fetchAttractions();
     plotInfoParc();
+    plotInfoAttraction();
 });
 
 const parcs = computed(() => parcstore.getParcs);
+const attractions = computed(() => attractionstore.getAttractions);
 
 const coords = ref(null);
 const fetchCoords = ref(null);
@@ -153,16 +158,21 @@ const removeResult = () => {
 
 const attractionMarkers = ref(null);
 const showModalResults = ref(false);
-// const showAttractionResults = ref(null);
-// const showAttractionImage = ref(null);
-// const showHeightAlone = ref(null);
-// const showHeightWithAdult = ref(null);
-// const showTypeAttraction = ref(null);
+const showAttractionResults = ref(null);
+const showParcResults = ref(null);
+
 const showParcName = ref(null);
 const showParcPrice = ref(null);
 const showParcBeginHour = ref(null);
 const showParcEndHour = ref(null);
 const showParcLegende = ref(null);
+
+const showAttractionName = ref(null);
+const showHeightAlone = ref(null);
+const showHeightWithAdult = ref(null);
+const showTypeAttraction = ref(null);
+const showWaitTime = ref(null);
+const showIsOpen = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
@@ -177,18 +187,43 @@ const plotInfoParc = () => {
                 .addTo(map)
                 .on("click", function (e) {
                     showModalResults.value = true;
+                    showParcResults.value = true;
                     showParcName.value = parc.nom;
                     showParcPrice.value = parc.ticketPrice;
                     showParcBeginHour.value = parc.beginHour;
                     showParcEndHour.value = parc.endHour;
                     showParcLegende.value = parc.legende;
+                });
+        }
+    }, 500);
+};
+
+const plotInfoAttraction = () => {
+    setTimeout(() => {
+        const customMarker = leaflet.icon({
+            iconUrl: "../assets/img/map-marker-blue.svg",
+            iconSize: [32, 32],
+        });
+
+        for (const attraction of attractions.value) {
+            leaflet
+                .marker([attraction.latitude, attraction.longitude], {
+                    icon: customMarker,
+                })
+                .addTo(map)
+                .on("click", function (e) {
+                    showModalResults.value = true;
+                    showAttractionResults.value = true;
+                    showParcResults.value = false;
 
                     //Pour attraction
-                    // showAttractionResults.value = parc.nomparc;
-                    // showAttractionImage.value = parc.url;
-                    // showHeightAlone.value = parc.tailleminseul + "cm";
-                    // showHeightWithAdult.value = parc.tailleminaccompagne + "cm";
-                    // showTypeAttraction.value = parc.type;
+
+                    showAttractionName.value = attraction.nom;
+                    showHeightAlone.value = attraction.minHeight;
+                    showHeightWithAdult.value = attraction.maxHeight;
+                    showTypeAttraction.value = attraction.ref_type;
+                    showWaitTime.value = attraction.wait_time;
+                    showIsOpen.value = attraction.is_open;
                 });
         }
     }, 500);
@@ -248,117 +283,24 @@ const goToAddParc = () => {
                     class="fa-regular fa-circle-xmark flex justify-end"
                 ></i>
 
-                <div v-if="isConnect">
-                    <!-- Image pour quand c'est Sensation -->
-                    <!-- <div class="grid grid-cols-2 pb-3">
-                        <div class="flex justify-end">
-                            <img
-                                class="w-12 h-12"
-                                src="/assets/img/sensation.png"
-                                alt="taille minimum seul"
-                            />
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <p class="text-2xl"></p>
-                        </div>
-                    </div> -->
-                    <!-- Image pour quand c'est Famille -->
-                    <!-- <div class="pb-3 grid grid-cols-2">
-                        <div class="flex justify-end">
-                            <img
-                                class="w-12 h-12"
-                                src="/assets/img/famille.png"
-                                alt="taille minimum seul"
-                            />
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <p class="text-2xl"></p>
-                        </div>
-                    </div> -->
-                    <!-- Image pour quand c'est Splash -->
-                    <!-- <div class="grid grid-cols-2 pb-3">
-                        <div class="flex justify-end">
-                            <img
-                                class="w-12 h-12"
-                                src="/assets/img/goutte-deau.png"
-                                alt="taille minimum seul"
-                            />
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <p class="text-2xl"></p>
-                        </div>
-                    </div> -->
+                <div v-if="showParcResults">
+                    <div v-if="isConnect" class="text-center">
+                        <h1 class="text-4xl">{{ showParcName }}</h1>
+                        <p class="text-2xl">{{ showParcPrice }}</p>
+                        <p class="text-2xl">{{ showParcBeginHour }}</p>
+                        <p class="text-2xl">{{ showParcEndHour }}</p>
+                        <p class="text-2xl">{{ showParcLegende }}</p>
+                    </div>
                 </div>
-                <!--Image du parc-->
-                <!-- <div>
-                    <div class="grid grid-cols-2" v-for="attribute in data">
-                        <div>
-                            <img
-                                class="sm:w-64 sm:h-40 object-cover rounded-lg w-28 h-28"
-                                :src="`${BASE_URL}${info.attributes.url}`"
-                                alt="Image"
-                            />
-                        </div>
+                <div v-if="showAttractionResults">
+                    <div>
+                        <h2>{{ showAttractionName }}</h2>
+                        <p>{{ showHeightAlone }}</p>
+                        <p>{{ showHeightWithAdult }}</p>
+                        <p>{{ showTypeAttraction }}</p>
+                        <p>{{ showWaitTime }}</p>
+                        <p>{{ showIsOpen }}</p>
                     </div>
-                </div> -->
-                <div v-if="isConnect" class="text-center">
-                    <h1 class="text-4xl">{{ showParcName }}</h1>
-                    <p class="text-2xl">{{ showParcPrice }}</p>
-                    <p class="text-2xl">{{ showParcBeginHour }}</p>
-                    <p class="text-2xl">{{ showParcEndHour }}</p>
-                    <p class="text-2xl">{{ showParcLegende }}</p>
-
-                    <!-- <p class="text-2xl">
-                        Attraction <span class="text-red-500">Fermée</span>
-                    </p>
-                    <p class="text-2xl pb-5">
-                        Attraction <span class="text-green-500">ouverte</span>
-                    </p>
-                    <div class="text-2xl pt-3">
-                        <p>
-                            Temps d'attente :
-                            <span class="text-red-500"></span>
-                            minutes
-                        </p>
-                    </div> -->
-                    <!-- <div class="text-2xl pt-3">
-                        <p>
-                            Temps d'attente :
-                            <span class="text-orange-400"></span>
-                            minutes
-                        </p>
-                    </div>
-                    <div class="text-2xl pt-3">
-                        <p>
-                            Temps d'attente :
-                            <span class="text-green-500">{{}}</span>
-                            minutes
-                        </p>
-                    </div> -->
-                    <!-- <div class="pt-3 grid grid-cols-2">
-                        <div class="flex justify-end">
-                            <img
-                                class="w-20 h-20"
-                                src="/assets/img/seul.png"
-                                alt="taille minimum seul"
-                            />
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <p class="text-2xl"></p>
-                        </div>
-                    </div> -->
-                    <!-- <div class="pt-3 grid grid-cols-2">
-                        <div class="flex justify-end">
-                            <img
-                                class="w-20 h-20"
-                                src="/assets/img/accompgne.png"
-                                alt="taille minimum seul"
-                            />
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <p class="text-2xl"></p>
-                        </div>
-                    </div> -->
                 </div>
 
                 <div v-if="!isConnect">

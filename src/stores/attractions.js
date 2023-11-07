@@ -76,7 +76,7 @@ export const useAttractionsStore = defineStore("attractions", {
             });
         },
 
-        async createImageAttraction(id, url_img) {
+        async createImageAttraction(id, img) {
             const response = await CapacitorHttp.request({
                 method: "POST",
                 url: `http://localhost:3000/api/attractions/${id}/img`,
@@ -86,10 +86,12 @@ export const useAttractionsStore = defineStore("attractions", {
                         "Bearer " + localStorage.getItem("savedToken"),
                 },
                 data: {
-                    url_img,
+                    id,
+                    img,
                 },
             }).then((res) => {
                 this.imagesDict = res.data;
+                console.log(res.data);
             });
         },
     },
