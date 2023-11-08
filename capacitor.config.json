@@ -1,6 +1,6 @@
 {
     "appId": "com.tfe.app",
-    "appName": "project_tfe",
+    "appName": "WatchUrPark",
     "webDir": "dist",
     "plugins": {
         "CapacitorHttp": {

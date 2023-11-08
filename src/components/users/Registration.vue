@@ -18,26 +18,23 @@ const goToLogin = () => {
 
 //Fonction qui permet de s'inscrire (créé un user)
 async function createUsers() {
-    if (!password.value || !email.value) {
-        return Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Veuillez renseigner un mot de passe ou une adresse mail valide !",
-        });
+    let regex =
+        /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/;
+
+    if (!regex.test(password.value)) {
+        alert(
+            "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
+        );
+    } else {
+        const body = await usersStore.createUser(
+            password.value,
+            email.value,
+            username.value
+        );
     }
-    if (!username.value) {
-        return Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Veuillez renseigner un nom d'utilisateur !",
-        });
-    }
-    const body = await usersStore.createUser(
-        password.value,
-        email.value,
-        username.value
-    );
 }
+
+function checkPasswordValidation() {}
 </script>
 
 <template>
@@ -62,6 +59,7 @@ async function createUsers() {
                             <input
                                 id="username"
                                 name="username"
+                                required
                                 type="text"
                                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black bg-zinc-200"
                                 v-model="username"
@@ -78,6 +76,7 @@ async function createUsers() {
                         <div class="mt-1">
                             <input
                                 id="email"
+                                required
                                 name="email"
                                 type="email"
                                 autocomplete="email"
@@ -108,8 +107,9 @@ async function createUsers() {
 
                     <div>
                         <button
+                            @click="checkPasswordValidation"
                             type="submit"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-stone-500 hover:bg-stone-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-[#344d59] hover:bg-[#344d59] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Inscrivez-vous !
                         </button>
@@ -132,7 +132,7 @@ async function createUsers() {
                     <button
                         @click="goToLogin"
                         type="button"
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-stone-500 hover:bg-stone-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-[#344d59] hover:bg-[#344d59] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         Connectez-vous !
                     </button>

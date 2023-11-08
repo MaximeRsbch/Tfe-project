@@ -14,7 +14,7 @@ export const useUsersStore = defineStore("users", {
         async loginUser(password, email) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/login",
+                url: "http://localhost:3000/api/auth/login",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -24,8 +24,10 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 const token = res.data.token;
+
                 localStorage.setItem("savedToken", token);
                 axios.defaults.headers.common["Authorization"] = token;
+                this.usersDict = res.data;
                 if (res.data.data) {
                     window.location.href = "/features";
                 }
@@ -34,7 +36,7 @@ export const useUsersStore = defineStore("users", {
         async createUser(password, email, username) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/register",
+                url: "http://localhost:3000/api/auth/register",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -49,22 +51,11 @@ export const useUsersStore = defineStore("users", {
                 }
             });
         },
+
         async fetchUsers() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be/api/users",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then((res) => {
-                this.usersDict = res.data.data;
-            });
-        },
-
-        async fetchUsersForComment() {
-            const response = await CapacitorHttp.request({
-                method: "GET",
-                url: "https://maximerossbach.be/api/users",
+                url: "http://localhost:3000/api/users",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -76,24 +67,30 @@ export const useUsersStore = defineStore("users", {
         async deleteUser(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/delete/${id}`,
+                url: `http://localhost:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
                 },
             }).then((res) => {
                 this.fetchUsers();
+                console.log(res);
             });
         },
 
-        async muteUser(id, canComment) {
+        async updateUser(id, username, email) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `https://maximerossbach.be/api/mute/${id}`,
+                url: `http://localhost:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
                 },
                 data: {
-                    canComment,
+                    username,
+                    email,
                 },
             }).then((res) => {
                 this.fetchUsers();
@@ -103,7 +100,7 @@ export const useUsersStore = defineStore("users", {
         async fetchOneUser(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/oneuser/${id}`,
+                url: `http://localhost:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -112,19 +109,39 @@ export const useUsersStore = defineStore("users", {
             });
         },
 
-        async updateUser(id, username, email) {
+        async muteUser(id, canComment) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `https://maximerossbach.be/api/user/${id}`,
+                url: `http://localhost:3000/api/users/mute/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
                 },
                 data: {
-                    username,
-                    email,
+                    canComment,
                 },
             }).then((res) => {
                 this.fetchUsers();
+                console.log(res);
+            });
+        },
+
+        async changRole(id, role) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/users/role/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    role,
+                },
+            }).then((res) => {
+                this.fetchUsers();
+                console.log(res);
             });
         },
     },
