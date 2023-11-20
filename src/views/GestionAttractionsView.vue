@@ -1,5 +1,5 @@
 <script setup>
-import GestionAttractions from "../components/admin/attractions/GestionAttractions.vue";
+import GestionAttractions from "../components/admin/attractionsAdmin/GestionAttractions.vue";
 </script>
 
 <template>

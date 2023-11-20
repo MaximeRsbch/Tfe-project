@@ -1,30 +1,27 @@
 <script setup>
-import { useArticlesStore } from "../../../stores/articles.js";
 import { computed, ref, onMounted } from "vue";
 import jwtDecode from "jwt-decode";
+import Swal from "sweetalert2";
+import { useAttractionsStore } from "../../../stores/attractions.js";
 import "../../../style/BulleTexte.css";
 
-const articlesStore = useArticlesStore();
+const attractionsStore = useAttractionsStore();
 
 onMounted(() => {
-    articlesStore.fetchArticles();
+    attractionsStore.fetchAttractions();
 });
 
-const articles = computed(() => articlesStore.getArticles);
+const attractions = computed(() => attractionsStore.getAttractions);
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
-
-const deleteArticle = (id) => {
-    articlesStore.deleteArticle(id);
-};
 </script>
 <template>
     <div class="container mx-auto">
-        <div v-if="articles.length === 0" class="text-center text-5xl pt-10">
+        <div v-if="attractions.length === 0" class="text-center text-5xl pt-10">
             <h2>Aucune attractions n'a encore été créée !</h2>
             <div class="pt-10">
                 <button
@@ -37,11 +34,14 @@ const deleteArticle = (id) => {
             </div>
         </div>
         <div v-if="role === 'admin' || role === 'modo'">
-            <div v-if="articles.length > 0">
-                <h1 class="text-center pt-10 text-4xl">Gestion des articles</h1>
+            <div v-if="attractions.length > 0">
+                <h1 class="text-center pt-10 text-4xl">
+                    Gestion des attractions
+                </h1>
                 <p class="text-center pb-10 text-2xl">
-                    Ici sont affichés tous les articles pour les gérer
+                    Ici sont affichés tous les attractions pour les gérer
                 </p>
+
                 <div class="mt-4 flex flex-col container mx-auto">
                     <div class="overflow-x-auto">
                         <div
@@ -76,7 +76,7 @@ const deleteArticle = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Titre de l'article
+                                                    Nom de l'attraction
                                                 </a>
                                             </th>
 
@@ -87,10 +87,29 @@ const deleteArticle = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Contenu
+                                                    Description
                                                 </a>
                                             </th>
-
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Parcs de référence
+                                                </a>
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Type de référence
+                                                </a>
+                                            </th>
                                             <th
                                                 v-if="role === 'admin'"
                                                 scope="col"
@@ -99,30 +118,18 @@ const deleteArticle = (id) => {
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Suppression article
+                                                    Suppression attraction
                                                 </a>
                                             </th>
-
                                             <th
-                                                v-if="role === 'modo'"
+                                                v-if="role === 'admin'"
                                                 scope="col"
                                                 class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                             >
                                                 <a
                                                     class="group inline-flex text-base"
                                                 >
-                                                    Supprimer article
-                                                </a>
-                                            </th>
-                                            <th
-                                                v-if="role === 'modo'"
-                                                scope="col"
-                                                class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                            >
-                                                <a
-                                                    class="group inline-flex text-base"
-                                                >
-                                                    Modifier article
+                                                    Modifier attraction
                                                 </a>
                                             </th>
                                         </tr>
@@ -132,20 +139,20 @@ const deleteArticle = (id) => {
                                     >
                                         <!--Affiche les info de tous les users-->
                                         <tr
-                                            v-for="article in articles"
-                                            :key="article.id"
+                                            v-for="attraction in attractions"
+                                            :key="attraction.id"
                                             class="hover:bg-gray-100"
                                         >
                                             <td
-                                                class="whitespace-nowrap py-4 px-3 text-base"
+                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
                                             >
-                                                {{ article.id }}
+                                                {{ attraction.id }}
                                             </td>
                                             <div>
                                                 <td
                                                     class="whitespace-nowrap px-3 py-4 text-base"
                                                 >
-                                                    {{ article.title }}
+                                                    {{ attraction.nom }}
                                                 </td>
                                             </div>
                                             <td
@@ -156,23 +163,25 @@ const deleteArticle = (id) => {
                                                     rows="3"
                                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                                                     >{{
-                                                        article.content
+                                                        attraction.description
                                                     }}</textarea
                                                 >
                                             </td>
-
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                {{ attraction.ref_parc }}
+                                            </td>
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                {{ attraction.ref_type }}
+                                            </td>
                                             <td
                                                 v-if="role === 'admin'"
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                <button
-                                                    @click="
-                                                        deleteArticle(
-                                                            article.id
-                                                        )
-                                                    "
-                                                    type="button"
-                                                >
+                                                <button @click="" type="button">
                                                     <div
                                                         class="image-container"
                                                     >
@@ -182,7 +191,8 @@ const deleteArticle = (id) => {
                                                             alt="poubelleImg"
                                                         />
                                                         <div class="tooltip">
-                                                            Supprimer article
+                                                            Supprimer
+                                                            attractions
                                                         </div>
                                                     </div>
                                                 </button>
@@ -195,27 +205,14 @@ const deleteArticle = (id) => {
                                                     <div
                                                         class="image-container"
                                                     >
-                                                        <RouterLink
-                                                            v-if="
-                                                                article.id !==
-                                                                undefined
-                                                            "
-                                                            v-bind:to="{
-                                                                name: 'modifArticle',
-                                                                params: {
-                                                                    id: article.id,
-                                                                },
-                                                            }"
-                                                        >
-                                                            <img
-                                                                class="w-5 md:w-5 lg:w-full"
-                                                                src="/assets/img/modif.png"
-                                                                alt="modoPImg"
-                                                            />
-                                                        </RouterLink>
+                                                        <img
+                                                            class="w-5 md:w-5 lg:w-full"
+                                                            src="/assets/img/modif.png"
+                                                            alt="modoPImg"
+                                                        />
 
                                                         <div class="tooltip">
-                                                            Modifier article
+                                                            Modifier Attractions
                                                         </div>
                                                     </div>
                                                 </button>

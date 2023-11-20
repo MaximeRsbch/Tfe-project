@@ -51,7 +51,7 @@ const deleteParc = (id) => {
             <h2>Aucun parc n'a encore été créée !</h2>
             <div class="pt-10">
                 <button
-                    class="bg-stone-500 text-white text-2xl px-5 py-2 rounded-xl"
+                    class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
                 >
                     <RouterLink :to="{ name: 'parcsform' }"
                         >Ajouter un parc</RouterLink
