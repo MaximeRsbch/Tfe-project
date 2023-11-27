@@ -7,6 +7,7 @@ import { useParcsStore } from "../../stores/parcs";
 import { useAttractionsStore } from "../../stores/attractions";
 import MapSearchAttraction from "./MapSearchAttraction.vue";
 
+
 const typesStore = useTypesStore();
 const parcsStore = useParcsStore();
 const attractionsStore = useAttractionsStore();
@@ -171,12 +172,14 @@ function changeParcValue() {
             document.getElementById("ref_parc").selectedIndex
         ].id;
     id_parc.value = idParc;
+    console.log(id_parc.value);
     //on recherche l'id des attractions grace à l'id du parc
     attractionsStore.fetchAttractionsQueuetimes(id_parc.value);
     //ensuite on recup les attractions
     setTimeout(() => {
         const getAttractions = computed(() => attractionsStore.getAttractions);
         attractions.value = getAttractions.value;
+        
     }, 3000);
 }
 
@@ -247,19 +250,31 @@ const createAttraction = () => {
 
                 <select
                     @change="changeAttractionValue"
+                    v-if="attractions != ''"
                     name="selectAttraction"
                     v-model="nom"
                     id="nom"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                 >
-                    <option
+                <option
                         v-for="dataAttraction in attractions"
-                        :id="dataAttraction.id"
+                        
                     >
-                        {{ dataAttraction.name }}
+                        <span v-for="test in dataAttraction">{{ test.name }}</span>
                     </option>
                 </select>
+                <select
+                    @change="changeAttractionValue"
+                    v-if="attractions == ''"
+                    name="selectAttraction"
+                    v-model="nom"
+                    id="nom"
+                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                >
+                
+                </select>
             </div>
+            
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                 <div>
                     <label class="text-gray-700" for="minHeight"

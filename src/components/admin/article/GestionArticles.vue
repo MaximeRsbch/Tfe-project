@@ -25,7 +25,7 @@ const deleteArticle = (id) => {
 <template>
     <div class="container mx-auto">
         <div v-if="articles.length === 0" class="text-center text-5xl pt-10">
-            <h2>Aucune attractions n'a encore été créée !</h2>
+            <h2>Aucun article n'a encore été créée !</h2>
             <div class="pt-10">
                 <button
                     class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"

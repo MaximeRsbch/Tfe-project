@@ -48,6 +48,8 @@ onMounted(() => {
 const parcs = computed(() => parcstore.getParcs);
 const attractions = computed(() => attractionstore.getAttractions);
 
+
+
 const coords = ref(null);
 const fetchCoords = ref(null);
 const geoMarker = ref(null);
@@ -166,6 +168,7 @@ const showParcPrice = ref(null);
 const showParcBeginHour = ref(null);
 const showParcEndHour = ref(null);
 const showParcLegende = ref(null);
+const showpeople = ref(null);
 
 const showAttractionName = ref(null);
 const showHeightAlone = ref(null);
@@ -200,10 +203,24 @@ const plotInfoParc = () => {
 
 const plotInfoAttraction = () => {
     setTimeout(() => {
-        const customMarker = leaflet.icon({
-            iconUrl: "../assets/img/map-marker-blue.svg",
-            iconSize: [32, 32],
-        });
+        let customMarker;
+
+        if(showIsOpen.value == true){
+            const customMarkerOpen = leaflet.icon({
+                iconUrl: "../assets/img/map-marker-blue.svg",
+                iconSize: [32, 32],
+            });
+            customMarker = customMarkerOpen;
+            
+        }else{
+            const customMarkerClose = leaflet.icon({
+                iconUrl: "../assets/img/map-marker-red.svg",
+                iconSize: [32, 32],
+            });
+            customMarker = customMarkerClose;
+            
+        }
+        
 
         for (const attraction of attractions.value) {
             leaflet
@@ -225,6 +242,9 @@ const plotInfoAttraction = () => {
                     showWaitTime.value = attraction.wait_time;
                     showIsOpen.value = attraction.is_open;
                 });
+
+                
+                showpeople.value = attraction.wait_time;
         }
     }, 500);
 };
@@ -290,6 +310,7 @@ const goToAddParc = () => {
                         <p class="text-2xl">{{ showParcBeginHour }}</p>
                         <p class="text-2xl">{{ showParcEndHour }}</p>
                         <p class="text-2xl">{{ showParcLegende }}</p>
+                        <p>{{ showpeople }}</p>
                     </div>
                 </div>
                 <div v-if="showAttractionResults">
