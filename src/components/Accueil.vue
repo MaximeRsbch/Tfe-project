@@ -8,15 +8,22 @@ import { BASE_URL } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
 import { useAttractionsStore } from "../stores/attractions.js";
 import { useRouter } from "vue-router";
+import RatingStars from "./attractions/RatingStars.vue";
+import jwtDecode from "jwt-decode";
+import { useUsersStore } from "../stores/users.js";
 
 const router = useRouter();
 
 const parcstore = useParcsStore();
 const attractionstore = useAttractionsStore();
+const usersStore = useUsersStore();
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 let map;
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+const id = computed(() => tokenDecode.value.id_user);
 
 onMounted(() => {
     //init map
@@ -43,12 +50,12 @@ onMounted(() => {
     attractionstore.fetchAttractions();
     plotInfoParc();
     plotInfoAttraction();
+    usersStore.fetchOneUser(id.value);
 });
 
 const parcs = computed(() => parcstore.getParcs);
 const attractions = computed(() => attractionstore.getAttractions);
-
-
+const user = computed(() => usersStore.getUsersById);
 
 const coords = ref(null);
 const fetchCoords = ref(null);
@@ -160,6 +167,7 @@ const removeResult = () => {
 
 const attractionMarkers = ref(null);
 const showModalResults = ref(false);
+const showModalRating = ref(false);
 const showAttractionResults = ref(null);
 const showParcResults = ref(null);
 
@@ -205,22 +213,19 @@ const plotInfoAttraction = () => {
     setTimeout(() => {
         let customMarker;
 
-        if(showIsOpen.value == true){
+        if (showIsOpen.value == true) {
             const customMarkerOpen = leaflet.icon({
                 iconUrl: "../assets/img/map-marker-blue.svg",
                 iconSize: [32, 32],
             });
             customMarker = customMarkerOpen;
-            
-        }else{
+        } else {
             const customMarkerClose = leaflet.icon({
                 iconUrl: "../assets/img/map-marker-red.svg",
                 iconSize: [32, 32],
             });
             customMarker = customMarkerClose;
-            
         }
-        
 
         for (const attraction of attractions.value) {
             leaflet
@@ -243,8 +248,7 @@ const plotInfoAttraction = () => {
                     showIsOpen.value = attraction.is_open;
                 });
 
-                
-                showpeople.value = attraction.wait_time;
+            showpeople.value = attraction.wait_time;
         }
     }, 500);
 };
@@ -253,8 +257,16 @@ const removeAttrResults = () => {
     showModalResults.value = false;
 };
 
+const removeRatingResults = () => {
+    showModalRating.value = false;
+};
+
 const goToAddParc = () => {
     router.push("/parcsform");
+};
+
+const showRatingModal = () => {
+    showModalRating.value = true;
 };
 </script>
 
@@ -293,7 +305,7 @@ const goToAddParc = () => {
 
         <div
             v-if="showModalResults"
-            class="h-screen w-full absolute z-10 flex justify-center items-start pt-[40px] bg-black/50"
+            class="h-full absolute z-10 flex justify-start items-start pt-32 hover:overflow-y-auto"
         >
             <div
                 class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
@@ -304,9 +316,17 @@ const goToAddParc = () => {
                 ></i>
 
                 <div v-if="showParcResults">
-                    <div v-if="isConnect" class="text-center">
-                        <h1 class="text-4xl">{{ showParcName }}</h1>
-                        <p class="text-2xl">{{ showParcPrice }}</p>
+                    <div v-if="isConnect">
+                        <div>
+                            <img src="assets/img/walibi.jpg" alt="" />
+                        </div>
+                        <div class="pt-4">
+                            <h1 class="text-2xl">{{ showParcName }}</h1>
+                        </div>
+                        <div class="pt-40">
+                            <h2 class="text-2xl">Entrée</h2>
+                            <p class="text-2xl">{{ showParcPrice }}</p>
+                        </div>
                         <p class="text-2xl">{{ showParcBeginHour }}</p>
                         <p class="text-2xl">{{ showParcEndHour }}</p>
                         <p class="text-2xl">{{ showParcLegende }}</p>
@@ -322,6 +342,65 @@ const goToAddParc = () => {
                         <p>{{ showWaitTime }}</p>
                         <p>{{ showIsOpen }}</p>
                     </div>
+                    <button @click="showRatingModal">Rédiger un avis</button>
+                </div>
+
+                <div v-if="!isConnect">
+                    <h2 class="text-red-600">
+                        Connectez vous pour accéder à cette option !
+                    </h2>
+                </div>
+                <p class="text-xs mb-1"></p>
+            </div>
+        </div>
+
+        <div
+            v-if="showModalRating"
+            class="h-full w-full absolute z-10 flex justify-center items-start pt-32 bg-black/50"
+        >
+            <div
+                class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
+            >
+                <i
+                    @click="removeRatingResults"
+                    class="fa-regular fa-circle-xmark flex justify-end"
+                ></i>
+
+                <div class="flex justify-center pb-5">
+                    <h2 class="text-2xl">{{ showAttractionName }}</h2>
+                </div>
+                <div>
+                    <div v-for="data in user">
+                        <h2 class="text-xl">{{ data.username }}</h2>
+                    </div>
+                    <div>
+                        <p class="text-sm">
+                            Poste Public <i class="fa-solid fa-circle-info"></i>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-center pt-5 pb-5">
+                    <RatingStars />
+                </div>
+
+                <div class="mx-auto container max-w-xl pb-10">
+                    <textarea
+                        id="content"
+                        placeholder="Donner votre avis sur cet attraction ;)"
+                        minlength="10"
+                        maxlength="500"
+                        rows="5"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    />
+                </div>
+
+                <div class="flex justify-end">
+                    <button
+                        type="button"
+                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                    >
+                        Publier
+                    </button>
                 </div>
 
                 <div v-if="!isConnect">

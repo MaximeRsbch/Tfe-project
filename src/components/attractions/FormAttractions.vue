@@ -260,7 +260,7 @@ const createAttraction = () => {
                         v-for="dataAttraction in attractions"
                         
                     >
-                        <span v-for="test in dataAttraction">{{ test.name }}</span>
+                        {{ dataAttraction.name }}
                     </option>
                 </select>
                 <select

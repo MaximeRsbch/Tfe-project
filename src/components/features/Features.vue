@@ -37,10 +37,12 @@ const role = tokenDecode.value.role;
             <h1 class="flex justify-center items-center">
                 Veuillez vous connecter pour accéder à cette page !
             </h1>
+            
         </div>
         <div v-if="isConnect">
             <div class="text-center pt-20" v-if="articles.length == 0">
                 <h2 class="text-4xl">Aucun article n'est disponible</h2>
+                
                 <div v-if="role === 'admin'" class="pt-10">
                     <button
                         class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
