@@ -178,6 +178,7 @@ const showParcEndHour = ref(null);
 const showParcLegende = ref(null);
 const showpeople = ref(null);
 
+const showAttractionId = ref(null);
 const showAttractionName = ref(null);
 const showHeightAlone = ref(null);
 const showHeightWithAdult = ref(null);
@@ -240,6 +241,7 @@ const plotInfoAttraction = () => {
 
                     //Pour attraction
 
+                    showAttractionId.value = attraction.id;
                     showAttractionName.value = attraction.nom;
                     showHeightAlone.value = attraction.minHeight;
                     showHeightWithAdult.value = attraction.maxHeight;
@@ -247,8 +249,6 @@ const plotInfoAttraction = () => {
                     showWaitTime.value = attraction.wait_time;
                     showIsOpen.value = attraction.is_open;
                 });
-
-            showpeople.value = attraction.wait_time;
         }
     }, 500);
 };
@@ -268,6 +268,26 @@ const goToAddParc = () => {
 const showRatingModal = () => {
     showModalRating.value = true;
 };
+
+const content = ref("");
+const etoile = ref("");
+
+const handleRatingSelected = (rating) => {
+    etoile.value = rating;
+};
+
+async function AddRating() {
+    attractionstore.createCommentAttraction(
+        content.value,
+        id.value,
+        showAttractionId.value
+    );
+    attractionstore.createRatingAttraction(
+        id.value,
+        showAttractionId.value,
+        etoile.value
+    );
+}
 </script>
 
 <template>
@@ -385,11 +405,12 @@ const showRatingModal = () => {
                     </div>
                 </div>
                 <div class="flex justify-center pt-5 pb-5">
-                    <RatingStars />
+                    <RatingStars @rating-selected="handleRatingSelected" />
                 </div>
 
                 <div class="mx-auto container max-w-xl pb-10">
                     <textarea
+                        v-model="content"
                         id="content"
                         placeholder="Donner votre avis sur cet attraction ;)"
                         minlength="10"
@@ -401,6 +422,7 @@ const showRatingModal = () => {
 
                 <div class="flex justify-end">
                     <button
+                        @click="AddRating"
                         type="button"
                         class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
                     >

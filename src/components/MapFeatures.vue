@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { CapacitorHttp } from "@capacitor/core";
 import LoadingSpinner from "../components/LoadingSpinner.vue";
-import { useParcsStore } from "../stores/parcs.js";
 
 const props = defineProps({
     coords: Object,

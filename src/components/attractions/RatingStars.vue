@@ -1,19 +1,14 @@
 <script setup>
+import { ref } from "vue";
 
-document.addEventListener("DOMContentLoaded", function() {
-        // Récupérez tous les inputs radio avec le nom 'rating-8'
-        var radioInputs = document.getElementsByName("rating-8");
+const selectedRating = ref(1);
+const emit = defineEmits(["rating-selected"]);
 
-        // Ajoutez un écouteur d'événements de changement à chaque input radio
-        radioInputs.forEach(function(input, index) {
-            input.addEventListener("change", function() {
-                // Récupérez l'index de l'input radio sélectionné et ajoutez 1 pour obtenir le nombre d'étoiles
-                var rating = index + 1;
-                console.log(rating);
-                
-            });
-        });
-    });
+const setRating = (rating) => {
+    selectedRating.value = rating;
+    emit("rating-selected", rating);
+    // Vous pouvez faire quelque chose d'autre avec la valeur sélectionnée si nécessaire
+};
 </script>
 
 <template>
@@ -106,33 +101,37 @@ document.addEventListener("DOMContentLoaded", function() {
         />
     </div> -->
     <!-- lg -->
-    <div class="rating rating-lg">
+    <div class="rating rating-lg" id="starRating">
         <input
             type="radio"
             name="rating-8"
             class="mask mask-star-2 bg-orange-400"
             checked
+            @click="setRating(1)"
         />
         <input
             type="radio"
             name="rating-8"
             class="mask mask-star-2 bg-orange-400"
-            
+            @click="setRating(2)"
         />
         <input
             type="radio"
             name="rating-8"
             class="mask mask-star-2 bg-orange-400"
+            @click="setRating(3)"
         />
         <input
             type="radio"
             name="rating-8"
             class="mask mask-star-2 bg-orange-400"
+            @click="setRating(4)"
         />
         <input
             type="radio"
             name="rating-8"
             class="mask mask-star-2 bg-orange-400"
+            @click="setRating(5)"
         />
     </div>
 </template>
