@@ -6,12 +6,14 @@ export const useAttractionsStore = defineStore("attractions", {
         attractionsDict: {},
         imagesDict: {},
         commentsDict: {},
+        ratingStarDict: {},
     }),
 
     getters: {
         getAttractions: (state) => Object.values(state.attractionsDict),
         getImageAttraction: (state) => Object.values(state.imagesDict),
         getCommentAttraction: (state) => Object.values(state.commentsDict),
+        getRatingStarAttraction: (state) => Object.values(state.ratingStarDict),
     },
 
     actions: {
@@ -61,7 +63,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
 
@@ -74,7 +75,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
 
@@ -133,6 +133,30 @@ export const useAttractionsStore = defineStore("attractions", {
             }).then((res) => {
                 this.attractionsDict = res.data;
                 console.log(res.data);
+            });
+        },
+
+        async fetchCommentAttraction(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/commentsattr/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.commentsDict = res.data.data;
+            });
+        },
+
+        async fetchRatingAttraction(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/reviews/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.ratingStarDict = res.data.data;
             });
         },
     },

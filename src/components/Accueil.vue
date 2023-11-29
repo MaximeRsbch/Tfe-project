@@ -1,16 +1,15 @@
 <script setup>
 import leaflet from "leaflet";
-import { computed, onMounted, ref, watch } from "vue";
+import jwtDecode from "jwt-decode";
+import { computed, onMounted, ref } from "vue";
 import GeoErrorModal from "./GeoErrorModal.vue";
-import { Mapbox_API_KEY } from "../common/config.js";
 import MapFeatures from "./MapFeatures.vue";
-import { BASE_URL } from "../common/config.js";
+import RatingStars from "./attractions/RatingStars.vue";
+import { Mapbox_API_KEY } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
 import { useAttractionsStore } from "../stores/attractions.js";
-import { useRouter } from "vue-router";
-import RatingStars from "./attractions/RatingStars.vue";
-import jwtDecode from "jwt-decode";
 import { useUsersStore } from "../stores/users.js";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -24,6 +23,8 @@ let map;
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 const id = computed(() => tokenDecode.value.id_user);
+
+const showAttractionId = ref(null);
 
 onMounted(() => {
     //init map
@@ -178,13 +179,14 @@ const showParcEndHour = ref(null);
 const showParcLegende = ref(null);
 const showpeople = ref(null);
 
-const showAttractionId = ref(null);
 const showAttractionName = ref(null);
 const showHeightAlone = ref(null);
 const showHeightWithAdult = ref(null);
 const showTypeAttraction = ref(null);
 const showWaitTime = ref(null);
 const showIsOpen = ref(null);
+const showRatingAttraction = ref(null);
+const showCommentAttraction = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
@@ -248,6 +250,21 @@ const plotInfoAttraction = () => {
                     showTypeAttraction.value = attraction.ref_type;
                     showWaitTime.value = attraction.wait_time;
                     showIsOpen.value = attraction.is_open;
+
+                    attractionstore.fetchCommentAttraction(attraction.id);
+                    attractionstore.fetchRatingAttraction(attraction.id);
+
+                    setTimeout(() => {
+                        const commentAttr = computed(
+                            () => attractionstore.getCommentAttraction
+                        );
+                        const ratingAttr = computed(
+                            () => attractionstore.getRatingStarAttraction
+                        );
+
+                        showRatingAttraction.value = ratingAttr.value;
+                        showCommentAttraction.value = commentAttr.value;
+                    }, 300);
                 });
         }
     }, 500);
@@ -366,6 +383,12 @@ async function AddRating() {
                         <p>{{ showTypeAttraction }}</p>
                         <p>{{ showWaitTime }}</p>
                         <p>{{ showIsOpen }}</p>
+                        <div v-for="data in showRatingAttraction">
+                            {{ data.rating }}
+                        </div>
+                        <div v-for="data in showCommentAttraction">
+                            {{ data.content }}
+                        </div>
                     </div>
                     <button @click="showRatingModal">Rédiger un avis</button>
                 </div>
