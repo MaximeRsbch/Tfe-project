@@ -7,7 +7,6 @@ import { useParcsStore } from "../../stores/parcs";
 import { useAttractionsStore } from "../../stores/attractions";
 import MapSearchAttraction from "./MapSearchAttraction.vue";
 
-
 const typesStore = useTypesStore();
 const parcsStore = useParcsStore();
 const attractionsStore = useAttractionsStore();
@@ -179,7 +178,6 @@ function changeParcValue() {
     setTimeout(() => {
         const getAttractions = computed(() => attractionsStore.getAttractions);
         attractions.value = getAttractions.value;
-        
     }, 3000);
 }
 
@@ -188,6 +186,7 @@ function changeAttractionValue() {
         document.getElementById("nom").options[
             document.getElementById("nom").selectedIndex
         ].id;
+    console.log(idAttraction);
     id.value = idAttraction;
 }
 const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier
@@ -256,9 +255,9 @@ const createAttraction = () => {
                     id="nom"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                 >
-                <option
+                    <option
                         v-for="dataAttraction in attractions"
-                        
+                        :id="dataAttraction.id"
                     >
                         {{ dataAttraction.name }}
                     </option>
@@ -270,11 +269,9 @@ const createAttraction = () => {
                     v-model="nom"
                     id="nom"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                >
-                
-                </select>
+                ></select>
             </div>
-            
+
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                 <div>
                     <label class="text-gray-700" for="minHeight"

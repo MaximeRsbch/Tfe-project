@@ -305,7 +305,7 @@ const showRatingModal = () => {
 
         <div
             v-if="showModalResults"
-            class="h-full absolute z-10 flex justify-start items-start pt-32 hover:overflow-y-auto"
+            class="h-full absolute z-10 flex justify-start items-start pt-32"
         >
             <div
                 class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
@@ -325,7 +325,12 @@ const showRatingModal = () => {
                         </div>
                         <div class="pt-40">
                             <h2 class="text-2xl">Entrée</h2>
-                            <p class="text-2xl">{{ showParcPrice }}</p>
+                            <div class="grid grid-cols-2 pt-6">
+                                <p class="text-xl">{{ showParcName }}</p>
+                                <div class="flex justify-end pr-5">
+                                    <p class="text-xl">{{ showParcPrice }}</p>
+                                </div>
+                            </div>
                         </div>
                         <p class="text-2xl">{{ showParcBeginHour }}</p>
                         <p class="text-2xl">{{ showParcEndHour }}</p>
