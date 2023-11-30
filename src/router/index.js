@@ -14,7 +14,7 @@ import ModifParcsView from "../views/ModifParcsView.vue";
 import AddArticlesView from "../views/AddArticlesView.vue";
 import GestionArticlesView from "../views/GestionArticlesView.vue";
 import ModifArticleView from "../views/ModifArticleView.vue";
-import RatingStarsVue from "../components/attractions/RatingStars.vue";
+import BestAttraPageView from "../views/BestAttraPageView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -96,9 +96,9 @@ const router = createRouter({
             component: AttractionsFormView,
         },
         {
-            path: "/caca",
-            name: "caca",
-            component: RatingStarsVue,
+            path: "/bestattractions",
+            name: "best",
+            component: BestAttraPageView,
         },
     ],
 });

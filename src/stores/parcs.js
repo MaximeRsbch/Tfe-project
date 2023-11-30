@@ -21,6 +21,7 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data.data;
+                console.log(res.data.data);
             });
         },
 
