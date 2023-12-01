@@ -56,6 +56,9 @@ onMounted(() => {
 
 const parcs = computed(() => parcstore.getParcs);
 const attractions = computed(() => attractionstore.getAttractions);
+setTimeout(() => {
+    console.log(attractions.value);
+}, 300);
 const user = computed(() => usersStore.getUsersById);
 
 const coords = ref(null);

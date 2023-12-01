@@ -63,12 +63,13 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
+                console.log(res.data);
             });
         },
         async fetchAttractionsParc(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/attractions/${id}?`,
+                url: `http://localhost:3000/api/attractions/${id}/all`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -163,7 +164,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchRatingAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/reviews/${id}`,
+                url: `http://localhost:3000/api/reviews/${id}?`,
                 headers: {
                     "Content-Type": "application/json",
                 },
