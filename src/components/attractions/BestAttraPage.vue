@@ -12,7 +12,6 @@ onMounted(() => {
 
 const parc = ref("");
 const attraction = ref("");
-const notes = ref("");
 
 const parcs = computed(() => parcsStore.getParcs);
 
@@ -30,7 +29,53 @@ const choixParc = () => {
         console.log(attractions.value);
         attraction.value = attractions.value;
     }, 300);
+
     //On récup les notes de chaque attraction
+};
+
+const averageRatings = computed(() => {
+    const result = {};
+
+    // Loop through attractions and calculate average rating for each attraction
+    attraction.value.forEach((attraction) => {
+        const totalRating = attraction.Reviews.reduce(
+            (sum, review) => sum + review.rating,
+            0
+        );
+        const averageRating =
+            totalRating / Math.max(attraction.Reviews.length, 1); // Prevent division by zero
+        result[attraction.id] = averageRating.toFixed(2); // Round to two decimal places
+    });
+
+    return result;
+});
+
+const sortBy = ref("id");
+const sortOrder = ref("asc");
+
+const sortTable = (field) => {
+    if (sortBy.value === field) {
+        // If clicking on the same field, toggle sort order
+        sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
+    } else {
+        // If clicking on a different field, set it as the new sort field
+        sortBy.value = field;
+        sortOrder.value = "asc";
+    }
+
+    // Sort the attractions array based on the chosen field and order
+    attraction.value.sort((a, b) => {
+        const aValue =
+            field === "averageRating" ? averageRatings[a.id] : a[field];
+        const bValue =
+            field === "averageRating" ? averageRatings[b.id] : b[field];
+
+        if (sortOrder.value === "asc") {
+            return aValue > bValue ? 1 : -1;
+        } else {
+            return aValue < bValue ? 1 : -1;
+        }
+    });
 };
 </script>
 <template>
@@ -118,11 +163,20 @@ const choixParc = () => {
                                             scope="col"
                                             class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
-                                            <a
+                                            <button
+                                                @click="sortTable('nom')"
                                                 class="group inline-flex text-base"
                                             >
-                                                Note
-                                            </a>
+                                                Note Moyenne
+                                                <!-- Add an arrow icon or text indicating the sort order -->
+                                                <span v-if="sortBy === 'nom'">
+                                                    {{
+                                                        sortOrder === "asc"
+                                                            ? "▲"
+                                                            : "▼"
+                                                    }}
+                                                </span>
+                                            </button>
                                         </th>
                                     </tr>
                                 </thead>
@@ -158,10 +212,9 @@ const choixParc = () => {
                                             {{ data.is_open }}
                                         </td>
                                         <td
-                                            v-for="note in data.Reviews"
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            {{ note.rating }}
+                                            {{ averageRatings[data.id] }}
                                         </td>
                                     </tr>
                                 </tbody>
