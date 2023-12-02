@@ -66,9 +66,10 @@ const sortTable = (field) => {
     // Sort the attractions array based on the chosen field and order
     attraction.value.sort((a, b) => {
         const aValue =
-            field === "averageRating" ? averageRatings[a.id] : a[field];
+            field === "averageRating" ? averageRatings.value[a.id] : a[field];
+
         const bValue =
-            field === "averageRating" ? averageRatings[b.id] : b[field];
+            field === "averageRating" ? averageRatings.value[b.id] : b[field];
 
         if (sortOrder.value === "asc") {
             return aValue > bValue ? 1 : -1;
@@ -146,16 +147,6 @@ const sortTable = (field) => {
                                             <a
                                                 class="group inline-flex text-base"
                                             >
-                                                Descriptions
-                                            </a>
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                        >
-                                            <a
-                                                class="group inline-flex text-base"
-                                            >
                                                 Ouverte/fermée
                                             </a>
                                         </th>
@@ -164,12 +155,19 @@ const sortTable = (field) => {
                                             class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
                                             <button
-                                                @click="sortTable('nom')"
+                                                @click="
+                                                    sortTable('averageRating')
+                                                "
                                                 class="group inline-flex text-base"
                                             >
                                                 Note Moyenne
                                                 <!-- Add an arrow icon or text indicating the sort order -->
-                                                <span v-if="sortBy === 'nom'">
+                                                <span
+                                                    v-if="
+                                                        sortBy ===
+                                                        'averageRating'
+                                                    "
+                                                >
                                                     {{
                                                         sortOrder === "asc"
                                                             ? "▲"
@@ -201,11 +199,7 @@ const sortTable = (field) => {
                                                 {{ data.nom }}
                                             </td>
                                         </div>
-                                        <td
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            {{ data.description }}
-                                        </td>
+
                                         <td
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
