@@ -15,13 +15,13 @@ export const useParcsStore = defineStore("parcs", {
         async fetchParcs() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/parcs/",
+                url: "http://localhost:3000/api/parcs/all",
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                this.parcsdict = res.data.data;
-                console.log(res.data.data);
+                this.parcsdict = res.data;
+                console.log(res.data);
             });
         },
 

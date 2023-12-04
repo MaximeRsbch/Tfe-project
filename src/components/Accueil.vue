@@ -56,9 +56,7 @@ onMounted(() => {
 
 const parcs = computed(() => parcstore.getParcs);
 const attractions = computed(() => attractionstore.getAttractions);
-setTimeout(() => {
-    console.log(attractions.value);
-}, 300);
+
 const user = computed(() => usersStore.getUsersById);
 
 const coords = ref(null);
@@ -210,6 +208,11 @@ const plotInfoParc = () => {
                     showParcBeginHour.value = parc.beginHour;
                     showParcEndHour.value = parc.endHour;
                     showParcLegende.value = parc.legende;
+
+                    const averageWaitTime = calculateAverageWaitTime(
+                        parc.Attractions
+                    );
+                    showpeople.value = averageWaitTime;
                 });
         }
     }, 500);
@@ -308,6 +311,23 @@ async function AddRating() {
         etoile.value
     );
 }
+
+const calculateAverageWaitTime = (attractions) => {
+    // Vérifiez si des attractions existent
+    if (attractions && attractions.length > 0) {
+        // Calculez la somme des temps d'attente
+        const totalWaitTime = attractions.reduce((sum, attraction) => {
+            return sum + attraction.wait_time;
+        }, 0);
+
+        // Calculez la moyenne en divisant la somme par le nombre d'attractions
+        const averageWaitTime = totalWaitTime / attractions.length;
+
+        return averageWaitTime;
+    }
+
+    return "Aucune attraction disponible"; // Retournez 0 si aucune attraction n'est disponible
+};
 </script>
 
 <template>
@@ -375,7 +395,9 @@ async function AddRating() {
                         <p class="text-2xl">{{ showParcBeginHour }}</p>
                         <p class="text-2xl">{{ showParcEndHour }}</p>
                         <p class="text-2xl">{{ showParcLegende }}</p>
-                        <p>{{ showpeople }}</p>
+                        <p class="text-2xl">
+                            {{ showpeople }} d'attente en moyenne
+                        </p>
                     </div>
                 </div>
                 <div v-if="showAttractionResults">
