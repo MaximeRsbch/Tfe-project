@@ -172,6 +172,7 @@ const showModalResults = ref(false);
 const showModalRating = ref(false);
 const showAttractionResults = ref(null);
 const showParcResults = ref(null);
+const showModalResto = ref(null);
 
 const showParcName = ref(null);
 const showParcPrice = ref(null);
@@ -188,6 +189,13 @@ const showWaitTime = ref(null);
 const showIsOpen = ref(null);
 const showRatingAttraction = ref(null);
 const showCommentAttraction = ref(null);
+const showWC = ref(null); // Jdois encore faire que le gars est pas obliger de mettre un wc
+
+const showResto = ref(null);
+const showRestoName = ref(null);
+const showRestoOpen = ref(null);
+const showRestoClose = ref(null);
+const showRestoDesc = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
@@ -196,7 +204,48 @@ const plotInfoParc = () => {
             iconSize: [32, 32],
         });
 
+        const toiletteMarker = leaflet.icon({
+            iconUrl: "../assets/img/toilette.png",
+            iconSize: [32, 32],
+        });
+
+        const restoMarker = leaflet.icon({
+            iconUrl: "../assets/img/resto.png",
+            iconSize: [32, 32],
+        });
+
         for (const parc of parcs.value) {
+            parcstore.fetchToilettes(parc.id);
+            setTimeout(() => {
+                const toilettes = computed(() => parcstore.getToilettes);
+                for (const toilette of toilettes.value) {
+                    leaflet
+                        .marker([toilette.latitude, toilette.longitude], {
+                            icon: toiletteMarker,
+                        })
+                        .addTo(map);
+                }
+            }, 300);
+            parcstore.fetchRestaurants(parc.id);
+            setTimeout(() => {
+                const restaurants = computed(() => parcstore.getRestaurants);
+
+                for (const restaurant of restaurants.value) {
+                    leaflet
+                        .marker([restaurant.latitude, restaurant.longitude], {
+                            icon: restoMarker,
+                        })
+                        .addTo(map)
+                        .on("click", function (e) {
+                            showModalResto.value = true;
+
+                            showRestoName.value = restaurant.name;
+                            showRestoOpen.value = restaurant.beginHour;
+                            showRestoClose.value = restaurant.endHour;
+                            showRestoDesc.value = restaurant.description;
+                        });
+                }
+            }, 300);
             leaflet
                 .marker([parc.latitude, parc.longitude], { icon: customMarker })
                 .addTo(map)
@@ -282,6 +331,9 @@ const removeAttrResults = () => {
 
 const removeRatingResults = () => {
     showModalRating.value = false;
+};
+const removeRestoResults = () => {
+    showModalResto.value = false;
 };
 
 const goToAddParc = () => {
@@ -476,6 +528,41 @@ const calculateAverageWaitTime = (attractions) => {
                     >
                         Publier
                     </button>
+                </div>
+
+                <div v-if="!isConnect">
+                    <h2 class="text-red-600">
+                        Connectez vous pour accéder à cette option !
+                    </h2>
+                </div>
+                <p class="text-xs mb-1"></p>
+            </div>
+        </div>
+        <div
+            v-if="showModalResto"
+            class="h-full w-full absolute z-10 flex justify-start items-start pt-32 bg-black/50"
+        >
+            <div
+                class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
+            >
+                <i
+                    @click="removeRestoResults"
+                    class="fa-regular fa-circle-xmark flex justify-end"
+                ></i>
+
+                <div class="flex justify-center pb-5">
+                    <h2 class="text-2xl">{{ showRestoName }}</h2>
+                </div>
+                <div>
+                    <p class="text-sm">
+                        {{ showRestoDesc }}
+                    </p>
+                </div>
+                <div>
+                    <p>{{ showRestoOpen }}</p>
+                </div>
+                <div>
+                    <p>{{ showRestoClose }}</p>
                 </div>
 
                 <div v-if="!isConnect">

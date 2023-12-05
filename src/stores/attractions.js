@@ -63,7 +63,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
         async fetchAttractionsParc(id) {

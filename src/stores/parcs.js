@@ -4,11 +4,17 @@ import { CapacitorHttp } from "@capacitor/core";
 export const useParcsStore = defineStore("parcs", {
     state: () => ({
         parcsdict: {},
+        toilettesdict: {},
+        magasinsdict: {},
+        restaurantsdict: {},
     }),
 
     getters: {
         getParcs: (state) => Object.values(state.parcsdict),
         getParcsById: (state) => (id) => state.parcsdict[id],
+        getToilettes: (state) => Object.values(state.toilettesdict),
+        getMagasins: (state) => Object.values(state.magasinsdict),
+        getRestaurants: (state) => Object.values(state.restaurantsdict),
     },
 
     actions: {
@@ -21,7 +27,6 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
-                console.log(res.data);
             });
         },
 
@@ -127,6 +132,43 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
+            });
+        },
+
+        async fetchToilettes(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/toilettes/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.toilettesdict = res.data;
+            });
+        },
+
+        async fetchMagasins(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/magasins/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.magasinsdict = res.data;
+                console.log(res.data);
+            });
+        },
+
+        async fetchRestaurants(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/restaurants/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.restaurantsdict = res.data;
             });
         },
     },
