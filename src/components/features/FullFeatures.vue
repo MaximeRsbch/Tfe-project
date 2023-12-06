@@ -88,105 +88,154 @@ async function addComment() {
 async function deleteComment(id) {
     const body = await articlesStore.deleteArticleComments(id);
 }
+
+const ModalReport = ref(false);
+
+const openModalReport = () => {
+    window.scrollTo(0, document.body.scrollHeight);
+    ModalReport.value = true;
+};
+
+const removeModalReport = () => {
+    document.body.style.overflow = "auto";
+    ModalReport.value = false;
+};
 </script>
 
 <template>
-    <div class="mx-auto container px-4 md:px-10 lg:px-0">
-        <div class="mt-10 pl-4">
-            <button @click="goToFeatures">
-                <img
-                    src="/assets/img/fleche.png"
-                    alt="Retour aux articles"
-                    class="w-20 mr-2"
-                />
-            </button>
-        </div>
-
-        <!-- Récupère et affiche les informations de l'image spécifique-->
-        <div class="mx-auto container max-w-4xl">
+    <div class="mt-10 pl-4">
+        <button @click="goToFeatures">
             <img
-                class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
-                :src="`${BASE_URL}${articles.img_url}`"
-                alt=""
+                src="/assets/img/fleche.png"
+                alt="Retour aux articles"
+                class="w-20 mr-2"
             />
+        </button>
+    </div>
 
-            <div>
-                <h1 class="text-center text-4xl pt-4">
-                    {{ articles.title }}
-                </h1>
-                <div class="flex justify-center">
-                    <p class="pt-4 max-w-5xl text-center pb-5">
-                        {{ articles.content }}
-                    </p>
+    <!-- Récupère et affiche les informations de l'image spécifique-->
+    <div class="mx-auto container max-w-4xl">
+        <img
+            class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
+            :src="`${BASE_URL}${articles.img_url}`"
+            alt=""
+        />
+
+        <div>
+            <h1 class="text-center text-4xl pt-4">
+                {{ articles.title }}
+            </h1>
+            <div class="flex justify-center">
+                <p class="pt-4 max-w-5xl text-center pb-5">
+                    {{ articles.content }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center pt-20">
+        <h2 class="text-4xl">Espace commentaire</h2>
+    </div>
+    <div class="pt-10">
+        <div
+            class="mx-auto container max-w-xl"
+            v-for="test in articleCommentaire"
+        >
+            <div v-for="data in user">
+                <div v-for="donne in data">
+                    <h3
+                        v-if="donne.id == test.ref_user"
+                        class="text-l font-semibold"
+                    >
+                        {{ donne.username }}
+                    </h3>
+                </div>
+            </div>
+            <div class="flex justify-start mt-2">
+                {{ test.content }}
+            </div>
+            <div class="grid grid-cols-2 mt-5">
+                <div>
+                    {{ test.createdAt }}
+                </div>
+                <div>
+                    <button
+                        @click="deleteComment(test.id)"
+                        class="bg-[#344D59] text-white rounded-md px-4 py-1"
+                    >
+                        Delete
+                    </button>
+
+                    <button @click="openModalReport" class="ml-4">
+                        Report
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center scroll-auto">
+                <div
+                    v-if="ModalReport"
+                    class="h-screen w-full absolute z-10 flex justify-center items-center bg-black/50"
+                >
+                    <div
+                        class="bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
+                    >
+                        <i
+                            @click="removeModalReport"
+                            class="fa-regular fa-circle-xmark flex justify-end"
+                        ></i>
+
+                        <div class="flex justify-center pb-5">
+                            <h2 class="text-2xl">Signaler</h2>
+                        </div>
+
+                        <div class="mx-auto container max-w-xl pb-10">
+                            <textarea
+                                id="content"
+                                placeholder="Donner votre avis sur cet attraction ;)"
+                                minlength="10"
+                                maxlength="500"
+                                rows="5"
+                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                            />
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button
+                                type="button"
+                                class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                            >
+                                Publier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative pt-10">
+                <div
+                    class="absolute inset-0 flex items-center"
+                    aria-hidden="true"
+                >
+                    <div class="w-full border-t border-gray-300" />
                 </div>
             </div>
         </div>
-
-        <div class="pt-20">
-            <div class="flex justify-center">
-                <h2 class="text-4xl">Espace commentaire</h2>
-            </div>
-            <div class="pt-10">
-                <div
-                    class="mx-auto container max-w-xl"
-                    v-for="test in articleCommentaire"
+        <div class="pt-10 mx-auto container max-w-xl pb-20">
+            <textarea
+                id="content"
+                placeholder="Donner votre avis sur cet article ;)"
+                minlength="10"
+                v-model="content"
+                rows="5"
+                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+            />
+            <div class="flex justify-end pt-4">
+                <button
+                    @click="addComment"
+                    type="button"
+                    class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
                 >
-                    <div v-for="data in user">
-                        <div v-for="donne in data">
-                            <h3
-                                v-if="donne.id == test.ref_user"
-                                class="text-l font-semibold"
-                            >
-                                {{ donne.username }}
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="flex justify-start mt-2">
-                        {{ test.content }}
-                    </div>
-                    <div class="grid grid-cols-2 mt-5">
-                        <div>
-                            {{ test.createdAt }}
-                        </div>
-                        <div>
-                            <button
-                                @click="deleteComment(test.id)"
-                                class="bg-[#344D59] text-white rounded-md px-4 py-1"
-                            >
-                                Delete
-                            </button>
-
-                            <button class="ml-4">Report</button>
-                        </div>
-                    </div>
-                    <div class="relative pt-10">
-                        <div
-                            class="absolute inset-0 flex items-center"
-                            aria-hidden="true"
-                        >
-                            <div class="w-full border-t border-gray-300" />
-                        </div>
-                    </div>
-                </div>
-                <div class="pt-10 mx-auto container max-w-xl pb-20">
-                    <textarea
-                        id="content"
-                        placeholder="Donner votre avis sur cet article ;)"
-                        minlength="10"
-                        v-model="content"
-                        rows="5"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                    <div class="flex justify-end pt-4">
-                        <button
-                            @click="addComment"
-                            type="button"
-                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
-                        >
-                            Ajouter
-                        </button>
-                    </div>
-                </div>
+                    Ajouter
+                </button>
             </div>
         </div>
     </div>
