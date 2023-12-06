@@ -16,6 +16,7 @@ import GestionArticlesView from "../views/GestionArticlesView.vue";
 import ModifArticleView from "../views/ModifArticleView.vue";
 import BestAttraPageView from "../views/BestAttraPageView.vue";
 import ContactPageView from "../views/ContactPageView.vue";
+import TicketsPageView from "../views/TicketsPageView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -105,6 +106,11 @@ const router = createRouter({
             path: "/contact",
             name: "contact",
             component: ContactPageView,
+        },
+        {
+            path: "/tickets",
+            name: "tickets",
+            component: TicketsPageView,
         },
     ],
 });

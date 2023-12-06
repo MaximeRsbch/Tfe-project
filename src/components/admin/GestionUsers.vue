@@ -145,7 +145,6 @@ const test = tokenDecode.value;
     <div class="container mx-auto">
         <div v-if="role === 'admin' || role === 'modo'">
             <h1 class="text-center pt-10 text-4xl">Gestion des utilisateurs</h1>
-            {{ test }}
             <p class="text-center pb-10 text-2xl">
                 Ici sont affichés tous les utilisateurs pour les modérer
             </p>

@@ -1,7 +1,6 @@
 <script setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import jwtDecode from "jwt-decode";
-import Swal from "sweetalert2";
 import { useAttractionsStore } from "../../../stores/attractions.js";
 import "../../../style/BulleTexte.css";
 
