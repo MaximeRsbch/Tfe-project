@@ -238,6 +238,8 @@ const plotInfoParc = () => {
                         .addTo(map)
                         .on("click", function (e) {
                             showModalResto.value = true;
+                            showParcResults.value = false;
+                            showAttractionResults.value = false;
 
                             showRestoName.value = restaurant.name;
                             showRestoOpen.value = restaurant.beginHour;
@@ -380,6 +382,10 @@ const calculateAverageWaitTime = (attractions) => {
 
     return "Aucune attraction disponible"; // Retournez 0 si aucune attraction n'est disponible
 };
+
+const dateLocale = new Date();
+
+const heureLocale = ref(dateLocale.toLocaleTimeString());
 </script>
 
 <template>
@@ -540,7 +546,7 @@ const calculateAverageWaitTime = (attractions) => {
         </div>
         <div
             v-if="showModalResto"
-            class="h-full w-full absolute z-10 flex justify-start items-start pt-32 bg-black/50"
+            class="h-full w-full absolute z-10 flex justify-start items-start pt-32"
         >
             <div
                 class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
@@ -550,7 +556,7 @@ const calculateAverageWaitTime = (attractions) => {
                     class="fa-regular fa-circle-xmark flex justify-end"
                 ></i>
 
-                <div class="flex justify-center pb-5">
+                <div class="">
                     <h2 class="text-2xl">{{ showRestoName }}</h2>
                 </div>
                 <div>
@@ -558,11 +564,22 @@ const calculateAverageWaitTime = (attractions) => {
                         {{ showRestoDesc }}
                     </p>
                 </div>
-                <div>
-                    <p>{{ showRestoOpen }}</p>
+                <div class="pt-5">
+                    <h2>Ici se trouvera la carte</h2>
                 </div>
-                <div>
-                    <p>{{ showRestoClose }}</p>
+                <div class="pt-5">
+                    <div v-if="heureLocale < '10'">
+                        <span class="text-red-700">Fermé</span> - Ouverture à
+                        {{ showRestoOpen }}
+                    </div>
+                    <div v-if="heureLocale > '18'">
+                        <span class="text-red-700">Fermé</span> - Ouverture à
+                        {{ showRestoOpen }}
+                    </div>
+                    <div v-if="heureLocale < '18' && heureLocale > '10'">
+                        <span class="text-green-500">Ouvert</span> - Fermeture à
+                        {{ showRestoClose }}
+                    </div>
                 </div>
 
                 <div v-if="!isConnect">
