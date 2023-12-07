@@ -1,6 +1,7 @@
 <script setup>
 import { useArticlesStore } from "../../stores/articles.js";
 import { useUsersStore } from "../../stores/users.js";
+import { useTicketsModStore } from "../../stores/ticketsmod.js";
 import { onMounted, computed, ref } from "vue";
 import { BASE_URL } from "../../common/config.js";
 import jwtDecode from "jwt-decode";
@@ -8,6 +9,7 @@ import { useRoute, useRouter } from "vue-router";
 
 const articlesStore = useArticlesStore();
 const usersStore = useUsersStore();
+const ticketsStore = useTicketsModStore();
 const route = useRoute();
 
 const router = useRouter();
@@ -52,6 +54,7 @@ const goToFeatures = () => {
     router.push({ name: "features" });
 };
 
+const title = ref("");
 const content = ref("");
 const ref_user = ref("");
 const ref_article = ref("");
@@ -92,13 +95,36 @@ async function deleteComment(id) {
 const ModalReport = ref(false);
 
 const openModalReport = () => {
-    window.scrollTo(0, document.body.scrollHeight);
+    setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+        document.body.style.overflow = "hidden";
+    }, 100);
     ModalReport.value = true;
 };
 
 const removeModalReport = () => {
     document.body.style.overflow = "auto";
     ModalReport.value = false;
+};
+
+const contentReport = ref("");
+
+const reportComment = () => {
+    if (title.value == "") {
+        alert("Vous devez écrire un titre");
+        return;
+    }
+    if (contentReport.value == "") {
+        alert("Vous devez écrire un commentaire");
+        return;
+    } else {
+        ticketsStore.createTickets(
+            title.value,
+            contentReport.value,
+            articleCom.value.ref_user,
+            articleCom.value.id
+        );
+    }
 };
 </script>
 
@@ -189,8 +215,18 @@ const removeModalReport = () => {
                         </div>
 
                         <div class="mx-auto container max-w-xl pb-10">
+                            <input
+                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                v-model="title"
+                                placeholder="Raison du signalement"
+                                type="text"
+                            />
+                        </div>
+
+                        <div class="mx-auto container max-w-xl pb-10">
                             <textarea
                                 id="content"
+                                v-model="contentReport"
                                 placeholder="Donner votre avis sur cet attraction ;)"
                                 minlength="10"
                                 maxlength="500"
@@ -201,10 +237,11 @@ const removeModalReport = () => {
 
                         <div class="flex justify-end">
                             <button
+                                @click="reportComment"
                                 type="button"
                                 class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
                             >
-                                Publier
+                                Report
                             </button>
                         </div>
                     </div>

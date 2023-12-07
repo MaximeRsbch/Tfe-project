@@ -162,14 +162,20 @@ const role = tokenDecode.value.role;
                                         </td>
                                         <td
                                             v-if="
-                                                ticket.ref_commentArticles !==
-                                                    null &&
-                                                ticket.ref_commentAttr !== null
+                                                ticket.ref_commentAttr === null
                                             "
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            {{ ticket.CommentArticle }}
-                                            {{ ticket.CommentAttraction }}
+                                            {{ ticket.CommentArticle.content }}
+                                        </td>
+                                        <td
+                                            v-if="
+                                                ticket.ref_commentArticles ===
+                                                null
+                                            "
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            {{ ticket.CommentAttr }}
                                         </td>
 
                                         <td
