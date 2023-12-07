@@ -52,7 +52,7 @@ const goToAdminPannel = () => {
                     class="z-30 bg-[#344d59] transition h-screen w-screen pb-16 lg:pb-0 left-0 top-0 fixed scale-x-0 flex flex-col lg:w-auto lg:h-auto origin-right opacity-0 lg:opacity-100 lg:static lg:scale-x-100"
                 >
                     <ul
-                        class="flex flex-1 justify-start items-center text-4xl md:text-2xl lg:text-sm xl:text-lg max-h-fit px-7 pt-[112px] flex-col lg:p-0 lg:flex-row gap-10 lg:gap-7 text-white lg:flex lg:justify-end lg:items-center lg:w-full lg:font-semibold"
+                        class="flex flex-1 justify-start items-center text-2xl md:text-2xl lg:text-sm xl:text-lg max-h-fit px-7 pt-[112px] flex-col lg:p-0 lg:flex-row gap-5 lg:gap-7 text-white lg:flex lg:justify-end lg:items-center lg:w-full lg:font-semibold"
                     >
                         <li v-for="link in links">
                             <RouterLink :to="link.href" active-class="active">{{
@@ -80,14 +80,6 @@ const goToAdminPannel = () => {
                         <div
                             class="mt-14 flex flex-col gap-2 justify-center items-center lg:hidden md:text-lg"
                         >
-                            <div>
-                                <button
-                                    @click="goToAdminPannel"
-                                    class="bg-white text-[#344d59] text-2xl px-5 py-2 rounded-xl"
-                                >
-                                    Admin pannel
-                                </button>
-                            </div>
                             <button
                                 v-if="!isConnect"
                                 @click="goToLogin"
