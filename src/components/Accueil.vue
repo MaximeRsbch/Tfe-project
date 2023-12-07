@@ -144,13 +144,13 @@ const plotResult = (coords) => {
 
     // create a marker with coords and custom icon
     resultMarker.value = leaflet
-        .marker([coords.latitude, coords.longitude], {
+        .marker([coords.coordinates[1], coords.coordinates[0]], {
             icon: customMarker,
         })
         .addTo(map);
 
     //set map view to the current location
-    map.setView([coords.latitude, coords.longitude], 17);
+    map.setView([coords.coordinates[1], coords.coordinates[0]], 17);
 
     closeSearchResults();
 };
