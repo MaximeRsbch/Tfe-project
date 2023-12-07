@@ -40,6 +40,7 @@ setTimeout(() => {
             articles.value = article.value[i];
         }
     }
+    console.log(articles.value);
 }, 200);
 
 onMounted(() => {
@@ -139,14 +140,18 @@ const reportComment = () => {
         </button>
     </div>
 
+    <div class="flex justify-center">
+        <!-- Display image using the URL -->
+        <img
+            v-if="articles.img_url"
+            :src="`${BASE_URL}/${articles.img_url}`"
+            alt="Article Image"
+            class="max-w-full mt-4"
+        />
+    </div>
+
     <!-- Récupère et affiche les informations de l'image spécifique-->
     <div class="mx-auto container max-w-4xl">
-        <img
-            class="lg:w-full h-96 object-cover object-center rounded-lg w-full"
-            :src="`${BASE_URL}${articles.img_url}`"
-            alt=""
-        />
-
         <div>
             <h1 class="text-center text-4xl pt-4">
                 {{ articles.title }}
