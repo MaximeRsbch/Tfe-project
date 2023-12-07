@@ -73,6 +73,7 @@ const updateUsers = () => {
                                 />
                             </div>
                         </div>
+
                         <div class="pt-4">
                             <h2 class="text-center pb-2">Email :</h2>
                             <div class="flex justify-center">
@@ -90,7 +91,7 @@ const updateUsers = () => {
             <div class="flex justify-center pt-10">
                 <button
                     @click="updateUsers"
-                    class="bg-stone-500 text-white text-2xl px-5 py-2 rounded-xl"
+                    class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
                 >
                     Sauvegarder
                 </button>
