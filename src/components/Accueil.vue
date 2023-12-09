@@ -185,8 +185,10 @@ const showAttractionName = ref(null);
 const showHeightAlone = ref(null);
 const showHeightWithAdult = ref(null);
 const showTypeAttraction = ref(null);
+const showDescription = ref(null);
 const showWaitTime = ref(null);
 const showIsOpen = ref(null);
+const showAverageRating = ref(null);
 const showRatingAttraction = ref(null);
 const showCommentAttraction = ref(null);
 const showWC = ref(null); // Jdois encore faire que le gars est pas obliger de mettre un wc
@@ -269,6 +271,21 @@ const plotInfoParc = () => {
     }, 500);
 };
 
+const calculateAverageRating = (attraction) => {
+    const ratings = attraction.Reviews;
+
+    if (ratings && ratings.length > 0) {
+        const totalRating = ratings.reduce(
+            (sum, review) => sum + review.rating,
+            0
+        );
+        const averageRating = totalRating / ratings.length;
+        return averageRating;
+    }
+
+    return 0; // Default rating if no ratings are available
+};
+
 const plotInfoAttraction = () => {
     setTimeout(() => {
         let customMarker;
@@ -288,6 +305,7 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
+            const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
                     icon: customMarker,
@@ -300,6 +318,7 @@ const plotInfoAttraction = () => {
 
                     //Pour attraction
 
+                    showAverageRating.value = averageRating;
                     showAttractionId.value = attraction.id;
                     showAttractionName.value = attraction.nom;
                     showHeightAlone.value = attraction.minHeight;
@@ -307,6 +326,7 @@ const plotInfoAttraction = () => {
                     showTypeAttraction.value = attraction.ref_type;
                     showWaitTime.value = attraction.wait_time;
                     showIsOpen.value = attraction.is_open;
+                    showDescription.value = attraction.description;
 
                     attractionstore.fetchCommentAttraction(attraction.id);
                     attractionstore.fetchRatingAttraction(attraction.id);
@@ -406,7 +426,9 @@ const heureLocale = ref(dateLocale.toLocaleTimeString());
             :searchResults="searchResults"
         />
 
-        <div class="z-[2] absolute top-10 md:left-[1400px]">
+        <div
+            class="z-[2] absolute top-4 left-[250px] md:top-10 md:left-[1400px]"
+        >
             <div class="">
                 <button
                     @click="goToAddParc"
@@ -460,14 +482,22 @@ const heureLocale = ref(dateLocale.toLocaleTimeString());
                 </div>
                 <div v-if="showAttractionResults">
                     <div>
-                        <h2>{{ showAttractionName }}</h2>
-                        <p>{{ showHeightAlone }}</p>
-                        <p>{{ showHeightWithAdult }}</p>
-                        <p>{{ showTypeAttraction }}</p>
-                        <p>{{ showWaitTime }}</p>
-                        <p>{{ showIsOpen }}</p>
+                        <h2 class="text-2xl">{{ showAttractionName }}</h2>
+                        <p class="text-sm">{{ showAverageRating }}/5</p>
+                        <p class="text-sm">{{ showDescription }}</p>
+                        <p>{{ showHeightAlone }} : taille seul</p>
+                        <p>{{ showHeightWithAdult }} : taille accompagné</p>
+                        <p v-if="showTypeAttraction === 1">Sensation</p>
+                        <p v-if="showTypeAttraction === 2">Aquatique</p>
+                        <p v-if="showTypeAttraction === 3">Famille</p>
+                        <p v-if="showWaitTime === 0">
+                            Aucune attraction n'est ouverte
+                        </p>
+                        <p v-if="showWaitTime !== 0">{{ showWaitTime }}</p>
+                        <p v-if="showIsOpen === false">Attraction fermée</p>
+                        <p v-if="showIsOpen === true">Attraction ouverte</p>
                         <div v-for="data in showRatingAttraction">
-                            {{ data.rating }}
+                            {{ data.rating }}/5
                         </div>
                         <div v-for="data in showCommentAttraction">
                             {{ data.content }}

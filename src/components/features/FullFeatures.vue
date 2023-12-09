@@ -144,7 +144,7 @@ const reportComment = () => {
         <!-- Display image using the URL -->
         <img
             v-if="articles.img_url"
-            :src="`${BASE_URL}/${articles.img_url}`"
+            :src="`${BASE_URL}${articles.img_url}`"
             alt="Article Image"
             class="max-w-full mt-4"
         />

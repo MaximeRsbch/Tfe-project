@@ -77,7 +77,7 @@ const role = tokenDecode.value.role;
                                                 Adresse Mail de l'auteur
                                             </a>
                                         </th>
-                                        <th
+                                        <!-- <th
                                             scope="col"
                                             class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -86,7 +86,7 @@ const role = tokenDecode.value.role;
                                             >
                                                 Sujet du ticket
                                             </a>
-                                        </th>
+                                        </th> -->
 
                                         <th
                                             v-if="role === 'admin'"
@@ -150,7 +150,7 @@ const role = tokenDecode.value.role;
                                         >
                                             {{ ticket.User.email }}
                                         </td>
-                                        <td
+                                        <!-- <td
                                             v-if="
                                                 ticket.ref_commentArticles ==
                                                     null &&
@@ -159,16 +159,16 @@ const role = tokenDecode.value.role;
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             Aucun sujet n'a été trouvé
-                                        </td>
-                                        <td
+                                        </td> -->
+                                        <!-- <td
                                             v-if="
                                                 ticket.ref_commentAttr === null
                                             "
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            {{ ticket.CommentArticle.content }}
-                                        </td>
-                                        <td
+                                            {{ ticket.CommentArticle }}
+                                        </td> -->
+                                        <!-- <td
                                             v-if="
                                                 ticket.ref_commentArticles ===
                                                 null
@@ -176,7 +176,7 @@ const role = tokenDecode.value.role;
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             {{ ticket.CommentAttr }}
-                                        </td>
+                                        </td> -->
 
                                         <td
                                             v-if="role === 'admin'"
