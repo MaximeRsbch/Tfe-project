@@ -52,6 +52,13 @@ const ChangeNomParc = () => {
     id.value = idParc;
 };
 
+const toilettes = ref(false);
+
+const showWC = () => {
+    toilettes.value = !toilettes.value;
+    console.log(toilettes.value);
+};
+
 async function createParc() {
     const body = await parcsStore.createParc(
         id.value,
@@ -222,6 +229,18 @@ const removeResult = () => {
                         type="text"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
+                </div>
+                <div>
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Toilettes</span>
+                            <input
+                                @change="showWC"
+                                type="checkbox"
+                                class="checkbox"
+                            />
+                        </label>
+                    </div>
                 </div>
 
                 <div>

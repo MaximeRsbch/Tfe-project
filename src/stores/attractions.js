@@ -7,6 +7,7 @@ export const useAttractionsStore = defineStore("attractions", {
         imagesDict: {},
         commentsDict: {},
         ratingStarDict: {},
+        favoriteDict: {},
     }),
 
     getters: {
@@ -14,6 +15,7 @@ export const useAttractionsStore = defineStore("attractions", {
         getImageAttraction: (state) => Object.values(state.imagesDict),
         getCommentAttraction: (state) => Object.values(state.commentsDict),
         getRatingStarAttraction: (state) => Object.values(state.ratingStarDict),
+        getFavoriteAttraction: (state) => Object.values(state.favoriteDict),
     },
 
     actions: {
@@ -169,6 +171,49 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.ratingStarDict = res.data.data;
+            });
+        },
+
+        async createFavoriteAttraction(ref_user, ref_attraction, isFavorite) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: `http://localhost:3000/api/favoris/`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    ref_user,
+                    ref_attraction,
+                    isFavorite,
+                },
+            }).then((res) => {
+                this.favoriteDict = res.data;
+                console.log(res.data);
+            });
+        },
+
+        async fetchFavoriteAttraction(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/favoris/all/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.favoriteDict = res.data.data;
+                console.log(res.data.data);
+            });
+        },
+
+        async deleteFavoriteAttraction(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/favoris/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.favoriteDict = res.data;
             });
         },
     },

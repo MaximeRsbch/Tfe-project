@@ -52,6 +52,7 @@ onMounted(() => {
     plotInfoParc();
     plotInfoAttraction();
     usersStore.fetchOneUser(id.value);
+    attractionstore.fetchFavoriteAttraction(id.value);
 });
 
 const parcs = computed(() => parcstore.getParcs);
@@ -191,9 +192,8 @@ const showIsOpen = ref(null);
 const showAverageRating = ref(null);
 const showRatingAttraction = ref(null);
 const showCommentAttraction = ref(null);
-const showWC = ref(null); // Jdois encore faire que le gars est pas obliger de mettre un wc
+const showFavorite = ref(null);
 
-const showResto = ref(null);
 const showRestoName = ref(null);
 const showRestoOpen = ref(null);
 const showRestoClose = ref(null);
@@ -305,6 +305,7 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
+            console.log(attraction.Favoris);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -327,6 +328,7 @@ const plotInfoAttraction = () => {
                     showWaitTime.value = attraction.wait_time;
                     showIsOpen.value = attraction.is_open;
                     showDescription.value = attraction.description;
+                    showFavorite.value = attraction.Favoris;
 
                     attractionstore.fetchCommentAttraction(attraction.id);
                     attractionstore.fetchRatingAttraction(attraction.id);
@@ -406,6 +408,23 @@ const calculateAverageWaitTime = (attractions) => {
 const dateLocale = new Date();
 
 const heureLocale = ref(dateLocale.toLocaleTimeString());
+
+const AddFav = () => {
+    attractionstore.createFavoriteAttraction(id.value, showAttractionId.value);
+};
+
+const favorisId = ref(null);
+
+setTimeout(() => {
+    const favoris = computed(() => attractionstore.getFavoriteAttraction);
+    for (const fav of favoris.value) {
+        favorisId.value = fav.id;
+        console.log(fav.id);
+    }
+}, 300);
+const RemoveFav = () => {
+    attractionstore.deleteFavoriteAttraction(favorisId.value);
+};
 </script>
 
 <template>
@@ -504,6 +523,25 @@ const heureLocale = ref(dateLocale.toLocaleTimeString());
                         </div>
                     </div>
                     <button @click="showRatingModal">Rédiger un avis</button>
+
+                    <div v-if="showFavorite.length == 0">
+                        <button @click="AddFav">Ajouter aux favoris</button>
+                    </div>
+                    <div v-if="showFavorite.length !== 0">
+                        <div v-for="data in showFavorite">
+                            {{ data }}
+                            <div v-if="id == data.ref_user">
+                                <button @click="RemoveFav">
+                                    Retirer des favoris
+                                </button>
+                            </div>
+                            <div>
+                                <button @click="AddFav">
+                                    Ajouter aux favoris
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div v-if="!isConnect">
