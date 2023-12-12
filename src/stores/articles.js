@@ -24,6 +24,18 @@ export const useArticlesStore = defineStore("articles", {
             });
         },
 
+        async fetchAllArticles(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/articles/all/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.articlesDict = res.data.data;
+            });
+        },
+
         async fetchArticleById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",

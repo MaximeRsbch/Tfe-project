@@ -216,6 +216,16 @@ const plotInfoParc = () => {
             iconSize: [32, 32],
         });
 
+        const InfoMarker = leaflet.icon({
+            iconUrl: "../assets/img/info.png",
+            iconSize: [32, 32],
+        });
+
+        const SecoursMarker = leaflet.icon({
+            iconUrl: "../assets/img/secours.png",
+            iconSize: [32, 32],
+        });
+
         for (const parc of parcs.value) {
             parcstore.fetchToilettes(parc.id);
             setTimeout(() => {
@@ -248,6 +258,31 @@ const plotInfoParc = () => {
                             showRestoClose.value = restaurant.endHour;
                             showRestoDesc.value = restaurant.description;
                         });
+                }
+            }, 300);
+            parcstore.fetchSecours(parc.id);
+            setTimeout(() => {
+                const secours = computed(() => parcstore.getSecours);
+
+                for (const secour of secours.value) {
+                    leaflet
+                        .marker([secour.latitude, secour.longitude], {
+                            icon: SecoursMarker,
+                        })
+                        .addTo(map);
+                }
+            }, 300);
+
+            parcstore.fetchInfos(parc.id);
+            setTimeout(() => {
+                const infos = computed(() => parcstore.getInfos);
+
+                for (const info of infos.value) {
+                    leaflet
+                        .marker([info.latitude, info.longitude], {
+                            icon: InfoMarker,
+                        })
+                        .addTo(map);
                 }
             }, 300);
             leaflet
