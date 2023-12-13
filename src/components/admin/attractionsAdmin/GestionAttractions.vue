@@ -32,7 +32,7 @@ const choixParc = () => {
     attractionsStore.fetchAttractionsParc(idParc);
     setTimeout(() => {
         const attractions = computed(() => attractionsStore.getAttractions);
-        console.log(attractions.value);
+
         attraction.value = attractions.value;
     }, 300);
 
@@ -44,7 +44,6 @@ const usersModoParc = ref("");
 setTimeout(() => {
     const users = computed(() => usersStore.getUsers);
     for (const user of users.value) {
-        console.log(user.ref_parc);
         usersModoParc.value = user.ref_parc;
     }
 }, 300);

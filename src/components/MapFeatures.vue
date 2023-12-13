@@ -38,7 +38,6 @@ const search = () => {
                 },
             });
             searchData.value = getData.data.features;
-            console.log(getData.data.features);
         }
     }, 750);
 };

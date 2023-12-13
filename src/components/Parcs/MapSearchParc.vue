@@ -44,7 +44,7 @@ const search = () => {
 
 const selectResult = (result) => {
     selectedResult.value = result;
-    console.log(result);
+
     emit("plotResult", result.geometry);
 };
 </script>

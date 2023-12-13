@@ -21,8 +21,6 @@ const img = ref("");
 setTimeout(() => {
     const article = computed(() => articleStore.getArticles);
 
-    console.log(article.value);
-
     for (let i = 0; i < article.value.length; i++) {
         if (article.value[i].id == idArticle) {
             id.value = article.value[i].id;

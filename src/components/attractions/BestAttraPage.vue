@@ -26,7 +26,7 @@ const choixParc = () => {
     attractionsStore.fetchAttractionsParc(idParc);
     setTimeout(() => {
         const attractions = computed(() => attractionsStore.getAttractions);
-        console.log(attractions.value);
+
         attraction.value = attractions.value;
     }, 300);
 

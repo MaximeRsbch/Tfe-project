@@ -40,7 +40,7 @@ setTimeout(() => {
             articles.value = article.value[i];
         }
     }
-    console.log(articles.value);
+    
 }, 200);
 
 onMounted(() => {

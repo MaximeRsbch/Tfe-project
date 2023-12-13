@@ -17,8 +17,6 @@ onMounted(() => {
 //Récupère toutes les informations des articles
 const articles = computed(() => articlesStore.getArticles);
 
-console.log(articles.value);
-
 //Verif si l'user est co ou non
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 

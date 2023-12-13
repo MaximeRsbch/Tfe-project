@@ -32,7 +32,6 @@ onMounted(() => {
         )
         .addTo(map);
     map.on("click", (e) => {
-        console.log(e.latlng.lat);
         latitude.value = e.latlng.lat;
         longitude.value = e.latlng.lng;
     });
@@ -157,9 +156,6 @@ function changeTypeValue() {
             document.getElementById("ref_type").selectedIndex
         ].id;
     id_type.value = idType;
-    console.log(id_type.value);
-    console.log(ref_type.value);
-    console.log(idType);
 }
 
 const attractions = ref(null);
@@ -171,7 +167,7 @@ function changeParcValue() {
             document.getElementById("ref_parc").selectedIndex
         ].id;
     id_parc.value = idParc;
-    console.log(id_parc.value);
+    
     //on recherche l'id des attractions grace à l'id du parc
     attractionsStore.fetchAttractionsQueuetimes(id_parc.value);
     //ensuite on recup les attractions
@@ -186,7 +182,7 @@ function changeAttractionValue() {
         document.getElementById("nom").options[
             document.getElementById("nom").selectedIndex
         ].id;
-    console.log(idAttraction);
+    
     id.value = idAttraction;
 }
 const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier

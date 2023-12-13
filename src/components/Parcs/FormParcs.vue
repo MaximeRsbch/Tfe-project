@@ -48,7 +48,6 @@ const ChangeNomParc = () => {
             document.getElementById("nomparc").selectedIndex
         ].id;
 
-    console.log(idParc);
     id.value = idParc;
 };
 
@@ -58,17 +57,14 @@ const magasins = ref(false);
 
 const showWC = () => {
     toilettes.value = !toilettes.value;
-    console.log(toilettes.value);
 };
 
 const showResto = () => {
     resto.value = !resto.value;
-    console.log(resto.value);
 };
 
 const showMagasins = () => {
     magasins.value = !magasins.value;
-    console.log(magasins.value);
 };
 
 async function createParc() {
@@ -167,7 +163,6 @@ const plotResult = (coords) => {
 
     //set map view to the current location
     map.setView([coords.coordinates[1], coords.coordinates[0]], 17);
-    console.log(coords.coordinates[1], coords.coordinates[0]);
 
     latitude.value = coords.coordinates[1];
     longitude.value = coords.coordinates[0];

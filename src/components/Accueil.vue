@@ -363,7 +363,6 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
-            console.log(attraction.Favoris);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -477,7 +476,6 @@ setTimeout(() => {
     const favoris = computed(() => attractionstore.getFavoriteAttraction);
     for (const fav of favoris.value) {
         favorisId.value = fav.id;
-        console.log(fav.id);
     }
 }, 300);
 const RemoveFav = () => {

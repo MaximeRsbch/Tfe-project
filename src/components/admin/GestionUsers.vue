@@ -161,7 +161,6 @@ const changeParcValue = (e) => {
             document.getElementById("ref_parc").selectedIndex
         ].id;
     id_parc.value = idParc;
-    console.log(id_parc.value);
 };
 
 const giveRoleModoParc = (Id, username, email, roleUser) => {
@@ -188,7 +187,6 @@ const giveRoleModoParc = (Id, username, email, roleUser) => {
 };
 
 const giveRoleModo = (Id, username, email, roleUser) => {
-    console.log(roleUser);
     if (roleUser === "modoParc") {
         Swal.fire(
             "Erreur",

@@ -3,12 +3,15 @@ import { computed, ref, onMounted } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
 import { useParcsStore } from "../../../stores/parcs.js";
+import { useUsersStore } from "../../../stores/users.js";
 import "../../../style/BulleTexte.css";
 
 const parcsStore = useParcsStore();
+const usersStore = useUsersStore();
 
 onMounted(() => {
     parcsStore.fetchParcs();
+    usersStore.fetchModoParc();
 });
 
 const parcs = computed(() => parcsStore.getParcs);
@@ -44,6 +47,15 @@ const deleteParc = (id) => {
         }
     });
 };
+
+const usersModoParc = ref("");
+
+setTimeout(() => {
+    const users = computed(() => usersStore.getUsers);
+    for (const user of users.value) {
+        usersModoParc.value = user.ref_parc;
+    }
+}, 300);
 </script>
 <template>
     <div class="container mx-auto">
@@ -195,7 +207,10 @@ const deleteParc = (id) => {
                                                 {{ parc.endHour }}
                                             </td>
                                             <td
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' &&
+                                                    parc.id === usersModoParc
+                                                "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
                                                 <button
@@ -217,7 +232,10 @@ const deleteParc = (id) => {
                                                 </button>
                                             </td>
                                             <td
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' &&
+                                                    parc.id === usersModoParc
+                                                "
                                                 class="whitespace-nowrap py-4 pr-10 text-base"
                                             >
                                                 <button type="button">
