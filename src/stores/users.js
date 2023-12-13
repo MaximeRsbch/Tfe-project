@@ -184,5 +184,19 @@ export const useUsersStore = defineStore("users", {
                 console.log(res);
             });
         },
+
+        async fetchModoParc() {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/modoparc/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.usersDict = res.data.data;
+            });
+        },
     },
 });

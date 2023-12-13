@@ -1,14 +1,53 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import jwtDecode from "jwt-decode";
+import { useParcsStore } from "../../../stores/parcs.js";
 import { useAttractionsStore } from "../../../stores/attractions.js";
+import { useUsersStore } from "../../../stores/users.js";
 import "../../../style/BulleTexte.css";
 
+const parcsStore = useParcsStore();
 const attractionsStore = useAttractionsStore();
+const usersStore = useUsersStore();
 
 onMounted(() => {
     attractionsStore.fetchAttractions();
+    parcsStore.fetchParcs();
+    usersStore.fetchModoParc();
 });
+
+const parc = ref("");
+const attraction = ref("");
+
+const parcs = computed(() => parcsStore.getParcs);
+
+const choixParc = () => {
+    //On récup l'id du parc choisit dans le select
+    const idParc =
+        document.getElementById("parc").options[
+            document.getElementById("parc").selectedIndex
+        ].id;
+
+    //On récup les attractions du parc choisit
+    attractionsStore.fetchAttractionsParc(idParc);
+    setTimeout(() => {
+        const attractions = computed(() => attractionsStore.getAttractions);
+        console.log(attractions.value);
+        attraction.value = attractions.value;
+    }, 300);
+
+    //On récup les notes de chaque attraction
+};
+
+const usersModoParc = ref("");
+
+setTimeout(() => {
+    const users = computed(() => usersStore.getUsers);
+    for (const user of users.value) {
+        console.log(user.ref_parc);
+        usersModoParc.value = user.ref_parc;
+    }
+}, 300);
 
 const attractions = computed(() => attractionsStore.getAttractions);
 
@@ -40,6 +79,24 @@ const role = tokenDecode.value.role;
                 <p class="text-center pb-10 text-2xl">
                     Ici sont affichés tous les attractions pour les gérer
                 </p>
+
+                <div class="pt-10">
+                    <h2 class="text-center text-lg">
+                        Choisissez le parc voulu :
+                    </h2>
+                    <div class="flex justify-center">
+                        <select
+                            v-model="parc"
+                            @change="choixParc"
+                            id="parc"
+                            class="block px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-[#344d59] focus:ring-[#344d59] focus:ring-opacity-40 focus:outline-none focus:ring"
+                        >
+                            <option v-for="data in parcs" :id="data.id">
+                                {{ data.nom }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="mt-4 flex flex-col container mx-auto">
                     <div class="overflow-x-auto">
@@ -99,16 +156,7 @@ const role = tokenDecode.value.role;
                                                     Parcs de référence
                                                 </a>
                                             </th>
-                                            <th
-                                                scope="col"
-                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                            >
-                                                <a
-                                                    class="group inline-flex text-base"
-                                                >
-                                                    Type de référence
-                                                </a>
-                                            </th>
+
                                             <th
                                                 v-if="role === 'admin'"
                                                 scope="col"
@@ -138,23 +186,35 @@ const role = tokenDecode.value.role;
                                     >
                                         <!--Affiche les info de tous les users-->
                                         <tr
-                                            v-for="attraction in attractions"
-                                            :key="attraction.id"
+                                            v-for="data in attraction"
+                                            :key="data.id"
                                             class="hover:bg-gray-100"
                                         >
                                             <td
+                                                v-if="
+                                                    data.ref_parc ===
+                                                    usersModoParc
+                                                "
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
                                             >
-                                                {{ attraction.id }}
+                                                {{ data.id }}
                                             </td>
                                             <div>
                                                 <td
+                                                    v-if="
+                                                        data.ref_parc ===
+                                                        usersModoParc
+                                                    "
                                                     class="whitespace-nowrap px-3 py-4 text-base"
                                                 >
-                                                    {{ attraction.nom }}
+                                                    {{ data.nom }}
                                                 </td>
                                             </div>
                                             <td
+                                                v-if="
+                                                    data.ref_parc ===
+                                                    usersModoParc
+                                                "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
                                                 <textarea
@@ -162,22 +222,26 @@ const role = tokenDecode.value.role;
                                                     rows="3"
                                                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                                                     >{{
-                                                        attraction.description
+                                                        data.description
                                                     }}</textarea
                                                 >
                                             </td>
                                             <td
+                                                v-if="
+                                                    data.ref_parc ===
+                                                    usersModoParc
+                                                "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                {{ attraction.ref_parc }}
+                                                {{ data.ref_parc }}
                                             </td>
+
                                             <td
-                                                class="whitespace-nowrap px-3 py-4 text-base"
-                                            >
-                                                {{ attraction.ref_type }}
-                                            </td>
-                                            <td
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' &&
+                                                    data.ref_parc ===
+                                                        usersModoParc
+                                                "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
                                                 <button @click="" type="button">
@@ -197,7 +261,11 @@ const role = tokenDecode.value.role;
                                                 </button>
                                             </td>
                                             <td
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' &&
+                                                    data.ref_parc ===
+                                                        usersModoParc
+                                                "
                                                 class="whitespace-nowrap py-4 pr-10 text-base"
                                             >
                                                 <button type="button">
