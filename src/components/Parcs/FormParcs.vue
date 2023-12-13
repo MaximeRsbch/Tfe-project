@@ -53,10 +53,22 @@ const ChangeNomParc = () => {
 };
 
 const toilettes = ref(false);
+const resto = ref(false);
+const magasins = ref(false);
 
 const showWC = () => {
     toilettes.value = !toilettes.value;
     console.log(toilettes.value);
+};
+
+const showResto = () => {
+    resto.value = !resto.value;
+    console.log(resto.value);
+};
+
+const showMagasins = () => {
+    magasins.value = !magasins.value;
+    console.log(magasins.value);
 };
 
 async function createParc() {
@@ -68,7 +80,10 @@ async function createParc() {
         latitude.value,
         longitude.value,
         ticket.value,
-        legende.value
+        legende.value,
+        toilettes.value,
+        resto.value,
+        magasins.value
     );
 }
 
@@ -236,6 +251,26 @@ const removeResult = () => {
                             <span class="label-text">Toilettes</span>
                             <input
                                 @change="showWC"
+                                type="checkbox"
+                                class="checkbox"
+                            />
+                        </label>
+                    </div>
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Restaurants</span>
+                            <input
+                                @change="showResto"
+                                type="checkbox"
+                                class="checkbox"
+                            />
+                        </label>
+                    </div>
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Magasins</span>
+                            <input
+                                @change="showMagasins"
                                 type="checkbox"
                                 class="checkbox"
                             />

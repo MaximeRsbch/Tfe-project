@@ -227,39 +227,48 @@ const plotInfoParc = () => {
         });
 
         for (const parc of parcs.value) {
-            parcstore.fetchToilettes(parc.id);
-            setTimeout(() => {
-                const toilettes = computed(() => parcstore.getToilettes);
-                for (const toilette of toilettes.value) {
-                    leaflet
-                        .marker([toilette.latitude, toilette.longitude], {
-                            icon: toiletteMarker,
-                        })
-                        .addTo(map);
-                }
-            }, 300);
-            parcstore.fetchRestaurants(parc.id);
-            setTimeout(() => {
-                const restaurants = computed(() => parcstore.getRestaurants);
+            if (parc.showWC == true) {
+                parcstore.fetchToilettes(parc.id);
+                setTimeout(() => {
+                    const toilettes = computed(() => parcstore.getToilettes);
+                    for (const toilette of toilettes.value) {
+                        leaflet
+                            .marker([toilette.latitude, toilette.longitude], {
+                                icon: toiletteMarker,
+                            })
+                            .addTo(map);
+                    }
+                }, 300);
+            }
+            if (parc.showResto == true) {
+                parcstore.fetchRestaurants(parc.id);
+                setTimeout(() => {
+                    const restaurants = computed(
+                        () => parcstore.getRestaurants
+                    );
 
-                for (const restaurant of restaurants.value) {
-                    leaflet
-                        .marker([restaurant.latitude, restaurant.longitude], {
-                            icon: restoMarker,
-                        })
-                        .addTo(map)
-                        .on("click", function (e) {
-                            showModalResto.value = true;
-                            showParcResults.value = false;
-                            showAttractionResults.value = false;
+                    for (const restaurant of restaurants.value) {
+                        leaflet
+                            .marker(
+                                [restaurant.latitude, restaurant.longitude],
+                                {
+                                    icon: restoMarker,
+                                }
+                            )
+                            .addTo(map)
+                            .on("click", function (e) {
+                                showModalResto.value = true;
+                                showParcResults.value = false;
+                                showAttractionResults.value = false;
 
-                            showRestoName.value = restaurant.name;
-                            showRestoOpen.value = restaurant.beginHour;
-                            showRestoClose.value = restaurant.endHour;
-                            showRestoDesc.value = restaurant.description;
-                        });
-                }
-            }, 300);
+                                showRestoName.value = restaurant.name;
+                                showRestoOpen.value = restaurant.beginHour;
+                                showRestoClose.value = restaurant.endHour;
+                                showRestoDesc.value = restaurant.description;
+                            });
+                    }
+                }, 300);
+            }
             parcstore.fetchSecours(parc.id);
             setTimeout(() => {
                 const secours = computed(() => parcstore.getSecours);
@@ -285,6 +294,20 @@ const plotInfoParc = () => {
                         .addTo(map);
                 }
             }, 300);
+            if (parc.showMagasins) {
+                parcstore.fetchMagasins(parc.id);
+                setTimeout(() => {
+                    const magasins = computed(() => parcstore.getMagasins);
+
+                    for (const magasin of magasins.value) {
+                        leaflet
+                            .marker([magasin.latitude, magasin.longitude], {
+                                icon: InfoMarker,
+                            })
+                            .addTo(map);
+                    }
+                }, 300);
+            }
             leaflet
                 .marker([parc.latitude, parc.longitude], { icon: customMarker })
                 .addTo(map)
