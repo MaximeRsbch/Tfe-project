@@ -1,14 +1,17 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
+import { useParcsStore } from "../../stores/parcs.js";
 import { computed, ref, onMounted } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
 import "../../style/BulleTexte.css";
 
 const usersStore = useUsersStore();
+const parcsStore = useParcsStore();
 
 onMounted(() => {
     usersStore.fetchUsers();
+    parcsStore.fetchParcs();
 });
 
 const users = computed(() => usersStore.getUsers);
@@ -109,29 +112,98 @@ const unmuteUsers = (id) => {
     });
 };
 
-const giveRoleModo = (id) => {
-    Swal.fire({
-        title: "Etes vous sure ?",
-        text: "Cet utilisateur sera modo !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Oui, modo !",
-    }).then((result) => {
-        if (result.isConfirmed && id !== 1) {
-            Swal.fire("Modo", "Cet utilisateur a bien été modo.", "success");
-            usersStore.changRole(id, role === "modo" ? "user" : "modo");
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire("Annulé", "Cet utilisateur n'a pas été modo :)", "error");
-        } else if (id === 1) {
-            Swal.fire(
-                "Erreur",
-                "Vous ne pouvez pas supprimer cet utilisateur.",
-                "error"
-            );
+const modalModoP = ref(false);
+const modalModo = ref(false);
+const usersId = ref("");
+const email = ref("");
+const username = ref("");
+const roleUser = ref("");
+
+const showModalModoP = (Id) => {
+    setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+        document.body.style.overflow = "hidden";
+        for (const user of users.value) {
+            if (Id == user.id) {
+                usersId.value = user.id;
+                email.value = user.email;
+                username.value = user.username;
+                roleUser.value = user.role;
+            }
         }
-    });
+    }, 100);
+    modalModoP.value = !modalModoP.value;
+};
+
+const showModalModo = (Id) => {
+    setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+        document.body.style.overflow = "hidden";
+        for (const user of users.value) {
+            if (Id == user.id) {
+                usersId.value = user.id;
+                email.value = user.email;
+                username.value = user.username;
+                roleUser.value = user.role;
+            }
+        }
+    }, 100);
+    modalModo.value = !modalModo.value;
+};
+
+const parcs = computed(() => parcsStore.getParcs);
+const ref_parc = ref("");
+const id_parc = ref("");
+
+const changeParcValue = (e) => {
+    const idParc =
+        document.getElementById("ref_parc").options[
+            document.getElementById("ref_parc").selectedIndex
+        ].id;
+    id_parc.value = idParc;
+    console.log(id_parc.value);
+};
+
+const giveRoleModoParc = (Id, username, email, roleUser) => {
+    if (roleUser === "modo") {
+        Swal.fire(
+            "Erreur",
+            "Vous ne pouvez pas donner le role ModoParc à un Modo.",
+            "error"
+        );
+    } else {
+        usersStore.giveRoleModoParc(username, email, Id, id_parc.value);
+        usersStore.changeUserRole(
+            Id,
+            role === "modoParc" ? "user" : "modoParc"
+        );
+        Swal.fire(
+            "ModoParc",
+            "Cet utilisateur a bien été modoParc.",
+            "success"
+        ).then(() => {
+            modalModoP.value = !modalModoP.value;
+        });
+    }
+};
+
+const giveRoleModo = (Id, username, email, roleUser) => {
+    console.log(roleUser);
+    if (roleUser === "modoParc") {
+        Swal.fire(
+            "Erreur",
+            "Vous ne pouvez pas donner le role Modo à un ModoParc.",
+            "error"
+        );
+    } else {
+        usersStore.giveRoleModo(username, email, Id, id_parc.value);
+        usersStore.changeUserRole(Id, role === "modo" ? "user" : "modo");
+        Swal.fire("Modo", "Cet utilisateur a bien été modo.", "success").then(
+            () => {
+                modalModo.value = !modalModo.value;
+            }
+        );
+    }
 };
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
@@ -139,7 +211,6 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
-const test = tokenDecode.value;
 </script>
 <template>
     <div class="container mx-auto">
@@ -312,24 +383,20 @@ const test = tokenDecode.value;
                                                 </div>
                                             </button>
                                         </td>
+
                                         <td
                                             v-if="role === 'admin'"
-                                            class="whitespace-nowrap py-4 text-base"
+                                            class="whitespace-nowrap py-4 pr-5 text-base"
                                         >
                                             <button
-                                                @click="
-                                                    giveRoleModo(
-                                                        user.id,
-                                                        role === 'modo'
-                                                    )
-                                                "
+                                                @click="showModalModo(user.id)"
                                                 type="button"
                                             >
                                                 <div class="image-container">
                                                     <img
                                                         class="w-5 md:w-5 lg:w-full"
-                                                        src="/assets/img/modo.png"
-                                                        alt="modoImg"
+                                                        src="/assets/img/modoP.png"
+                                                        alt="modoPImg"
                                                     />
                                                     <div class="tooltip">
                                                         Donner role Modo
@@ -337,14 +404,13 @@ const test = tokenDecode.value;
                                                 </div>
                                             </button>
                                         </td>
+
                                         <td
                                             v-if="role === 'admin'"
                                             class="whitespace-nowrap py-4 pr-5 text-base"
                                         >
                                             <button
-                                                @click="
-                                                    giveRoleModoParc(user.id)
-                                                "
+                                                @click="showModalModoP(user.id)"
                                                 type="button"
                                             >
                                                 <div class="image-container">
@@ -359,6 +425,7 @@ const test = tokenDecode.value;
                                                 </div>
                                             </button>
                                         </td>
+
                                         <td
                                             v-if="role === 'modo'"
                                             class="whitespace-nowrap px-3 py-4 text-base"
@@ -392,6 +459,146 @@ const test = tokenDecode.value;
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div
+                            class="flex justify-center items-center scroll-auto"
+                        >
+                            <div
+                                v-if="modalModo"
+                                class="h-screen w-full absolute z-30 flex justify-center items-center bg-black/50"
+                            >
+                                <div
+                                    class="bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
+                                >
+                                    <i
+                                        @click="showModalModo"
+                                        class="fa-regular fa-circle-xmark flex justify-end"
+                                    ></i>
+
+                                    <div class="flex justify-center pb-5">
+                                        <h2 class="text-2xl">Signaler</h2>
+                                    </div>
+
+                                    <div>
+                                        <p>
+                                            Veuiller selectionner un parc pour
+                                            le quel l'utilisateur sera
+                                            Modérateur
+                                        </p>
+                                    </div>
+
+                                    <div class="grid grid-cols-2">
+                                        <label for="">id de l'user :</label>
+                                        <p>
+                                            {{ usersId }}
+                                        </p>
+                                    </div>
+                                    {{ username }}
+                                    {{ email }}
+                                    {{ roleUser }}
+
+                                    <select
+                                        @change="changeParcValue"
+                                        id="ref_parc"
+                                        v-model="ref_parc"
+                                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                    >
+                                        <option
+                                            v-for="dataParc in parcs"
+                                            :id="dataParc.id"
+                                        >
+                                            {{ dataParc.nom }}
+                                        </option>
+                                    </select>
+
+                                    <div class="flex justify-end pt-2">
+                                        <button
+                                            @click="
+                                                giveRoleModo(
+                                                    usersId,
+                                                    username,
+                                                    email,
+                                                    roleUser
+                                                )
+                                            "
+                                            type="button"
+                                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                                        >
+                                            Ajouter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex justify-center items-center scroll-auto"
+                        >
+                            <div
+                                v-if="modalModoP"
+                                class="h-screen w-full absolute z-30 flex justify-center items-center bg-black/50"
+                            >
+                                <div
+                                    class="bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
+                                >
+                                    <i
+                                        @click="showModalModoP"
+                                        class="fa-regular fa-circle-xmark flex justify-end"
+                                    ></i>
+
+                                    <div class="flex justify-center pb-5">
+                                        <h2 class="text-2xl">Signaler</h2>
+                                    </div>
+
+                                    <div>
+                                        <p>
+                                            Veuiller selectionner un parc pour
+                                            le quel l'utilisateur sera
+                                            Modérateur de Parc
+                                        </p>
+                                    </div>
+
+                                    <div class="grid grid-cols-2">
+                                        <label for="">id de l'user :</label>
+                                        <p>
+                                            {{ usersId }}
+                                        </p>
+                                    </div>
+                                    {{ username }}
+                                    {{ email }}
+                                    {{ roleUser }}
+
+                                    <select
+                                        @change="changeParcValue"
+                                        id="ref_parc"
+                                        v-model="ref_parc"
+                                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                    >
+                                        <option
+                                            v-for="dataParc in parcs"
+                                            :id="dataParc.id"
+                                        >
+                                            {{ dataParc.nom }}
+                                        </option>
+                                    </select>
+
+                                    <div class="flex justify-end pt-2">
+                                        <button
+                                            @click="
+                                                giveRoleModoParc(
+                                                    usersId,
+                                                    username,
+                                                    email,
+                                                    roleUser
+                                                )
+                                            "
+                                            type="button"
+                                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                                        >
+                                            Ajouter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

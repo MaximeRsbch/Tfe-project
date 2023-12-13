@@ -127,7 +127,47 @@ export const useUsersStore = defineStore("users", {
             });
         },
 
-        async changRole(id, role) {
+        async giveRoleModoParc(username, email, ref_user, ref_parc) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: `http://localhost:3000/api/modoparc/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    username,
+                    email,
+                    ref_user,
+                    ref_parc,
+                },
+            }).then((res) => {
+                console.log(res);
+            });
+        },
+
+        async giveRoleModo(username, email, ref_user, ref_parc) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: `http://localhost:3000/api/modo/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    username,
+                    email,
+                    ref_user,
+                    ref_parc,
+                },
+            }).then((res) => {
+                console.log(res);
+            });
+        },
+
+        async changeUserRole(id, role) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
                 url: `http://localhost:3000/api/users/role/${id}`,
