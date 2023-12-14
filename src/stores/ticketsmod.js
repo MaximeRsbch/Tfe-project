@@ -21,7 +21,6 @@ export const useTicketsModStore = defineStore("ticketsMod", {
                 },
             }).then((res) => {
                 this.ticketsdict = res.data;
-                console.log(this.ticketsdict);
             });
         },
 
@@ -47,7 +46,6 @@ export const useTicketsModStore = defineStore("ticketsMod", {
                 },
             }).then((res) => {
                 this.ticketsdict = res.data;
-                console.log(this.ticketsdict);
             });
         },
     },

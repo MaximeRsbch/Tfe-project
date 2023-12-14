@@ -67,7 +67,6 @@ export const useArticlesStore = defineStore("articles", {
                 },
             }).then((res) => {
                 this.articlesDict = res.data;
-                console.log(this.articlesDict);
             });
         },
 
@@ -80,7 +79,6 @@ export const useArticlesStore = defineStore("articles", {
                 },
             }).then((res) => {
                 this.commentsDict = res.data.data;
-                console.log(this.commentsDict);
             });
         },
 
@@ -114,7 +112,6 @@ export const useArticlesStore = defineStore("articles", {
                 },
             }).then((res) => {
                 this.commentsDict = res.data;
-                console.log(res);
             });
         },
 
@@ -148,7 +145,6 @@ export const useArticlesStore = defineStore("articles", {
                 },
             }).then((res) => {
                 this.articlesDict = res.data;
-                console.log(this.articlesDict);
             });
         },
     },

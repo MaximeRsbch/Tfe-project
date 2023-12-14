@@ -52,7 +52,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res);
             });
         },
 
@@ -76,7 +75,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
 
@@ -107,7 +105,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.imagesDict = res.data;
-                console.log(res.data);
             });
         },
 
@@ -127,7 +124,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
         async createRatingAttraction(id_user, id_attraction, note) {
@@ -146,7 +142,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
 
@@ -188,7 +183,7 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.favoriteDict = res.data;
-                console.log(res.data);
+                
             });
         },
 
@@ -201,7 +196,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.favoriteDict = res.data.data;
-                console.log(res.data.data);
             });
         },
 

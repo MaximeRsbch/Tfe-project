@@ -79,7 +79,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.fetchUsers();
-                console.log(res);
             });
         },
 
@@ -127,7 +126,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.fetchUsers();
-                console.log(res);
             });
         },
 
@@ -146,9 +144,7 @@ export const useUsersStore = defineStore("users", {
                     ref_user,
                     ref_parc,
                 },
-            }).then((res) => {
-                console.log(res);
-            });
+            }).then((res) => {});
         },
 
         async giveRoleModo(username, email, ref_user, ref_parc) {
@@ -166,9 +162,7 @@ export const useUsersStore = defineStore("users", {
                     ref_user,
                     ref_parc,
                 },
-            }).then((res) => {
-                console.log(res);
-            });
+            }).then((res) => {});
         },
 
         async changeUserRole(id, role) {
@@ -185,7 +179,6 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.fetchUsers();
-                console.log(res);
             });
         },
 

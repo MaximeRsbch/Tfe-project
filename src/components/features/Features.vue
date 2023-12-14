@@ -45,7 +45,7 @@ const choixParc = () => {
         const articles = computed(() => articlesStore.getArticles);
 
         article.value = articles.value;
-        console.log(article.value.length);
+        
     }, 300);
 
     //On récup les notes de chaque attraction

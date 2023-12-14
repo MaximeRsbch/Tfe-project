@@ -31,7 +31,6 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
-                console.log(res.data);
             });
         },
 
@@ -96,7 +95,6 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
-                console.log(this.parcsdict);
             });
         },
 
@@ -167,7 +165,6 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.magasinsdict = res.data;
-                console.log(res.data);
             });
         },
 
