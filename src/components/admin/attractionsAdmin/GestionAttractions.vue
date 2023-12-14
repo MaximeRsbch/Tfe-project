@@ -42,7 +42,7 @@ const choixParc = () => {
 const usersModoParc = ref("");
 
 setTimeout(() => {
-    const users = computed(() => usersStore.getUsers);
+    const users = computed(() => usersStore.getModoParc);
     for (const user of users.value) {
         usersModoParc.value = user.ref_parc;
     }

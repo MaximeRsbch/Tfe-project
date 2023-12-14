@@ -1,6 +1,7 @@
 <script setup>
 import { useArticlesStore } from "../../stores/articles.js";
 import { useParcsStore } from "../../stores/parcs.js";
+import { useUsersStore } from "../../stores/users.js";
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
@@ -8,10 +9,28 @@ const router = useRouter();
 
 const articlesStore = useArticlesStore();
 const parcsStore = useParcsStore();
+const usersStore = useUsersStore();
 
 onMounted(() => {
     parcsStore.fetchParcs();
+    usersStore.fetchModoParc();
+    usersStore.fetchModo();
 });
+
+const modoParc = ref("");
+const modo = ref("");
+
+setTimeout(() => {
+    const userModoParcs = computed(() => usersStore.getModoParc);
+    for (const data of userModoParcs.value) {
+        modoParc.value = data.ref_parc;
+    }
+
+    const userModo = computed(() => usersStore.getModo);
+    for (const data of userModo.value) {
+        modo.value = data.ref_parc;
+    }
+}, 300);
 
 const nomarticle = ref("");
 const contenu = ref("");
@@ -66,17 +85,20 @@ const ChangeNomParc = () => {
         ].id;
 
     id.value = idParc;
-    console.log(id.value);
 };
 
 const createArticle = async () => {
-    const body = await articlesStore.createArticles(
-        nomarticle.value,
-        contenu.value,
-        img.value,
-        comment.value,
-        id.value
-    );
+    if (modoParc.value === id.value || modo.value == id.value) {
+        const body = await articlesStore.createArticles(
+            nomarticle.value,
+            contenu.value,
+            img.value,
+            comment.value,
+            id.value
+        );
+    } else {
+        alert("Vous n'avez pas les droits pour ajouter un article à ce parc");
+    }
 };
 </script>
 

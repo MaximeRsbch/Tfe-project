@@ -5,10 +5,14 @@ import axios from "axios";
 export const useUsersStore = defineStore("users", {
     state: () => ({
         usersDict: {},
+        modoPDict: {},
+        modoDict: {},
     }),
     getters: {
         getUsers: (state) => Object.values(state.usersDict),
         getUsersById: (state) => Object.values(state.usersDict),
+        getModoParc: (state) => Object.values(state.modoPDict),
+        getModo: (state) => Object.values(state.modoDict),
     },
     actions: {
         async loginUser(password, email) {
@@ -195,7 +199,21 @@ export const useUsersStore = defineStore("users", {
                         "Bearer " + localStorage.getItem("savedToken"),
                 },
             }).then((res) => {
-                this.usersDict = res.data.data;
+                this.modoPDict = res.data.data;
+            });
+        },
+
+        async fetchModo() {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/modo/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.modoDict = res.data.data;
             });
         },
     },
