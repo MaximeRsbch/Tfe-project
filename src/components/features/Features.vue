@@ -1,21 +1,20 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useArticlesStore } from "../../stores/articles.js";
+import { useParcsStore } from "../../stores/parcs.js";
 import { BASE_URL } from "../../common/config.js";
 import jwtDecode from "jwt-decode";
 import { RouterLink, useRouter } from "vue-router";
 import "../../style/BulleTexte.css";
 
 const articlesStore = useArticlesStore();
-
-const router = useRouter();
+const parcsStore = useParcsStore();
 
 onMounted(() => {
-    articlesStore.fetchArticles();
+    parcsStore.fetchParcs();
 });
 
-//Récupère toutes les informations des articles
-const articles = computed(() => articlesStore.getArticles);
+const router = useRouter();
 
 //Verif si l'user est co ou non
 const isConnect = computed(() => localStorage.getItem("savedToken"));
@@ -27,6 +26,30 @@ const goToArticleForm = () => {
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
+
+const parc = ref("");
+const article = ref("");
+
+const parcs = computed(() => parcsStore.getParcs);
+
+const choixParc = () => {
+    //On récup l'id du parc choisit dans le select
+    const idParc =
+        document.getElementById("parc").options[
+            document.getElementById("parc").selectedIndex
+        ].id;
+
+    //On récup les attractions du parc choisit
+    articlesStore.fetchAllArticles(idParc);
+    setTimeout(() => {
+        const articles = computed(() => articlesStore.getArticles);
+
+        article.value = articles.value;
+        console.log(article.value.length);
+    }, 300);
+
+    //On récup les notes de chaque attraction
+};
 </script>
 
 <template>
@@ -36,24 +59,8 @@ const role = tokenDecode.value.role;
                 Veuillez vous connecter pour accéder à cette page !
             </h1>
         </div>
-        <div v-if="isConnect">
-            <div class="text-center pt-20" v-if="articles.length == 0">
-                <h2 class="text-4xl">Aucun article n'est disponible</h2>
-
-                <div v-if="role === 'admin'" class="pt-10">
-                    <button
-                        class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
-                    >
-                        <RouterLink :to="{ name: 'addArticles' }"
-                            >Ajouter un article</RouterLink
-                        >
-                    </button>
-                </div>
-            </div>
-            <!--Récupère toutes les informations des articles et je les affiche-->
-        </div>
     </div>
-    <div v-if="articles.length !== 0" class="container px-6 pt-10 mx-auto">
+    <div class="container px-6 pt-10 mx-auto">
         <div class="text-center">
             <h1
                 class="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl"
@@ -67,7 +74,41 @@ const role = tokenDecode.value.role;
             </p>
         </div>
 
-        <div>
+        <div class="pt-10">
+            <h2 class="text-center text-lg">Choisissez le parc voulu :</h2>
+            <div class="flex justify-center">
+                <select
+                    v-model="parc"
+                    @change="choixParc"
+                    id="parc"
+                    class="block px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-[#344d59] focus:ring-[#344d59] focus:ring-opacity-40 focus:outline-none focus:ring"
+                >
+                    <option v-for="data in parcs" :id="data.id">
+                        {{ data.nom }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div v-if="isConnect">
+            <div class="text-center pt-20" v-if="article.length == 0">
+                <h2 class="text-2xl">
+                    Aucun article n'est disponible pour ce parc
+                </h2>
+
+                <div v-if="role === 'admin'" class="pt-10">
+                    <button
+                        class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
+                    >
+                        <RouterLink :to="{ name: 'addArticles' }"
+                            >Ajouter un article</RouterLink
+                        >
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="article.length > 0">
             <div v-if="role === 'admin'" class="flex justify-end">
                 <button @click="goToArticleForm">
                     <div class="image-container">
@@ -83,7 +124,7 @@ const role = tokenDecode.value.role;
         </div>
 
         <div class="grid grid-cols-1 gap-8 md:mt-8 mb-10 lg:grid-cols-2">
-            <div v-for="data in articles">
+            <div v-for="data in article">
                 <img
                     class="relative z-10 object-cover w-full rounded-md h-96"
                     src="https://images.unsplash.com/photo-1644018335954-ab54c83e007f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"

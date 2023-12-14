@@ -1,15 +1,23 @@
 <script setup>
 import { useArticlesStore } from "../../stores/articles.js";
-import { ref } from "vue";
+import { useParcsStore } from "../../stores/parcs.js";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 const articlesStore = useArticlesStore();
+const parcsStore = useParcsStore();
+
+onMounted(() => {
+    parcsStore.fetchParcs();
+});
 
 const nomarticle = ref("");
 const contenu = ref("");
 const img = ref("");
+
+const parcs = computed(() => parcsStore.getParcs);
 
 const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier
 
@@ -38,16 +46,37 @@ const saveImageToConstant = () => {
     imageInput.value = null;
 };
 
+const goToFeatures = () => {
+    router.push({ name: "features" });
+};
+
+const comment = ref(false);
+
+const showComment = () => {
+    comment.value = !comment.value;
+};
+
+const id = ref("");
+const nomparc = ref("");
+
+const ChangeNomParc = () => {
+    var idParc =
+        document.getElementById("nomparc").options[
+            document.getElementById("nomparc").selectedIndex
+        ].id;
+
+    id.value = idParc;
+    console.log(id.value);
+};
+
 const createArticle = async () => {
     const body = await articlesStore.createArticles(
         nomarticle.value,
         contenu.value,
-        img.value
+        img.value,
+        comment.value,
+        id.value
     );
-};
-
-const goToFeatures = () => {
-    router.push({ name: "features" });
 };
 </script>
 
@@ -91,6 +120,36 @@ const goToFeatures = () => {
                     rows="5"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                 />
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div class="form-control">
+                    <label class="label cursor-pointer">
+                        <span class="label-text">Commentaires</span>
+                        <input
+                            @change="showComment"
+                            type="checkbox"
+                            class="checkbox"
+                        />
+                    </label>
+                </div>
+
+                <div>
+                    <label class="text-gray-700" for="nomparc"
+                        >Nom du parc</label
+                    >
+
+                    <select
+                        @change="ChangeNomParc"
+                        id="nomparc"
+                        v-model="nomparc"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    >
+                        <option v-for="data in parcs" :id="data.id">
+                            {{ data.nom }}
+                        </option>
+                    </select>
+                </div>
             </div>
 
             <div class="pt-10">

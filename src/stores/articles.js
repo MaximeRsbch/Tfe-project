@@ -48,7 +48,7 @@ export const useArticlesStore = defineStore("articles", {
             });
         },
 
-        async createArticles(title, content, img) {
+        async createArticles(title, content, img, showCommentaires, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
                 url: `http://localhost:3000/api/articles/`,
@@ -62,6 +62,8 @@ export const useArticlesStore = defineStore("articles", {
                     title,
                     content,
                     img,
+                    showCommentaires,
+                    ref_parc,
                 },
             }).then((res) => {
                 this.articlesDict = res.data;
