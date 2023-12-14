@@ -9,6 +9,7 @@ export const useParcsStore = defineStore("parcs", {
         restaurantsdict: {},
         secoursdict: {},
         infosdict: {},
+        evenementdict: {},
     }),
 
     getters: {
@@ -19,6 +20,7 @@ export const useParcsStore = defineStore("parcs", {
         getRestaurants: (state) => Object.values(state.restaurantsdict),
         getSecours: (state) => Object.values(state.secoursdict),
         getInfos: (state) => Object.values(state.infosdict),
+        getEvenements: (state) => Object.values(state.evenementdict),
     },
 
     actions: {
@@ -200,6 +202,18 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.infosdict = res.data;
+            });
+        },
+
+        async fetchEvenements(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/evenements/all/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.evenementdict = res.data;
             });
         },
     },
