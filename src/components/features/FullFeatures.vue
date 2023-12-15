@@ -38,9 +38,9 @@ setTimeout(() => {
     for (let i = 0; i < article.value.length; i++) {
         if (article.value[i].id == id) {
             articles.value = article.value[i];
+            console.log(articles.value);
         }
     }
-    
 }, 200);
 
 onMounted(() => {
@@ -141,15 +141,13 @@ const reportComment = () => {
     </div>
 
     <div class="flex justify-center">
-        <!-- Display image using the URL -->
         <img
             v-if="articles.img_url"
-            :src="`${BASE_URL}${articles.img_url}`"
+            :src="`${BASE_URL}/${articles.img_url.replace(/\\/g, '/')}`"
             alt="Article Image"
-            class="max-w-full mt-4"
+            class="max-w-lg mt-4"
         />
     </div>
-
     <!-- Récupère et affiche les informations de l'image spécifique-->
     <div class="mx-auto container max-w-4xl">
         <div>

@@ -45,7 +45,6 @@ const choixParc = () => {
         const articles = computed(() => articlesStore.getArticles);
 
         article.value = articles.value;
-        
     }, 300);
 
     //On récup les notes de chaque attraction
@@ -127,7 +126,8 @@ const choixParc = () => {
             <div v-for="data in article">
                 <img
                     class="relative z-10 object-cover w-full rounded-md h-96"
-                    src="https://images.unsplash.com/photo-1644018335954-ab54c83e007f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                    v-if="data.img_url"
+                    :src="`${BASE_URL}/${data.img_url.replace(/\\/g, '/')}`"
                     alt=""
                 />
 

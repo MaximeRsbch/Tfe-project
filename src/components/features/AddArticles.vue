@@ -4,6 +4,7 @@ import { useParcsStore } from "../../stores/parcs.js";
 import { useUsersStore } from "../../stores/users.js";
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import jwtDecode from "jwt-decode";
 
 const router = useRouter();
 
@@ -87,8 +88,18 @@ const ChangeNomParc = () => {
     id.value = idParc;
 };
 
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+const role = tokenDecode.value.role;
+
 const createArticle = async () => {
-    if (modoParc.value === id.value || modo.value == id.value) {
+    if (
+        modoParc.value === id.value ||
+        modo.value == id.value ||
+        role == "admin"
+    ) {
         const body = await articlesStore.createArticles(
             nomarticle.value,
             contenu.value,
