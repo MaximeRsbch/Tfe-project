@@ -10,6 +10,7 @@ import { useParcsStore } from "../stores/parcs.js";
 import { useAttractionsStore } from "../stores/attractions.js";
 import { useUsersStore } from "../stores/users.js";
 import { useRouter } from "vue-router";
+import { BASE_URL } from "../common/config.js";
 
 const router = useRouter();
 
@@ -198,6 +199,7 @@ const showRestoName = ref(null);
 const showRestoOpen = ref(null);
 const showRestoClose = ref(null);
 const showRestoDesc = ref(null);
+const showRestoImg = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
@@ -265,6 +267,7 @@ const plotInfoParc = () => {
                                 showRestoOpen.value = restaurant.beginHour;
                                 showRestoClose.value = restaurant.endHour;
                                 showRestoDesc.value = restaurant.description;
+                                showRestoImg.value = restaurant.carte_img;
                             });
                     }
                 }, 300);
@@ -690,6 +693,12 @@ const RemoveFav = () => {
                 </div>
                 <div class="pt-5">
                     <h2>Ici se trouvera la carte</h2>
+                    <img
+                        class="relative z-10 object-cover w-full rounded-md h-96"
+                        v-if="showRestoImg"
+                        :src="`${BASE_URL}/${showRestoImg.replace(/\\/g, '/')}`"
+                        alt=""
+                    />
                 </div>
                 <div class="pt-5">
                     <div v-if="heureLocale < '10'">
