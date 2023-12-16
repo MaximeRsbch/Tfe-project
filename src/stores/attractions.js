@@ -4,7 +4,6 @@ import { CapacitorHttp } from "@capacitor/core";
 export const useAttractionsStore = defineStore("attractions", {
     state: () => ({
         attractionsDict: {},
-        imagesDict: {},
         commentsDict: {},
         ratingStarDict: {},
         favoriteDict: {},
@@ -12,7 +11,6 @@ export const useAttractionsStore = defineStore("attractions", {
 
     getters: {
         getAttractions: (state) => Object.values(state.attractionsDict),
-        getImageAttraction: (state) => Object.values(state.imagesDict),
         getCommentAttraction: (state) => Object.values(state.commentsDict),
         getRatingStarAttraction: (state) => Object.values(state.ratingStarDict),
         getFavoriteAttraction: (state) => Object.values(state.favoriteDict),
@@ -90,21 +88,22 @@ export const useAttractionsStore = defineStore("attractions", {
             });
         },
 
-        async createImageAttraction(id, img) {
+        async createImageAttraction(img_url, ref_attraction) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/attractions/${id}/img`,
+                url: `http://localhost:3000/api/attractions/img`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
                         "Bearer " + localStorage.getItem("savedToken"),
                 },
                 data: {
-                    id,
-                    img,
+                    img_url,
+                    ref_attraction,
                 },
             }).then((res) => {
-                this.imagesDict = res.data;
+                this.attractionsDict = res.data;
+                console.log(res.data);
             });
         },
 
@@ -183,7 +182,6 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.favoriteDict = res.data;
-                
             });
         },
 

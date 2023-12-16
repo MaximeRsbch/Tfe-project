@@ -167,7 +167,7 @@ function changeParcValue() {
             document.getElementById("ref_parc").selectedIndex
         ].id;
     id_parc.value = idParc;
-    
+
     //on recherche l'id des attractions grace à l'id du parc
     attractionsStore.fetchAttractionsQueuetimes(id_parc.value);
     //ensuite on recup les attractions
@@ -182,7 +182,7 @@ function changeAttractionValue() {
         document.getElementById("nom").options[
             document.getElementById("nom").selectedIndex
         ].id;
-    
+
     id.value = idAttraction;
 }
 const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier
@@ -207,7 +207,6 @@ const saveImageToConstant = () => {
     // Ensuite, envoyez imageFile vers le store ou utilisez-le comme nécessaire
 
     img.value = imageFile;
-    console.log(img.value);
 
     // Vous pouvez également réinitialiser l'élément d'entrée de fichier si nécessaire
     imageInput.value = null;
@@ -225,9 +224,10 @@ const createAttraction = () => {
         id_type.value,
         id_parc.value
     );
+
     setTimeout(() => {
-        attractionsStore.createImageAttraction(id.value, img.value);
-    }, 3000);
+        attractionsStore.createImageAttraction(img.value, id.value);
+    }, 500);
 };
 </script>
 
