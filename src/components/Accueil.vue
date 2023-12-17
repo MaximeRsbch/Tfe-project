@@ -190,6 +190,8 @@ const showParcBeginHour = ref(null);
 const showParcEndHour = ref(null);
 const showParcLegende = ref(null);
 const showpeople = ref(null);
+const latitude = ref(null);
+const longitude = ref(null);
 
 const showAttractionName = ref(null);
 const showHeightAlone = ref(null);
@@ -325,15 +327,20 @@ const plotInfoParc = () => {
                 .on("click", function (e) {
                     showModalResults.value = true;
                     showParcResults.value = true;
+                    showAttractionResults.value = false;
                     showParcName.value = parc.nom;
                     showParcPrice.value = parc.ticketPrice;
                     showParcBeginHour.value = parc.beginHour;
                     showParcEndHour.value = parc.endHour;
                     showParcLegende.value = parc.legende;
+                    latitude.value = parc.latitude;
+                    longitude.value = parc.longitude;
 
                     const averageWaitTime = calculateAverageWaitTime(
                         parc.Attractions
                     );
+                    console.log(averageWaitTime);
+                    console.log(parc.Attractions.length);
                     showpeople.value = averageWaitTime;
                 });
         }
@@ -508,6 +515,12 @@ const showAvisOrNot = () => {
     isPresentationSelected.value = false;
     isAvisSelected.value = true;
 };
+
+const goToPark = () => {
+    window.open(
+        `https://www.google.com/maps/dir/?api=1&destination=${latitude.value},${longitude.value}`
+    );
+};
 </script>
 
 <template>
@@ -564,23 +577,69 @@ const showAvisOrNot = () => {
                         <div>
                             <img src="assets/img/walibi.jpg" alt="" />
                         </div>
-                        <div class="pt-4">
+                        <div class="pt-4 pl-4">
                             <h1 class="text-2xl">{{ showParcName }}</h1>
                         </div>
-                        <div class="pt-40">
-                            <h2 class="text-2xl">Entrée</h2>
+                        <div class="pb-4 flex justify-center pt-4">
+                            <button @click="goToPark">
+                                Démarrer la navigation
+                            </button>
+                        </div>
+                        <hr />
+
+                        <div class="px-10 flex justify-center">
+                            <p class="text-sm text-justify pb-4 pt-4">
+                                {{ showParcLegende }}
+                            </p>
+                        </div>
+
+                        <hr />
+                        <div class="pt-4 pb-4">
+                            <h2 class="text-lg pl-4">Entrée</h2>
+                            <p class="text-sm pl-4">
+                                Votre entrée pour ce parc
+                            </p>
                             <div class="grid grid-cols-2 pt-6">
-                                <p class="text-xl">{{ showParcName }}</p>
+                                <p class="text-lg pl-4">{{ showParcName }}</p>
                                 <div class="flex justify-end pr-5">
-                                    <p class="text-xl">{{ showParcPrice }}</p>
+                                    <p class="text-lg">{{ showParcPrice }} €</p>
                                 </div>
                             </div>
                         </div>
-                        <p class="text-2xl">{{ showParcBeginHour }}</p>
-                        <p class="text-2xl">{{ showParcEndHour }}</p>
-                        <p class="text-2xl">{{ showParcLegende }}</p>
-                        <p class="text-2xl">
-                            {{ showpeople }} d'attente en moyenne
+                        <hr />
+
+                        <div class="pt-4 pl-4 pb-4">
+                            <div v-if="heureLocale < '11'">
+                                <span class="text-red-700">Fermé</span> -
+                                Ouverture à
+                                {{ showParcBeginHour }}
+                            </div>
+                            <div v-if="heureLocale > '19'">
+                                <span class="text-red-700">Fermé</span> -
+                                Ouverture à
+                                {{ showParcBeginHour }}
+                            </div>
+                            <div
+                                v-if="heureLocale < '19' && heureLocale > '11'"
+                            >
+                                <span class="text-green-500">Ouvert</span> -
+                                Fermeture à
+                                {{ showParcEndHour }}
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <p class="text-lg pl-4 pt-4 pb-4">
+                            {{ showpeople }}
+                            <span
+                                v-if="
+                                    showpeople !==
+                                    'Aucune attraction disponible'
+                                "
+                                class="text-sm"
+                                >d'attente en moyenne</span
+                            >
                         </p>
                     </div>
                 </div>
