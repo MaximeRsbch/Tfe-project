@@ -60,7 +60,7 @@ const goToPark = () => {
 </script>
 <template>
     <div
-        class="w-full md:w-auto absolute md:top-[40px] md:left-[60px] z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
+        class="w-full md:w-auto absolute md:left-[10px] md:-top-6 z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
     >
         <!-- Search-->
         <div class="relative flex-1 md:min-w-[350px]">
@@ -68,7 +68,7 @@ const goToPark = () => {
             <div class="pt-10">
                 <input
                     v-model="searchQuery"
-                    class="pl-9 pr-4 py-3 text-sm focus:outline-none w-full shadow-md rounded-md"
+                    class="pl-9 pr-4 py-3 text-sm focus:outline-none w-full shadow-md rounded-lg"
                     type="text"
                     placeholder="Start your search"
                     @input="search"

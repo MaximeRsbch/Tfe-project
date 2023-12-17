@@ -47,6 +47,14 @@ onMounted(() => {
         )
         .addTo(map);
 
+    map.zoomControl.remove();
+
+    leaflet.control
+        .zoom({
+            position: "topright",
+        })
+        .addTo(map);
+
     getGeoLocation();
     parcstore.fetchParcs();
     attractionstore.fetchAttractions();
@@ -366,6 +374,7 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
+            console.log(attraction);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -469,6 +478,8 @@ const dateLocale = new Date();
 
 const heureLocale = ref(dateLocale.toLocaleTimeString());
 
+const favoris = ref(false);
+
 const AddFav = () => {
     attractionstore.createFavoriteAttraction(id.value, showAttractionId.value);
 };
@@ -484,10 +495,23 @@ setTimeout(() => {
 const RemoveFav = () => {
     attractionstore.deleteFavoriteAttraction(favorisId.value);
 };
+
+const isPresentationSelected = ref(true);
+const isAvisSelected = ref(false);
+
+const showPresOrNot = () => {
+    isPresentationSelected.value = true;
+    isAvisSelected.value = false;
+};
+
+const showAvisOrNot = () => {
+    isPresentationSelected.value = false;
+    isAvisSelected.value = true;
+};
 </script>
 
 <template>
-    <div class="h-screen relative">
+    <div class="h-screen relative overflow-x-hidden">
         <GeoErrorModal
             @closeGeoError="closeGeoError"
             v-if="geoError"
@@ -523,15 +547,17 @@ const RemoveFav = () => {
 
         <div
             v-if="showModalResults"
-            class="h-full absolute z-10 flex justify-start items-start pt-32"
+            class="h-full absolute z-10 flex justify-start items-start pt-16 pl-2"
         >
             <div
-                class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
+                class="flex flex-col bg-white w-[80%] sm:w-[400px] rounded-md max-h-[74vh] overflow-y-auto"
             >
-                <i
-                    @click="removeAttrResults"
-                    class="fa-regular fa-circle-xmark flex justify-end"
-                ></i>
+                <div class="relative z-10 flex justify-end top-6 right-2">
+                    <i
+                        @click="removeAttrResults"
+                        class="fa-solid fa-xmark fa-2xl text-gray-200 hover:text-[#344d59] fixed"
+                    ></i>
+                </div>
 
                 <div v-if="showParcResults">
                     <div v-if="isConnect">
@@ -560,43 +586,156 @@ const RemoveFav = () => {
                 </div>
                 <div v-if="showAttractionResults">
                     <div>
-                        <h2 class="text-2xl">{{ showAttractionName }}</h2>
-                        <p class="text-sm">{{ showAverageRating }}/5</p>
-                        <p class="text-sm">{{ showDescription }}</p>
-                        <p>{{ showHeightAlone }} : taille seul</p>
-                        <p>{{ showHeightWithAdult }} : taille accompagné</p>
-                        <p v-if="showTypeAttraction === 1">Sensation</p>
-                        <p v-if="showTypeAttraction === 2">Aquatique</p>
-                        <p v-if="showTypeAttraction === 3">Famille</p>
-                        <p v-if="showWaitTime === 0">
-                            Aucune attraction n'est ouverte
-                        </p>
-                        <p v-if="showWaitTime !== 0">{{ showWaitTime }}</p>
-                        <p v-if="showIsOpen === false">Attraction fermée</p>
-                        <p v-if="showIsOpen === true">Attraction ouverte</p>
-                        <div v-for="data in showRatingAttraction">
-                            {{ data.rating }}/5
+                        <div>
+                            <img
+                                class="w-[408px] h-[272px]]"
+                                src="assets/img/walibi.jpg"
+                                alt=""
+                            />
                         </div>
-                        <div v-for="data in showCommentAttraction">
-                            {{ data.content }}
-                        </div>
-                    </div>
-                    <button @click="showRatingModal">Rédiger un avis</button>
-
-                    <div v-if="showFavorite.length == 0">
-                        <button @click="AddFav">Ajouter aux favoris</button>
-                    </div>
-                    <div v-if="showFavorite.length !== 0">
-                        <div v-for="data in showFavorite">
-                            {{ data }}
-                            <div v-if="id == data.ref_user">
-                                <button @click="RemoveFav">
-                                    Retirer des favoris
-                                </button>
+                        <div class="grid grid-cols-2">
+                            <h2 class="text-2xl pl-4 pt-4">
+                                {{ showAttractionName }}
+                            </h2>
+                            <div class="flex justify-end pr-4">
+                                <div
+                                    class="absolute z-10 top-20 left-8"
+                                    v-if="showFavorite.length == 0"
+                                >
+                                    <button
+                                        v-if="favoris === false"
+                                        @click="AddFav"
+                                    >
+                                        <i
+                                            class="fa-regular fa-heart fa-2xl text-orange-500"
+                                        ></i>
+                                    </button>
+                                    <button
+                                        v-if="favoris === true"
+                                        @click="RemoveFav"
+                                    >
+                                        <i
+                                            class="fa-solid fa-heart fa-2xl text-orange-500"
+                                        ></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div>
-                                <button @click="AddFav">
-                                    Ajouter aux favoris
+                        </div>
+                        <p class="text-sm pl-4">{{ showAverageRating }}/5</p>
+                        <p class="text-sm pl-4" v-if="showTypeAttraction === 1">
+                            Sensation
+                        </p>
+                        <p class="text-sm pl-4" v-if="showTypeAttraction === 2">
+                            Aquatique
+                        </p>
+                        <p class="text-sm pl-4" v-if="showTypeAttraction === 3">
+                            Famille
+                        </p>
+                        <div class="grid grid-cols-2 pt-6">
+                            <button
+                                @click="showPresOrNot"
+                                :class="{ selected: isPresentationSelected }"
+                                id="pres"
+                                class="flex justify-center"
+                            >
+                                Présentation
+                            </button>
+
+                            <button
+                                @click="showAvisOrNot"
+                                :class="{ selected: isAvisSelected }"
+                                id="avis"
+                                class="flex justify-center"
+                            >
+                                Avis
+                            </button>
+                        </div>
+                        <div v-if="isPresentationSelected" class="pt-8">
+                            <hr class="pt-4" />
+                            <p
+                                class="text-sm flex justify-center text-justify pb-4"
+                            >
+                                {{ showDescription }}
+                            </p>
+                            <hr />
+                            <div class="grid grid-cols-2 pt-4">
+                                <div class="flex justify-end">
+                                    <img
+                                        class="h-16 w-16"
+                                        src="/assets/img/seul.png"
+                                        alt=""
+                                    />
+                                </div>
+                                <p class="pt-3">{{ showHeightAlone }} cm</p>
+                            </div>
+                            <div class="grid grid-cols-2 pt-4 pb-4">
+                                <div class="flex justify-end">
+                                    <img
+                                        class="h-16 w-16"
+                                        src="/assets/img/accompgne.png"
+                                        alt=""
+                                    />
+                                </div>
+                                <p class="pt-3">{{ showHeightWithAdult }} cm</p>
+                            </div>
+                            <hr />
+
+                            <div class="pt-4 pb-4 pl-4">
+                                <p v-if="showWaitTime === 0">
+                                    Temps d'attente inconnu
+                                </p>
+                                <p v-if="showWaitTime !== 0">
+                                    Temps d'attente moyen dans cet attraction :
+                                    <span
+                                        class="text-green-500"
+                                        v-if="showWaitTime < 20"
+                                        >{{ showWaitTime }}</span
+                                    >
+                                    <span
+                                        class="text-orange-500"
+                                        v-if="showWaitTime < 50"
+                                        >{{ showWaitTime }}</span
+                                    >
+                                    <span
+                                        class="text-red-500"
+                                        v-if="showWaitTime > 50"
+                                        >{{ showWaitTime }}</span
+                                    >
+                                </p>
+                            </div>
+                            <hr />
+                            <div class="pl-4 pt-4 pb-4">
+                                <p v-if="showIsOpen === false">
+                                    Attraction
+                                    <span class="text-red-500">fermée</span>
+                                </p>
+                                <p v-if="showIsOpen === true">
+                                    Attraction
+                                    <span class="text-green-500">ouverte</span
+                                    >ouverte
+                                </p>
+                            </div>
+                        </div>
+                        <div v-if="isAvisSelected">
+                            <div
+                                class="pt-4"
+                                v-for="data in showRatingAttraction"
+                            >
+                                {{ data.rating }}/5
+                            </div>
+                            <div
+                                class="pb-4"
+                                v-for="data in showCommentAttraction"
+                            >
+                                {{ data.content }}
+                            </div>
+                            <hr />
+                            <div class="flex justify-center pt-4">
+                                <button
+                                    class="px-4 py-2 border hover:bg-gray-200 text-black rounded-full"
+                                    @click="showRatingModal"
+                                >
+                                    Rédiger un avis
                                 </button>
                             </div>
                         </div>
@@ -727,3 +866,10 @@ const RemoveFav = () => {
         <div id="map" class="h-full z-[1]"></div>
     </div>
 </template>
+
+<style scoped>
+.selected {
+    border-bottom: 2px solid blue;
+    border-bottom-width: ;
+}
+</style>
