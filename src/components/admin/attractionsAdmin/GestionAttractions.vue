@@ -30,11 +30,10 @@ const choixParc = () => {
 
     //On récup les attractions du parc choisit
     attractionsStore.fetchAttractionsParc(idParc);
-    setTimeout(() => {
-        const attractions = computed(() => attractionsStore.getAttractions);
 
-        attraction.value = attractions.value;
-    }, 300);
+    const attractions = computed(() => attractionsStore.getAttractions);
+
+    attraction.value = attractions.value;
 
     //On récup les notes de chaque attraction
 };
@@ -97,8 +96,26 @@ const role = tokenDecode.value.role;
                     </div>
                 </div>
 
-                <div class="mt-4 flex flex-col container mx-auto">
-                    <div class="overflow-x-auto">
+                <div
+                    v-if="parc !== ''"
+                    class="mt-4 flex flex-col container mx-auto"
+                >
+                    <div
+                        v-if="attraction.length === 0"
+                        class="text-center text-5xl pt-10"
+                    >
+                        <h2>Aucune attraction n'a encore été créée !</h2>
+                        <div class="pt-10">
+                            <button
+                                class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
+                            >
+                                <RouterLink :to="{ name: 'attractionform' }"
+                                    >Ajouter une attraction</RouterLink
+                                >
+                            </button>
+                        </div>
+                    </div>
+                    <div v-if="attraction.length !== 0" class="overflow-x-auto">
                         <div
                             class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
                         >
