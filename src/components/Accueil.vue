@@ -712,7 +712,7 @@ const goToPark = () => {
                         <div v-if="isPresentationSelected" class="pt-8">
                             <hr class="pt-4" />
                             <p
-                                class="text-sm flex justify-center text-justify pb-4"
+                                class="text-sm flex justify-center text-justify pb-4 px-10"
                             >
                                 {{ showDescription }}
                             </p>
@@ -745,6 +745,7 @@ const goToPark = () => {
                                 </p>
                                 <p v-if="showWaitTime !== 0">
                                     Temps d'attente moyen dans cet attraction :
+                                    {{ showWaitTime }}
                                     <span
                                         class="text-green-500"
                                         v-if="showWaitTime < 20"

@@ -82,7 +82,7 @@ const sortTable = (field) => {
 <template>
     <div>
         <div class="pt-10">
-            <h1 class="text-center text-4xl">Best Attractions</h1>
+            <h1 class="text-center text-4xl">Meilleur attraction</h1>
             <p class="text-center text-lg pt-2">
                 Ici se trouve le classement des meilleurs attractions de chaque
                 parc
@@ -194,9 +194,22 @@ const sortTable = (field) => {
                                             Ouverte
                                         </td>
                                         <td
+                                            v-if="
+                                                averageRatings[data.id] !==
+                                                '0.00'
+                                            "
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             {{ averageRatings[data.id] }}
+                                        </td>
+                                        <td
+                                            v-if="
+                                                averageRatings[data.id] ===
+                                                '0.00'
+                                            "
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            Pas de note disponible
                                         </td>
                                     </tr>
                                 </tbody>
