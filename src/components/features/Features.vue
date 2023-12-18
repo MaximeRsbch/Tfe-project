@@ -90,7 +90,10 @@ const choixParc = () => {
         </div>
 
         <div v-if="isConnect">
-            <div class="text-center pt-20" v-if="article.length == 0">
+            <div
+                class="text-center pt-20"
+                v-if="article.length == 0 && parc !== ''"
+            >
                 <h2 class="text-2xl">
                     Aucun article n'est disponible pour ce parc
                 </h2>
