@@ -71,7 +71,7 @@ setTimeout(() => {
                 </button>
             </div>
         </div>
-        <div v-if="role === 'admin' || role === 'modo'">
+        <div v-if="role === 'admin' || role === 'modoParc'">
             <div v-if="parcs.length > 0">
                 <h1 class="text-center pt-10 text-4xl">Gestion des parcs</h1>
                 <p class="text-center pb-10 text-2xl">
@@ -147,7 +147,10 @@ setTimeout(() => {
                                                 </a>
                                             </th>
                                             <th
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
                                                 scope="col"
                                                 class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                             >
@@ -158,7 +161,10 @@ setTimeout(() => {
                                                 </a>
                                             </th>
                                             <th
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
                                                 scope="col"
                                                 class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                             >
@@ -208,7 +214,7 @@ setTimeout(() => {
                                             </td>
                                             <td
                                                 v-if="
-                                                    role === 'admin' &&
+                                                    role === 'admin' ||
                                                     parc.id === usersModoParc
                                                 "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
@@ -233,7 +239,7 @@ setTimeout(() => {
                                             </td>
                                             <td
                                                 v-if="
-                                                    role === 'admin' &&
+                                                    role === 'admin' ||
                                                     parc.id === usersModoParc
                                                 "
                                                 class="whitespace-nowrap py-4 pr-10 text-base"

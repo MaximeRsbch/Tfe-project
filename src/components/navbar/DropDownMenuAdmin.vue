@@ -1,6 +1,8 @@
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { useRouter } from "vue-router";
+import { computed } from "vue";
+import jwtDecode from "jwt-decode";
 
 const router = useRouter();
 
@@ -33,6 +35,16 @@ const goToTickets = () => {
         name: "tickets",
     });
 };
+
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const role = computed(() => {
+    if (isConnect.value) {
+        const token = localStorage.getItem("savedToken");
+        const decoded = jwtDecode(token);
+        return decoded.role;
+    }
+});
 </script>
 <template>
     <Menu as="div" class="relative inline-block text-left">
@@ -82,7 +94,10 @@ const goToTickets = () => {
                             Gestion users
                         </button>
                     </MenuItem>
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem
+                        v-slot="{ active }"
+                        v-if="role === 'admin' || role === 'modoParc'"
+                    >
                         <button
                             @click="goToParcs"
                             type="button"
@@ -96,7 +111,10 @@ const goToTickets = () => {
                             Gestion parcs
                         </button>
                     </MenuItem>
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem
+                        v-slot="{ active }"
+                        v-if="role === 'admin' || role === 'modoParc'"
+                    >
                         <button
                             @click="goToAttractions"
                             type="button"
@@ -110,7 +128,10 @@ const goToTickets = () => {
                             Gestion attractions
                         </button>
                     </MenuItem>
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem
+                        v-slot="{ active }"
+                        v-if="role === 'modo' || role === 'admin'"
+                    >
                         <button
                             @click="goToArticles"
                             type="button"
@@ -124,7 +145,10 @@ const goToTickets = () => {
                             Gestion articles
                         </button>
                     </MenuItem>
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem
+                        v-slot="{ active }"
+                        v-if="role === 'modo' || role === 'admin'"
+                    >
                         <button
                             @click="goToTickets"
                             type="button"

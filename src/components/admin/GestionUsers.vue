@@ -212,7 +212,7 @@ const role = tokenDecode.value.role;
 </script>
 <template>
     <div class="container mx-auto">
-        <div v-if="role === 'admin' || role === 'modo'">
+        <div v-if="role === 'admin' || role === 'modo' || role === 'modoParc'">
             <h1 class="text-center pt-10 text-4xl">Gestion des utilisateurs</h1>
             <p class="text-center pb-10 text-2xl">
                 Ici sont affichés tous les utilisateurs pour les modérer
@@ -383,7 +383,10 @@ const role = tokenDecode.value.role;
                                         </td>
 
                                         <td
-                                            v-if="role === 'admin'"
+                                            v-if="
+                                                role === 'admin' ||
+                                                role === 'modoParc'
+                                            "
                                             class="whitespace-nowrap py-4 pr-5 text-base"
                                         >
                                             <button
@@ -473,28 +476,39 @@ const role = tokenDecode.value.role;
                                         class="fa-regular fa-circle-xmark flex justify-end"
                                     ></i>
 
-                                    <div class="flex justify-center pb-5">
-                                        <h2 class="text-2xl">Signaler</h2>
+                                    <div class="flex justify-center pb-4">
+                                        <h2 class="text-2xl">Promotion</h2>
                                     </div>
 
-                                    <div>
+                                    <div class="pb-4">
                                         <p>
                                             Veuiller selectionner un parc pour
-                                            le quel l'utilisateur sera
-                                            Modérateur
+                                            lequel l'utilisateur sera
+                                            modérateur.
                                         </p>
                                     </div>
 
                                     <div class="grid grid-cols-2">
-                                        <label for="">id de l'user :</label>
                                         <p>
-                                            {{ usersId }}
+                                            id de l'user :
+                                            <span>{{ usersId }}</span>
+                                        </p>
+                                        <p>
+                                            Pseudo :
+                                            <span>{{ username }}</span>
                                         </p>
                                     </div>
-                                    {{ username }}
-                                    {{ email }}
-                                    {{ roleUser }}
 
+                                    <div class="grid grid-cols-2 pt-4 pb-4">
+                                        <p>
+                                            Email : <span>{{ email }}</span>
+                                        </p>
+                                        <p>
+                                            Role : <span>{{ roleUser }}</span>
+                                        </p>
+                                    </div>
+
+                                    <p>A quel parc voulez-vous le relier ?</p>
                                     <select
                                         @change="changeParcValue"
                                         id="ref_parc"
@@ -543,28 +557,39 @@ const role = tokenDecode.value.role;
                                         class="fa-regular fa-circle-xmark flex justify-end"
                                     ></i>
 
-                                    <div class="flex justify-center pb-5">
-                                        <h2 class="text-2xl">Signaler</h2>
+                                    <div class="flex justify-center pb-4">
+                                        <h2 class="text-2xl">Promotion</h2>
                                     </div>
 
-                                    <div>
+                                    <div class="pb-4">
                                         <p>
                                             Veuiller selectionner un parc pour
-                                            le quel l'utilisateur sera
-                                            Modérateur de Parc
+                                            lequel l'utilisateur sera modérateur
+                                            de Parc
                                         </p>
                                     </div>
 
                                     <div class="grid grid-cols-2">
-                                        <label for="">id de l'user :</label>
                                         <p>
-                                            {{ usersId }}
+                                            id de l'user :
+                                            <span>{{ usersId }}</span>
+                                        </p>
+                                        <p>
+                                            Pseudo :
+                                            <span>{{ username }}</span>
                                         </p>
                                     </div>
-                                    {{ username }}
-                                    {{ email }}
-                                    {{ roleUser }}
 
+                                    <div class="grid grid-cols-2 pt-4 pb-4">
+                                        <p>
+                                            Email : <span>{{ email }}</span>
+                                        </p>
+                                        <p>
+                                            Role : <span>{{ roleUser }}</span>
+                                        </p>
+                                    </div>
+
+                                    <p>A quel parc voulez-vous le relier ?</p>
                                     <select
                                         @change="changeParcValue"
                                         id="ref_parc"
@@ -579,7 +604,7 @@ const role = tokenDecode.value.role;
                                         </option>
                                     </select>
 
-                                    <div class="flex justify-end pt-2">
+                                    <div class="flex justify-end pt-4">
                                         <button
                                             @click="
                                                 giveRoleModoParc(
@@ -602,7 +627,7 @@ const role = tokenDecode.value.role;
                 </div>
             </div>
         </div>
-        <div v-if="role !== 'admin'">
+        <div v-if="role !== 'admin' || role !== 'modo' || role !== 'modoParc'">
             <h2>
                 Bien essayer, vous êtes pas connecter pour accéder à cette page
             </h2>

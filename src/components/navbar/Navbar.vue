@@ -23,6 +23,8 @@ const role = computed(() => {
     }
 });
 
+console.log(role.value);
+
 const router = useRouter();
 
 const goToLogin = () => {
@@ -70,7 +72,13 @@ const goToAdminPannel = () => {
                         <DropDownMenuCompte v-if="isConnect" />
 
                         <div>
-                            <DropDownMenuAdmin v-if="role === 'admin'" />
+                            <DropDownMenuAdmin
+                                v-if="
+                                    role === 'admin' ||
+                                    role === 'modo' ||
+                                    role === 'modoParc'
+                                "
+                            />
                         </div>
                     </ul>
 

@@ -69,7 +69,7 @@ const role = tokenDecode.value.role;
                 </button>
             </div>
         </div>
-        <div v-if="role === 'admin' || role === 'modo'">
+        <div v-if="role === 'admin' || role === 'modoParc'">
             <div v-if="attractions.length > 0">
                 <h1 class="text-center pt-10 text-4xl">
                     Gestion des attractions
@@ -174,7 +174,10 @@ const role = tokenDecode.value.role;
                                             </th>
 
                                             <th
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
                                                 scope="col"
                                                 class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                             >
@@ -185,7 +188,10 @@ const role = tokenDecode.value.role;
                                                 </a>
                                             </th>
                                             <th
-                                                v-if="role === 'admin'"
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
                                                 scope="col"
                                                 class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                             >
@@ -254,7 +260,7 @@ const role = tokenDecode.value.role;
 
                                             <td
                                                 v-if="
-                                                    role === 'admin' &&
+                                                    role === 'admin' ||
                                                     data.ref_parc ===
                                                         usersModoParc
                                                 "
@@ -278,7 +284,7 @@ const role = tokenDecode.value.role;
                                             </td>
                                             <td
                                                 v-if="
-                                                    role === 'admin' &&
+                                                    role === 'admin' ||
                                                     data.ref_parc ===
                                                         usersModoParc
                                                 "

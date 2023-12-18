@@ -26,11 +26,20 @@ async function createUsers() {
             "Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
         );
     } else {
+        Swal.fire({
+            title: "Inscription réussie !",
+            text: "Vous pouvez désormais vous connecter",
+            icon: "success",
+            confirmButtonText: "Cool !",
+        });
         const body = await usersStore.createUser(
             password.value,
             email.value,
             username.value
         );
+        setTimeout(() => {
+            router.push({ name: "login" });
+        }, 300);
     }
 }
 
