@@ -119,7 +119,7 @@ const reportComment = () => {
         alert("Vous devez écrire un commentaire");
         return;
     } else {
-        ticketsStore.createTickets(
+        ticketsStore.createReport(
             title.value,
             contentReport.value,
             articleCom.value.ref_user,

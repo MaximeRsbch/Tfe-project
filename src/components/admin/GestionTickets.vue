@@ -2,20 +2,87 @@
 import { computed, onMounted, ref } from "vue";
 import jwtDecode from "jwt-decode";
 import { useTicketsModStore } from "../../stores/ticketsmod.js";
+import Swal from "sweetalert2";
 
 const ticketsModStore = useTicketsModStore();
 
-onMounted(() => {
-    ticketsModStore.fetchTickets();
-});
+const contact = computed(() => ticketsModStore.getContact);
 
-const tickets = computed(() => ticketsModStore.getTickets);
+const report = computed(() => ticketsModStore.getReport);
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
+
+const typeTicket = ref("");
+
+const typeContact = ref(false);
+const typeReport = ref(false);
+
+const choixTicket = () => {
+    if (typeTicket.value === "Ticket de contact") {
+        ticketsModStore.fetchContact();
+        typeContact.value = true;
+        typeReport.value = false;
+    } else if (typeTicket.value === "Ticket de report") {
+        ticketsModStore.fetchReport();
+        typeReport.value = true;
+        typeContact.value = false;
+    }
+};
+
+const deleteContact = (id) => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ticketsModStore.deleteContact(id);
+            Swal.fire(
+                "Supprimé !",
+                "Le ticket a bien été supprimé.",
+                "success"
+            );
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Annulé", "Le ticket n'a pas été supprimé :)", "error");
+        }
+    });
+};
+
+const deleteReport = (id) => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ticketsModStore.deleteReport(id);
+
+            Swal.fire(
+                "Supprimé !",
+                "Le ticket a bien été supprimé.",
+                "success"
+            );
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Annulé", "Le ticket n'a pas été supprimé :)", "error");
+        }
+    });
+};
 </script>
 <template>
     <div v-if="role === 'admin' || role === 'modo'">
@@ -25,12 +92,25 @@ const role = tokenDecode.value.role;
                 Ici sont affichés tous les tickets pour les gérer
             </p>
 
+            <div class="flex justify-center">
+                <select
+                    v-model="typeTicket"
+                    @change="choixTicket"
+                    id="parc"
+                    class="block px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-[#344d59] focus:ring-[#344d59] focus:ring-opacity-40 focus:outline-none focus:ring"
+                >
+                    <option>Ticket de contact</option>
+                    <option>Ticket de report</option>
+                </select>
+            </div>
+
             <div class="mt-4 flex flex-col container mx-auto">
                 <div class="overflow-x-auto">
                     <div
                         class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
                     >
                         <div
+                            v-if="typeContact"
                             class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
                         >
                             <table class="min-w-full divide-y divide-gray-300">
@@ -43,7 +123,7 @@ const role = tokenDecode.value.role;
                                             <a
                                                 class="group inline-flex text-base"
                                             >
-                                                Nom de l'attraction
+                                                Titre du ticket
                                             </a>
                                         </th>
 
@@ -77,16 +157,6 @@ const role = tokenDecode.value.role;
                                                 Adresse Mail de l'auteur
                                             </a>
                                         </th>
-                                        <!-- <th
-                                            scope="col"
-                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                        >
-                                            <a
-                                                class="group inline-flex text-base"
-                                            >
-                                                Sujet du ticket
-                                            </a>
-                                        </th> -->
 
                                         <th
                                             v-if="role === 'admin'"
@@ -117,15 +187,15 @@ const role = tokenDecode.value.role;
                                 >
                                     <!--Affiche les info de tous les users-->
                                     <tr
-                                        v-for="ticket in tickets"
-                                        :key="ticket.id"
+                                        v-for="data in contact"
+                                        :key="data.id"
                                         class="hover:bg-gray-100"
                                     >
                                         <div>
                                             <td
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                {{ ticket.title }}
+                                                {{ data.title }}
                                             </td>
                                         </div>
                                         <td
@@ -136,81 +206,203 @@ const role = tokenDecode.value.role;
                                                 rows="3"
                                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                                                 >{{
-                                                    ticket.description
+                                                    data.description
                                                 }}</textarea
                                             >
                                         </td>
                                         <td
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            {{ ticket.User.username }}
+                                            {{ data.User.username }}
                                         </td>
                                         <td
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            {{ ticket.User.email }}
+                                            {{ data.User.email }}
                                         </td>
-                                        <!-- <td
-                                            v-if="
-                                                ticket.ref_commentArticles ==
-                                                    null &&
-                                                ticket.ref_commentAttr == null
-                                            "
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            Aucun sujet n'a été trouvé
-                                        </td> -->
-                                        <!-- <td
-                                            v-if="
-                                                ticket.ref_commentAttr === null
-                                            "
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            {{ ticket.CommentArticle }}
-                                        </td> -->
-                                        <!-- <td
-                                            v-if="
-                                                ticket.ref_commentArticles ===
-                                                null
-                                            "
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            {{ ticket.CommentAttr }}
-                                        </td> -->
 
                                         <td
                                             v-if="role === 'admin'"
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            <button @click="" type="button">
-                                                <div class="image-container">
-                                                    <img
-                                                        class="w-5 md:w-5 lg:w-full"
-                                                        src="/assets/img/poubelle.png"
-                                                        alt="poubelleImg"
-                                                    />
-                                                    <div class="tooltip">
-                                                        Supprimer attractions
-                                                    </div>
-                                                </div>
+                                            <button
+                                                @click="deleteContact(data.id)"
+                                                type="button"
+                                            >
+                                                <img
+                                                    class="w-5 md:w-5 lg:w-full"
+                                                    src="/assets/img/poubelle.png"
+                                                    alt="poubelleImg"
+                                                />
                                             </button>
                                         </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div
+                            v-if="typeReport"
+                            class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
+                        >
+                            <table class="min-w-full divide-y divide-gray-300">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th
+                                            scope="col"
+                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Titre du ticket
+                                            </a>
+                                        </th>
+
+                                        <th
+                                            scope="col"
+                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Description
+                                            </a>
+                                        </th>
+
+                                        <th
+                                            scope="col"
+                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Adresse Mail de l'auteur
+                                            </a>
+                                        </th>
+
+                                        <th
+                                            scope="col"
+                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Type de commentaire
+                                            </a>
+                                        </th>
+
+                                        <th
+                                            scope="col"
+                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Commentaire signaler
+                                            </a>
+                                        </th>
+
+                                        <th
+                                            v-if="role === 'admin'"
+                                            scope="col"
+                                            class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                        >
+                                            <a
+                                                class="group inline-flex text-base"
+                                            >
+                                                Suppression ticket
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="divide-y divide-gray-200 bg-white"
+                                >
+                                    <!--Affiche les info de tous les users-->
+                                    <tr
+                                        v-for="data in report"
+                                        :key="data.id"
+                                        class="hover:bg-gray-100"
+                                    >
+                                        <div>
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                {{ data.title }}
+                                            </td>
+                                        </div>
+                                        <td
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            <textarea
+                                                disabled
+                                                rows="3"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                                >{{
+                                                    data.description
+                                                }}</textarea
+                                            >
+                                        </td>
+
+                                        <td
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            {{ data.User.email }}
+                                        </td>
+                                        <td
+                                            v-if="data.ref_commentAttr == null"
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            Article
+                                        </td>
+                                        <td
+                                            v-if="
+                                                data.ref_commentArticles == null
+                                            "
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            Attraction
+                                        </td>
+
+                                        <td
+                                            v-if="
+                                                data.ref_commentArticles == null
+                                            "
+                                        >
+                                            <textarea
+                                                disabled
+                                                rows="3"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                                >{{
+                                                    data.CommentAttraction
+                                                        .content
+                                                }}</textarea
+                                            >
+                                        </td>
+                                        <td v-if="data.ref_commentAttr == null">
+                                            <textarea
+                                                disabled
+                                                rows="3"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                                >{{
+                                                    data.CommentArticle.content
+                                                }}</textarea
+                                            >
+                                        </td>
+
                                         <td
                                             v-if="role === 'admin'"
-                                            class="whitespace-nowrap py-4 pr-10 text-base"
+                                            class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            <button type="button">
-                                                <div class="image-container">
-                                                    <img
-                                                        class="w-5 md:w-5 lg:w-full"
-                                                        src="/assets/img/modif.png"
-                                                        alt="modoPImg"
-                                                    />
-
-                                                    <div class="tooltip">
-                                                        Modifier Attractions
-                                                    </div>
-                                                </div>
+                                            <button
+                                                @click="deleteReport(data.id)"
+                                                type="button"
+                                            >
+                                                <img
+                                                    class="w-10 md:w-10 lg:w-full"
+                                                    src="/assets/img/poubelle.png"
+                                                    alt="poubelleImg"
+                                                />
                                             </button>
                                         </td>
                                     </tr>

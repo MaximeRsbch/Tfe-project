@@ -5,10 +5,6 @@ import { useTicketsModStore } from "../stores/ticketsmod.js";
 
 const ticketsModStore = useTicketsModStore();
 
-onMounted(() => {
-    ticketsModStore.fetchTickets();
-});
-
 //Empecher l'accès à la page si l'utilisateur n'est pas connecté
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -20,7 +16,7 @@ const title = ref("");
 const description = ref("");
 
 const createContact = () => {
-    ticketsModStore.createTickets(title.value, description.value, id.value);
+    ticketsModStore.createContact(title.value, description.value, id.value);
 };
 </script>
 
