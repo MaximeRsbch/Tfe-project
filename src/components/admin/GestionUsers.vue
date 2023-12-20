@@ -462,7 +462,7 @@ const role = tokenDecode.value.role;
                             </table>
                         </div>
                         <div
-                            class="flex justify-center items-center scroll-auto"
+                            class="flex md:justify-center items-center scroll-auto"
                         >
                             <div
                                 v-if="modalModo"
@@ -543,7 +543,7 @@ const role = tokenDecode.value.role;
                             </div>
                         </div>
                         <div
-                            class="flex justify-center items-center scroll-auto"
+                            class="flex md:justify-center items-center scroll-auto"
                         >
                             <div
                                 v-if="modalModoP"
@@ -627,7 +627,7 @@ const role = tokenDecode.value.role;
                 </div>
             </div>
         </div>
-        <div v-if="role !== 'admin' || role !== 'modo' || role !== 'modoParc'">
+        <div v-if="role === 'user'">
             <h2>
                 Bien essayer, vous êtes pas connecter pour accéder à cette page
             </h2>

@@ -28,6 +28,8 @@ onMounted(() => {
         )
         .addTo(map);
 
+    map.zoomControl.remove();
+
     parcsStore.fetchQueuetimeParc();
 });
 
@@ -191,7 +193,7 @@ const removeResult = () => {
 
         <form @submit.prevent="createParc">
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div>
+                <div class="hidden">
                     <label class="text-gray-700" for="id">Id du parc</label>
                     <input
                         v-if="id == ''"

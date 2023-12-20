@@ -761,9 +761,11 @@ const reportComment = () => {
                             <div class="grid grid-cols-2 pt-4">
                                 <div class="flex justify-end">
                                     <img
+                                        title="Informations sur la hauteur seule"
                                         class="h-16 w-16"
                                         src="/assets/img/seul.png"
                                         alt=""
+                                        id="imageAlone"
                                     />
                                 </div>
                                 <p class="pt-3">{{ showHeightAlone }} cm</p>
@@ -771,9 +773,11 @@ const reportComment = () => {
                             <div class="grid grid-cols-2 pt-4 pb-4">
                                 <div class="flex justify-end">
                                     <img
+                                        title="Informations sur la hauteur avec un adulte"
                                         class="h-16 w-16"
                                         src="/assets/img/accompgne.png"
                                         alt=""
+                                        id="imageWithAdult"
                                     />
                                 </div>
                                 <p class="pt-3">{{ showHeightWithAdult }} cm</p>

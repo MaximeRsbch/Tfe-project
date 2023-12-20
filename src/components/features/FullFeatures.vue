@@ -146,13 +146,13 @@ const reportComment = () => {
             v-if="articles.img_url"
             :src="`${BASE_URL}/${articles.img_url.replace(/\\/g, '/')}`"
             alt="Article Image"
-            class="max-w-lg mt-4"
+            class="md:max-w-lg mt-4"
         />
     </div>
     <!-- Récupère et affiche les informations de l'image spécifique-->
     <div class="mx-auto container max-w-4xl">
         <div>
-            <h1 class="text-center text-4xl pt-4">
+            <h1 class="text-center md:text-4xl text-3xl pt-4">
                 {{ articles.title }}
             </h1>
             <div class="flex justify-center">
@@ -163,7 +163,7 @@ const reportComment = () => {
         </div>
     </div>
     <div class="flex justify-center pt-20">
-        <h2 class="text-4xl">Espace commentaire</h2>
+        <h2 class="md:text-4xl text-2xl">Espace commentaire</h2>
     </div>
     <div class="pt-10">
         <div
@@ -174,17 +174,17 @@ const reportComment = () => {
                 <div v-for="donne in data">
                     <h3
                         v-if="donne.id == test.ref_user"
-                        class="text-l font-semibold"
+                        class="text-l font-semibold pl-4 md:pl-0"
                     >
                         {{ donne.username }}
                     </h3>
                 </div>
             </div>
-            <div class="flex justify-start mt-2">
+            <div class="flex justify-start mt-2 pl-4 max-w-lg md:max-w-3xl">
                 {{ test.content }}
             </div>
             <div class="grid grid-cols-2 mt-5">
-                <div>
+                <div class="text-sm pl-4 md:pl-0">
                     {{ test.createdAt }}
                 </div>
                 <div>

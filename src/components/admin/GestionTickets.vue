@@ -169,17 +169,6 @@ const deleteReport = (id) => {
                                                 Suppression attraction
                                             </a>
                                         </th>
-                                        <th
-                                            v-if="role === 'admin'"
-                                            scope="col"
-                                            class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                        >
-                                            <a
-                                                class="group inline-flex text-base"
-                                            >
-                                                Modifier attraction
-                                            </a>
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody
@@ -399,7 +388,7 @@ const deleteReport = (id) => {
                                                 type="button"
                                             >
                                                 <img
-                                                    class="w-10 md:w-10 lg:w-full"
+                                                    class="w-5 md:w-5 lg:w-full"
                                                     src="/assets/img/poubelle.png"
                                                     alt="poubelleImg"
                                                 />

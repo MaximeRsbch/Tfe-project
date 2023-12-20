@@ -71,10 +71,10 @@ const role = tokenDecode.value.role;
         </div>
         <div v-if="role === 'admin' || role === 'modoParc'">
             <div v-if="attractions.length > 0">
-                <h1 class="text-center pt-10 text-4xl">
+                <h1 class="text-center pt-10 md:text-4xl text-3xl">
                     Gestion des attractions
                 </h1>
-                <p class="text-center pb-10 text-2xl">
+                <p class="text-center pb-10 md:text-2xl text-xl">
                     Ici sont affichés tous les attractions pour les gérer
                 </p>
 
@@ -117,10 +117,10 @@ const role = tokenDecode.value.role;
                     </div>
                     <div v-if="attraction.length !== 0" class="overflow-x-auto">
                         <div
-                            class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
+                            class="inline-block min-w-full py-2 align-middle md:px-6 md:flex lg:px-8"
                         >
                             <div
-                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
+                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md md:w-1/3 md:pr-4"
                             >
                                 <table
                                     class="min-w-full divide-y divide-gray-300"
@@ -207,6 +207,7 @@ const role = tokenDecode.value.role;
                                         class="divide-y divide-gray-200 bg-white"
                                     >
                                         <!--Affiche les info de tous les users-->
+
                                         <tr
                                             v-for="data in attraction"
                                             :key="data.id"
@@ -215,7 +216,8 @@ const role = tokenDecode.value.role;
                                             <td
                                                 v-if="
                                                     data.ref_parc ===
-                                                    usersModoParc
+                                                        usersModoParc ||
+                                                    role === 'admin'
                                                 "
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-6"
                                             >
@@ -225,7 +227,8 @@ const role = tokenDecode.value.role;
                                                 <td
                                                     v-if="
                                                         data.ref_parc ===
-                                                        usersModoParc
+                                                            usersModoParc ||
+                                                        role === 'admin'
                                                     "
                                                     class="whitespace-nowrap px-3 py-4 text-base"
                                                 >
@@ -235,7 +238,8 @@ const role = tokenDecode.value.role;
                                             <td
                                                 v-if="
                                                     data.ref_parc ===
-                                                    usersModoParc
+                                                        usersModoParc ||
+                                                    role === 'admin'
                                                 "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
@@ -251,7 +255,8 @@ const role = tokenDecode.value.role;
                                             <td
                                                 v-if="
                                                     data.ref_parc ===
-                                                    usersModoParc
+                                                        usersModoParc ||
+                                                    role === 'admin'
                                                 "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >

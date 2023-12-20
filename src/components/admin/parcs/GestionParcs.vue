@@ -73,8 +73,10 @@ setTimeout(() => {
         </div>
         <div v-if="role === 'admin' || role === 'modoParc'">
             <div v-if="parcs.length > 0">
-                <h1 class="text-center pt-10 text-4xl">Gestion des parcs</h1>
-                <p class="text-center pb-10 text-2xl">
+                <h1 class="text-center pt-10 md:text-4xl text-3xl">
+                    Gestion des parcs
+                </h1>
+                <p class="text-center pb-10 text-xl">
                     Ici sont affichés tous les parcs pour les gérer
                 </p>
 
