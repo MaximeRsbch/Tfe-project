@@ -339,8 +339,7 @@ const plotInfoParc = () => {
                     const averageWaitTime = calculateAverageWaitTime(
                         parc.Attractions
                     );
-                    console.log(averageWaitTime);
-                    console.log(parc.Attractions.length);
+
                     showpeople.value = averageWaitTime;
                 });
         }
@@ -413,6 +412,14 @@ const plotInfoAttraction = () => {
                         const commentAttr = computed(
                             () => attractionstore.getCommentAttraction
                         );
+                        for (let i = 0; i < commentAttr.value.length; i++) {
+                            if (commentAttr.value[i].id == id) {
+                                showCommentAttraction.value =
+                                    commentAttr.value[i];
+                                console.log(showCommentAttraction.value);
+                            }
+                            console.log(commentAttr.value[i].id);
+                        }
                         const ratingAttr = computed(
                             () => attractionstore.getRatingStarAttraction
                         );
@@ -520,6 +527,40 @@ const goToPark = () => {
     window.open(
         `https://www.google.com/maps/dir/?api=1&destination=${latitude.value},${longitude.value}`
     );
+};
+
+const title = ref("");
+const contentReport = ref("");
+const ref_user = ref("");
+
+const ModalReport = ref(false);
+
+const openModalReport = () => {
+    ModalReport.value = true;
+};
+
+const removeModalReport = () => {
+    document.body.style.overflow = "auto";
+    ModalReport.value = false;
+};
+
+const reportComment = () => {
+    if (title.value == "") {
+        alert("Vous devez écrire un titre");
+        return;
+    }
+    if (contentReport.value == "") {
+        alert("Vous devez écrire un commentaire");
+        return;
+    } else {
+        ticketsStore.createReport(
+            title.value,
+            contentReport.value,
+            id,
+            null,
+            articleCom.value.id
+        );
+    }
 };
 </script>
 
@@ -777,19 +818,46 @@ const goToPark = () => {
                             </div>
                         </div>
                         <div v-if="isAvisSelected">
-                            <div
-                                class="pt-4"
-                                v-for="data in showRatingAttraction"
-                            >
-                                {{ data.rating }}/5
+                            <div class="pl-4">
+                                <div
+                                    class="pt-6"
+                                    v-for="data in showRatingAttraction"
+                                >
+                                    <p>{{ data.User.username }}</p>
+                                    <p class="text-sm">{{ data.rating }}/5</p>
+                                </div>
+                                <div
+                                    class="pb-4"
+                                    v-for="data in showCommentAttraction"
+                                >
+                                    {{ data.content }}
+                                </div>
                             </div>
-                            <div
-                                class="pb-4"
-                                v-for="data in showCommentAttraction"
-                            >
-                                {{ data.content }}
+
+                            <div class="flex justify-end pr-2">
+                                <button
+                                    @click=""
+                                    class="bg-[#344D59] text-white rounded-md px-4 py-1"
+                                >
+                                    Delete
+                                </button>
+
+                                <button @click="openModalReport" class="ml-4">
+                                    Report
+                                </button>
                             </div>
-                            <hr />
+
+                            <div class="relative pt-6">
+                                <div
+                                    class="absolute inset-0 flex items-center"
+                                    aria-hidden="true"
+                                >
+                                    <div
+                                        class="w-full border-t border-gray-300"
+                                    />
+                                </div>
+                            </div>
+
                             <div class="flex justify-center pt-4">
                                 <button
                                     class="px-4 py-2 border hover:bg-gray-200 text-black rounded-full"
@@ -808,6 +876,53 @@ const goToPark = () => {
                     </h2>
                 </div>
                 <p class="text-xs mb-1"></p>
+            </div>
+        </div>
+
+        <div
+            v-if="ModalReport"
+            class="h-screen w-full absolute z-10 flex justify-center items-center bg-black/50"
+        >
+            <div class="bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md">
+                <i
+                    @click="removeModalReport"
+                    class="fa-regular fa-circle-xmark flex justify-end"
+                ></i>
+
+                <div class="flex justify-center pb-5">
+                    <h2 class="text-2xl">Signaler</h2>
+                </div>
+
+                <div class="mx-auto container max-w-xl pb-10">
+                    <input
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        v-model="title"
+                        placeholder="Raison du signalement"
+                        type="text"
+                    />
+                </div>
+
+                <div class="mx-auto container max-w-xl pb-10">
+                    <textarea
+                        id="content"
+                        v-model="contentReport"
+                        placeholder="Donner votre avis sur cet attraction ;)"
+                        minlength="10"
+                        maxlength="500"
+                        rows="5"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    />
+                </div>
+
+                <div class="flex justify-end">
+                    <button
+                        @click="reportComment"
+                        type="button"
+                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                    >
+                        Report
+                    </button>
+                </div>
             </div>
         </div>
 

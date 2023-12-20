@@ -153,6 +153,7 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.commentsDict = res.data.data;
+                console.log(res.data.data);
             });
         },
 

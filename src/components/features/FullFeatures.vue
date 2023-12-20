@@ -27,6 +27,7 @@ setTimeout(() => {
     for (let i = 0; i < articleCommentaire.value.length; i++) {
         if (articleCommentaire.value[i].id == id) {
             articleCom.value = articleCommentaire.value[i];
+            console.log(articleCom.value);
         }
     }
 }, 200);
