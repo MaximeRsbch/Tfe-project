@@ -380,7 +380,6 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
-            console.log(attraction);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -416,9 +415,7 @@ const plotInfoAttraction = () => {
                             if (commentAttr.value[i].id == id) {
                                 showCommentAttraction.value =
                                     commentAttr.value[i];
-                                console.log(showCommentAttraction.value);
                             }
-                            console.log(commentAttr.value[i].id);
                         }
                         const ratingAttr = computed(
                             () => attractionstore.getRatingStarAttraction

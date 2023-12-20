@@ -30,8 +30,8 @@ const deleteArticle = (id) => {
                 <button
                     class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
                 >
-                    <RouterLink :to="{ name: 'attractionform' }"
-                        >Ajouter une attraction</RouterLink
+                    <RouterLink :to="{ name: 'addArticles' }"
+                        >Ajouter un article</RouterLink
                     >
                 </button>
             </div>

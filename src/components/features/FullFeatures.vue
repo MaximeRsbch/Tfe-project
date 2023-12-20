@@ -18,6 +18,12 @@ const id = route.params.id;
 
 //Récupère l'image spécifique à l'article ouvert
 
+onMounted(() => {
+    articlesStore.fetchArticleComments(id);
+    articlesStore.fetchArticleById(id);
+    usersStore.fetchOneUser(articleCom.value);
+});
+
 const articleCom = ref("");
 
 const articleCommentaire = computed(() => articlesStore.getArticleComments);
@@ -25,9 +31,8 @@ const articleCommentaire = computed(() => articlesStore.getArticleComments);
 setTimeout(() => {
     const articleCommentaire = computed(() => articlesStore.getArticleComments);
     for (let i = 0; i < articleCommentaire.value.length; i++) {
-        if (articleCommentaire.value[i].id == id) {
+        if (articleCommentaire.value[i].ref_article == id) {
             articleCom.value = articleCommentaire.value[i];
-            console.log(articleCom.value);
         }
     }
 }, 200);
@@ -39,16 +44,9 @@ setTimeout(() => {
     for (let i = 0; i < article.value.length; i++) {
         if (article.value[i].id == id) {
             articles.value = article.value[i];
-            console.log(articles.value);
         }
     }
 }, 200);
-
-onMounted(() => {
-    articlesStore.fetchArticleComments(id);
-    articlesStore.fetchArticleById(id);
-    usersStore.fetchOneUser(articleCom.value);
-});
 
 const user = computed(() => usersStore.getUsersById);
 
@@ -123,7 +121,7 @@ const reportComment = () => {
         ticketsStore.createReport(
             title.value,
             contentReport.value,
-            articleCom.value.ref_user,
+            idUser,
             articleCom.value.id
         );
     }

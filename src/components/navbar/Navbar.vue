@@ -23,8 +23,6 @@ const role = computed(() => {
     }
 });
 
-console.log(role.value);
-
 const router = useRouter();
 
 const goToLogin = () => {

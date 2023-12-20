@@ -117,10 +117,10 @@ const role = tokenDecode.value.role;
                     </div>
                     <div v-if="attraction.length !== 0" class="overflow-x-auto">
                         <div
-                            class="inline-block min-w-full py-2 align-middle md:px-6 md:flex lg:px-8"
+                            class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
                         >
                             <div
-                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md md:w-1/3 md:pr-4"
+                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
                             >
                                 <table
                                     class="min-w-full divide-y divide-gray-300"
