@@ -125,7 +125,7 @@ export const useAttractionsStore = defineStore("attractions", {
                 this.attractionsDict = res.data;
             });
         },
-        async createRatingAttraction(id_user, id_attraction, note) {
+        async createRatingAttraction(id_user, id_attraction, note, content) {
             const response = await CapacitorHttp.request({
                 method: "POST",
                 url: `http://localhost:3000/api/reviews/`,
@@ -138,6 +138,7 @@ export const useAttractionsStore = defineStore("attractions", {
                     id_user,
                     id_attraction,
                     note,
+                    content,
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;

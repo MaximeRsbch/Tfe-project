@@ -459,15 +459,16 @@ const handleRatingSelected = (rating) => {
 };
 
 async function AddRating() {
-    attractionstore.createCommentAttraction(
-        content.value,
-        id.value,
-        showAttractionId.value
-    );
+    // attractionstore.createCommentAttraction(
+    //     content.value,
+    //     id.value,
+    //     showAttractionId.value
+    // );
     attractionstore.createRatingAttraction(
         id.value,
         showAttractionId.value,
-        etoile.value
+        etoile.value,
+        content.value
     );
 }
 
@@ -527,6 +528,10 @@ const goToPark = () => {
     window.open(
         `https://www.google.com/maps/dir/?api=1&destination=${latitude.value},${longitude.value}`
     );
+};
+
+const goToFormAttraction = () => {
+    router.push("/attractionform");
 };
 
 const title = ref("");
@@ -620,6 +625,16 @@ const reportComment = () => {
                         </div>
                         <div class="pt-4 pl-4">
                             <h1 class="text-2xl">{{ showParcName }}</h1>
+                        </div>
+                        <div class="flex justify-end pr-4">
+                            <div class="absolute z-10 top-20 left-4">
+                                <button
+                                    @click="goToFormAttraction"
+                                    class="bg-[#344d59] text-white px-4 py-2 rounded-lg"
+                                >
+                                    Ajouter une attraction
+                                </button>
+                            </div>
                         </div>
                         <div class="pb-4 flex justify-center pt-4">
                             <button @click="goToPark">
@@ -829,12 +844,7 @@ const reportComment = () => {
                                 >
                                     <p>{{ data.User.username }}</p>
                                     <p class="text-sm">{{ data.rating }}/5</p>
-                                </div>
-                                <div
-                                    class="pb-4"
-                                    v-for="data in showCommentAttraction"
-                                >
-                                    {{ data.content }}
+                                    <p>{{ data.content }}</p>
                                 </div>
                             </div>
 
