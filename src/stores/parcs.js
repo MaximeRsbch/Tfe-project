@@ -68,6 +68,7 @@ export const useParcsStore = defineStore("parcs", {
             latitude,
             longitude,
             ticketPrice,
+            img,
             legende,
             showWC,
             showResto,
@@ -78,6 +79,7 @@ export const useParcsStore = defineStore("parcs", {
                 url: "http://localhost:3000/api/parcs",
                 headers: {
                     "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                     Authorization:
                         "Bearer " + localStorage.getItem("savedToken"),
                 },
@@ -90,6 +92,7 @@ export const useParcsStore = defineStore("parcs", {
                     latitude,
                     longitude,
                     ticketPrice,
+                    img,
                     legende,
                     showWC,
                     showResto,
@@ -97,6 +100,7 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
+                console.log(res.data);
             });
         },
 

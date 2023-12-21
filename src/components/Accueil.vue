@@ -189,6 +189,7 @@ const showParcName = ref(null);
 const showParcPrice = ref(null);
 const showParcBeginHour = ref(null);
 const showParcEndHour = ref(null);
+const showParcImage = ref(null);
 const showParcLegende = ref(null);
 const showpeople = ref(null);
 const latitude = ref(null);
@@ -241,6 +242,7 @@ const plotInfoParc = () => {
         });
 
         for (const parc of parcs.value) {
+            console.log(parc.img_url);
             if (parc.showWC == true) {
                 parcstore.fetchToilettes(parc.id);
                 setTimeout(() => {
@@ -334,6 +336,7 @@ const plotInfoParc = () => {
                     showParcPrice.value = parc.ticketPrice;
                     showParcBeginHour.value = parc.beginHour;
                     showParcEndHour.value = parc.endHour;
+                    showParcImage.value = parc.img_url;
                     showParcLegende.value = parc.legende;
                     latitude.value = parc.latitude;
                     longitude.value = parc.longitude;
@@ -689,8 +692,17 @@ setTimeout(() => {
                 <div v-if="showParcResults">
                     <div v-if="isConnect">
                         <div>
-                            <img src="assets/img/walibi.jpg" alt="" />
+                            <img
+                                v-if="showParcImage"
+                                :src="`${BASE_URL}/${showParcImage.replace(
+                                    /\\/g,
+                                    '/'
+                                )}`"
+                                alt="Image parc"
+                                class="w-[408px] h-[272px]]"
+                            />
                         </div>
+
                         <div class="pt-4 pl-4">
                             <h1 class="text-2xl">{{ showParcName }}</h1>
                         </div>

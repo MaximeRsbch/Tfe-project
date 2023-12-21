@@ -69,6 +69,34 @@ const showMagasins = () => {
     magasins.value = !magasins.value;
 };
 
+const img = ref("");
+const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier
+
+const saveImageToConstant = () => {
+    // Récupérer l'élément d'entrée de fichier
+    const selectedImage = imageInput.value.files[0];
+
+    if (!selectedImage) {
+        console.log("Aucun fichier sélectionné");
+        return;
+    }
+
+    // Créer un objet FormData pour envoyer le fichier
+    const formData = new FormData();
+    formData.append("file", selectedImage);
+    formData.append("upload_preset", "vue3course");
+
+    // Stocker le fichier dans une constante
+    const imageFile = formData.get("file"); // Vous pouvez également utiliser selectedImage directement
+
+    // Ensuite, envoyez imageFile vers le store ou utilisez-le comme nécessaire
+
+    img.value = imageFile;
+
+    // Vous pouvez également réinitialiser l'élément d'entrée de fichier si nécessaire
+    imageInput.value = null;
+};
+
 async function createParc() {
     const body = await parcsStore.createParc(
         id.value,
@@ -78,6 +106,7 @@ async function createParc() {
         latitude.value,
         longitude.value,
         ticket.value,
+        img.value,
         legende.value,
         toilettes.value,
         resto.value,
@@ -336,6 +365,16 @@ const removeResult = () => {
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
+            </div>
+
+            <div class="pt-10">
+                <input
+                    id="image"
+                    type="file"
+                    ref="imageInput"
+                    @change="saveImageToConstant"
+                    class="block w-full mt-2"
+                />
             </div>
 
             <div class="pt-10">
