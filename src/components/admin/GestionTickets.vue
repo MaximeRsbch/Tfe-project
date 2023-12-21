@@ -9,10 +9,7 @@ const ticketsModStore = useTicketsModStore();
 const contact = computed(() => ticketsModStore.getContact);
 
 const reportComArticle = computed(() => ticketsModStore.getReportArt);
-
-setTimeout(() => {
-    console.log(report.value);
-}, 500);
+const reportComAttraction = computed(() => ticketsModStore.getReportAttr);
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -24,17 +21,26 @@ const typeTicket = ref("");
 
 const typeContact = ref(false);
 const typeReport = ref(false);
+const typeReportAttraction = ref(false);
+const typeReportArticle = ref(false);
 
 const choixTicket = () => {
     if (typeTicket.value === "Ticket de contact") {
         ticketsModStore.fetchContact();
         typeContact.value = true;
         typeReport.value = false;
-    } else if (typeTicket.value === "Ticket de report") {
-        ticketsModStore.fetchReportArticle();
+    }
+    if (typeTicket.value === "Ticket de report Attraction") {
         ticketsModStore.fetchReportAttr();
         typeReport.value = true;
+        typeReportAttraction.value = true;
+        typeReportArticle.value = false;
         typeContact.value = false;
+    } else if (typeTicket.value === "Ticket de report Article") {
+        ticketsModStore.fetchReportArticle();
+        typeReport.value = true;
+        typeReportAttraction.value = false;
+        typeReportArticle.value = true;
     }
 };
 
@@ -63,31 +69,31 @@ const deleteContact = (id) => {
     });
 };
 
-const deleteReport = (id) => {
-    Swal.fire({
-        title: "Êtes-vous sûr ?",
-        text: "Vous ne pourrez pas revenir en arrière !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Oui, supprimer !",
-        cancelButtonText: "Non, annuler !",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            ticketsModStore.deleteReport(id);
+// const deleteReport = (id) => {
+//     Swal.fire({
+//         title: "Êtes-vous sûr ?",
+//         text: "Vous ne pourrez pas revenir en arrière !",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonText: "Oui, supprimer !",
+//         cancelButtonText: "Non, annuler !",
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             ticketsModStore.deleteReport(id);
 
-            Swal.fire(
-                "Supprimé !",
-                "Le ticket a bien été supprimé.",
-                "success"
-            );
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire("Annulé", "Le ticket n'a pas été supprimé :)", "error");
-        }
-    });
-};
+//             Swal.fire(
+//                 "Supprimé !",
+//                 "Le ticket a bien été supprimé.",
+//                 "success"
+//             );
+//             setTimeout(() => {
+//                 window.location.reload();
+//             }, 500);
+//         } else if (result.dismiss === Swal.DismissReason.cancel) {
+//             Swal.fire("Annulé", "Le ticket n'a pas été supprimé :)", "error");
+//         }
+//     });
+// };
 </script>
 <template>
     <div v-if="role === 'admin' || role === 'modo'">
@@ -105,7 +111,8 @@ const deleteReport = (id) => {
                     class="block px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-[#344d59] focus:ring-[#344d59] focus:ring-opacity-40 focus:outline-none focus:ring"
                 >
                     <option>Ticket de contact</option>
-                    <option>Ticket de report</option>
+                    <option>Ticket de report Attraction</option>
+                    <option>Ticket de report Article</option>
                 </select>
             </div>
 
@@ -281,17 +288,6 @@ const deleteReport = (id) => {
                                             <a
                                                 class="group inline-flex text-base"
                                             >
-                                                Type de commentaire
-                                            </a>
-                                        </th>
-
-                                        <th
-                                            scope="col"
-                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                        >
-                                            <a
-                                                class="group inline-flex text-base"
-                                            >
                                                 Commentaire signaler
                                             </a>
                                         </th>
@@ -314,7 +310,8 @@ const deleteReport = (id) => {
                                 >
                                     <!--Affiche les info de tous les users-->
                                     <tr
-                                        v-for="data in report"
+                                        v-if="typeReportAttraction"
+                                        v-for="data in reportComAttraction"
                                         :key="data.id"
                                         class="hover:bg-gray-100"
                                     >
@@ -340,47 +337,77 @@ const deleteReport = (id) => {
                                         <td
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            {{ data }}
-                                        </td>
-                                        <td
-                                            v-if="data.ref_commentAttr == null"
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            Article
-                                        </td>
-                                        <td
-                                            v-if="
-                                                data.ref_commentArticles == null
-                                            "
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            Attraction
+                                            {{ data.User.email }}
                                         </td>
 
-                                        <td
-                                            v-if="
-                                                data.ref_commentArticles == null
-                                            "
-                                        >
-                                            <!-- <textarea
+                                        <td>
+                                            <textarea
                                                 disabled
                                                 rows="3"
                                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                                                 >{{
-                                                    data.CommentAttraction
-                                                        .content
+                                                    data.Review.content
                                                 }}</textarea
-                                            > -->
+                                            >
                                         </td>
-                                        <td v-if="data.ref_commentAttr == null">
-                                            <!-- <textarea
+
+                                        <td
+                                            v-if="role === 'admin'"
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            <button
+                                                @click="deleteReport(data.id)"
+                                                type="button"
+                                            >
+                                                <img
+                                                    class="w-5 md:w-5 lg:w-full"
+                                                    src="/assets/img/poubelle.png"
+                                                    alt="poubelleImg"
+                                                />
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <tr
+                                        v-if="typeReportArticle"
+                                        v-for="data in reportComArticle"
+                                        :key="data.id"
+                                        class="hover:bg-gray-100"
+                                    >
+                                        <td
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            {{ data.title }}
+                                        </td>
+
+                                        <td
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            <textarea
+                                                disabled
+                                                rows="3"
+                                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                                                >{{
+                                                    data.description
+                                                }}</textarea
+                                            >
+                                        </td>
+
+                                        <td
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            {{ data.User.email }}
+                                        </td>
+
+                                        <td>
+                                            <textarea
                                                 disabled
                                                 rows="3"
                                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                                                 >{{
                                                     data.CommentArticle.content
                                                 }}</textarea
-                                            > -->
+                                            >
                                         </td>
 
                                         <td
