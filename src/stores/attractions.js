@@ -53,6 +53,20 @@ export const useAttractionsStore = defineStore("attractions", {
             });
         },
 
+        async deleteAttraction(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/attractions/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.attractionsDict = res.data;
+            });
+        },
+
         async fetchAttractions() {
             const response = await CapacitorHttp.request({
                 method: "GET",
@@ -88,21 +102,23 @@ export const useAttractionsStore = defineStore("attractions", {
             });
         },
 
-        async createImageAttraction(img_url, ref_attraction) {
+        async createImageAttraction(img, ref_attraction) {
             const response = await CapacitorHttp.request({
                 method: "POST",
                 url: `http://localhost:3000/api/attractions/img`,
                 headers: {
                     "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                     Authorization:
                         "Bearer " + localStorage.getItem("savedToken"),
                 },
                 data: {
-                    img_url,
+                    img,
                     ref_attraction,
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
+                console.log(res.data);
             });
         },
 

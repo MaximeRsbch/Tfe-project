@@ -5,6 +5,7 @@ import { useParcsStore } from "../../../stores/parcs.js";
 import { useAttractionsStore } from "../../../stores/attractions.js";
 import { useUsersStore } from "../../../stores/users.js";
 import "../../../style/BulleTexte.css";
+import Swal from "sweetalert2";
 
 const parcsStore = useParcsStore();
 const attractionsStore = useAttractionsStore();
@@ -54,6 +55,40 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
+
+const deleteAttraction = (id) => {
+    if (role === "admin" || role === "modoParc") {
+        Swal.fire({
+            title: "Êtes-vous sûr ?",
+            text: "Vous ne pourrez pas revenir en arrière !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Oui, supprimer !",
+            cancelButtonText: "Non, annuler !",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                attractionsStore.deleteAttraction(id);
+                Swal.fire(
+                    "Supprimé !",
+                    "L'attraction a bien été supprimé.",
+                    "success"
+                );
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    "Annulé",
+                    "L'attraction n'a pas été supprimé :)",
+                    "error"
+                );
+            }
+        });
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Vous n'avez pas les droits pour supprimer une attraction",
+        });
+    }
+};
 </script>
 <template>
     <div class="container mx-auto">
@@ -271,7 +306,14 @@ const role = tokenDecode.value.role;
                                                 "
                                                 class="whitespace-nowrap px-3 py-4 text-base"
                                             >
-                                                <button @click="" type="button">
+                                                <button
+                                                    @click="
+                                                        deleteAttraction(
+                                                            data.id
+                                                        )
+                                                    "
+                                                    type="button"
+                                                >
                                                     <div
                                                         class="image-container"
                                                     >

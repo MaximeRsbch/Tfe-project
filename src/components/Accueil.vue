@@ -205,6 +205,7 @@ const showAverageRating = ref(null);
 const showRatingAttraction = ref(null);
 const showCommentAttraction = ref(null);
 const showFavorite = ref(null);
+const showImageAttraction = ref(null);
 
 const showRestoName = ref(null);
 const showRestoOpen = ref(null);
@@ -381,6 +382,7 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
+            console.log(attraction.ImageAttractions);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -404,7 +406,7 @@ const plotInfoAttraction = () => {
                     showIsOpen.value = attraction.is_open;
                     showDescription.value = attraction.description;
                     showFavorite.value = attraction.Favoris;
-                    console.log(showFavorite.value.length);
+                    showImageAttraction.value = attraction.ImageAttractions;
 
                     attractionstore.fetchCommentAttraction(attraction.id);
                     attractionstore.fetchRatingAttraction(attraction.id);
@@ -767,11 +769,15 @@ setTimeout(() => {
                 </div>
                 <div v-if="showAttractionResults">
                     <div>
-                        <div>
+                        <div v-for="data in showImageAttraction">
                             <img
+                                v-if="data.img_url"
+                                :src="`${BASE_URL}/${data.img_url.replace(
+                                    /\\/g,
+                                    '/'
+                                )}`"
+                                alt="Image attraction"
                                 class="w-[408px] h-[272px]]"
-                                src="assets/img/walibi.jpg"
-                                alt=""
                             />
                         </div>
                         <div class="grid grid-cols-2">

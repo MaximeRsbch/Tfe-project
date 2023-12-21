@@ -54,7 +54,6 @@ const id_type = ref("");
 const ref_type = ref("");
 const id_parc = ref("");
 const ref_parc = ref("");
-const img = ref("");
 
 const coords = ref(null);
 const fetchCoords = ref(null);
@@ -185,6 +184,8 @@ function changeAttractionValue() {
 
     id.value = idAttraction;
 }
+
+const img = ref("");
 const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier
 
 const saveImageToConstant = () => {
