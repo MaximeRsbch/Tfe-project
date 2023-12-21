@@ -5,6 +5,7 @@ import { computed, onMounted, ref } from "vue";
 import GeoErrorModal from "./GeoErrorModal.vue";
 import MapFeatures from "./MapFeatures.vue";
 import RatingStars from "./attractions/RatingStars.vue";
+import Swal from "sweetalert2";
 import { Mapbox_API_KEY } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
 import { useAttractionsStore } from "../stores/attractions.js";
@@ -403,6 +404,7 @@ const plotInfoAttraction = () => {
                     showIsOpen.value = attraction.is_open;
                     showDescription.value = attraction.description;
                     showFavorite.value = attraction.Favoris;
+                    console.log(showFavorite.value.length);
 
                     attractionstore.fetchCommentAttraction(attraction.id);
                     attractionstore.fetchRatingAttraction(attraction.id);
@@ -490,10 +492,47 @@ const dateLocale = new Date();
 
 const heureLocale = ref(dateLocale.toLocaleTimeString());
 
-const favoris = ref(false);
+const isAttractionFavorite = ref(false);
 
-const AddFav = () => {
-    attractionstore.createFavoriteAttraction(id.value, showAttractionId.value);
+// Function to toggle favorite status
+const toggleFavorite = async () => {
+    if (isConnect.value) {
+        if (isAttractionFavorite.value) {
+            // Remove from favorites
+            await attractionstore.deleteFavoriteAttraction(favorisId.value);
+        } else {
+            // Add to favorites
+            await attractionstore.createFavoriteAttraction(
+                id.value,
+                showAttractionId.value
+            );
+        }
+
+        // Toggle the reactive data property
+        isAttractionFavorite.value = !isAttractionFavorite.value;
+
+        Swal.fire({
+            title: isAttractionFavorite.value
+                ? "Attraction ajoutée aux favoris"
+                : "Attraction supprimée des favoris",
+            icon: "success",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Do any additional actions if needed
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Vous devez être connecté pour gérer les favoris",
+            icon: "error",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Handle the user not being logged in
+            }
+        });
+    }
 };
 
 const favorisId = ref(null);
@@ -504,8 +543,31 @@ setTimeout(() => {
         favorisId.value = fav.id;
     }
 }, 300);
-const RemoveFav = () => {
-    attractionstore.deleteFavoriteAttraction(favorisId.value);
+const RemoveFav = async () => {
+    if (isConnect.value) {
+        await attractionstore.deleteFavoriteAttraction(favorisId.value);
+        isAttractionFavorite.value = false;
+
+        Swal.fire({
+            title: "Attraction supprimée des favoris",
+            icon: "success",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Do any additional actions if needed
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Vous devez être connecté pour supprimer une attraction des favoris",
+            icon: "error",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Handle the user not being logged in
+            }
+        });
+    }
 };
 
 const isPresentationSelected = ref(true);
@@ -533,7 +595,6 @@ const goToFormAttraction = () => {
 
 const title = ref("");
 const contentReport = ref("");
-const ref_user = ref("");
 
 const ModalReport = ref(false);
 
@@ -564,6 +625,14 @@ const reportComment = () => {
         );
     }
 };
+
+const userFavorite = ref(null);
+
+setTimeout(() => {
+    for (const users in user.value) {
+        userFavorite.value = user.value[users].Favoris;
+    }
+}, 300);
 </script>
 
 <template>
@@ -712,24 +781,50 @@ const reportComment = () => {
                             <div class="flex justify-end pr-4">
                                 <div
                                     class="absolute z-10 top-20 left-8"
-                                    v-if="showFavorite.length == 0"
+                                    v-for="data in showFavorite"
                                 >
-                                    <button
-                                        v-if="favoris === false"
-                                        @click="AddFav"
-                                    >
+                                    <div v-if="data.ref_user !== id">
+                                        <button @click="toggleFavorite">
+                                            <i
+                                                :class="{
+                                                    'fa-solid fa-heart fa-2xl text-orange-500':
+                                                        isAttractionFavorite,
+                                                    'fa-regular fa-heart fa-2xl text-orange-500':
+                                                        !isAttractionFavorite,
+                                                }"
+                                            ></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="absolute z-10 top-20 left-8"
+                                    v-if="showFavorite.length === 0"
+                                >
+                                    <button @click="toggleFavorite">
                                         <i
-                                            class="fa-regular fa-heart fa-2xl text-orange-500"
+                                            :class="{
+                                                'fa-solid fa-heart fa-2xl text-orange-500':
+                                                    isAttractionFavorite,
+                                                'fa-regular fa-heart fa-2xl text-orange-500':
+                                                    !isAttractionFavorite,
+                                            }"
                                         ></i>
                                     </button>
-                                    <button
-                                        v-if="favoris === true"
-                                        @click="RemoveFav"
-                                    >
-                                        <i
-                                            class="fa-solid fa-heart fa-2xl text-orange-500"
-                                        ></i>
-                                    </button>
+                                </div>
+
+                                <div
+                                    class="absolute z-10 top-20 left-8"
+                                    v-if="showFavorite.length !== 0"
+                                    v-for="data in showFavorite"
+                                >
+                                    <div v-if="data.ref_user === id">
+                                        <button @click="RemoveFav">
+                                            <i
+                                                class="fa-solid fa-heart fa-2xl text-orange-500"
+                                            ></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

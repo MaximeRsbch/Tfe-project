@@ -200,8 +200,6 @@ export const useUsersStore = defineStore("users", {
                 url: `http://localhost:3000/api/modo/`,
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization:
-                        "Bearer " + localStorage.getItem("savedToken"),
                 },
             }).then((res) => {
                 this.modoDict = res.data.data;
