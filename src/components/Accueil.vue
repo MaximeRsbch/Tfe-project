@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { Mapbox_API_KEY } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
 import { useAttractionsStore } from "../stores/attractions.js";
+import { useTicketsModStore } from "../stores/ticketsmod.js";
 import { useUsersStore } from "../stores/users.js";
 import { useRouter } from "vue-router";
 import { BASE_URL } from "../common/config.js";
@@ -18,6 +19,7 @@ const router = useRouter();
 const parcstore = useParcsStore();
 const attractionstore = useAttractionsStore();
 const usersStore = useUsersStore();
+const ticketsStore = useTicketsModStore();
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -205,6 +207,7 @@ const showIsOpen = ref(null);
 const showAverageRating = ref(null);
 const showRatingAttraction = ref(null);
 const showCommentAttraction = ref(null);
+const showRatingid = ref(null);
 const showFavorite = ref(null);
 const showImageAttraction = ref(null);
 
@@ -242,7 +245,6 @@ const plotInfoParc = () => {
         });
 
         for (const parc of parcs.value) {
-            console.log(parc.img_url);
             if (parc.showWC == true) {
                 parcstore.fetchToilettes(parc.id);
                 setTimeout(() => {
@@ -600,11 +602,14 @@ const goToFormAttraction = () => {
 
 const title = ref("");
 const contentReport = ref("");
+const ref_commentArticles = ref(null);
 
 const ModalReport = ref(false);
 
-const openModalReport = () => {
+const openModalReport = (id) => {
     ModalReport.value = true;
+
+    showRatingid.value = id;
 };
 
 const removeModalReport = () => {
@@ -621,12 +626,11 @@ const reportComment = () => {
         alert("Vous devez écrire un commentaire");
         return;
     } else {
-        ticketsStore.createReport(
+        ticketsStore.createReportAttr(
             title.value,
             contentReport.value,
-            id,
-            null,
-            articleCom.value.id
+            id.value,
+            showRatingid.value
         );
     }
 };
@@ -955,20 +959,22 @@ setTimeout(() => {
                                     <p>{{ data.User.username }}</p>
                                     <p class="text-sm">{{ data.rating }}/5</p>
                                     <p>{{ data.content }}</p>
+                                    <div class="flex justify-end pr-2">
+                                        <button
+                                            @click=""
+                                            class="bg-[#344D59] text-white rounded-md px-4 py-1"
+                                        >
+                                            Delete
+                                        </button>
+
+                                        <button
+                                            @click="openModalReport(data.id)"
+                                            class="ml-4"
+                                        >
+                                            Report
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="flex justify-end pr-2">
-                                <button
-                                    @click=""
-                                    class="bg-[#344D59] text-white rounded-md px-4 py-1"
-                                >
-                                    Delete
-                                </button>
-
-                                <button @click="openModalReport" class="ml-4">
-                                    Report
-                                </button>
                             </div>
 
                             <div class="relative pt-6">

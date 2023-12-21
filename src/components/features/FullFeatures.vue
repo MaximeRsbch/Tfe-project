@@ -118,7 +118,7 @@ const reportComment = () => {
         alert("Vous devez écrire un commentaire");
         return;
     } else {
-        ticketsStore.createReport(
+        ticketsStore.createReportArticle(
             title.value,
             contentReport.value,
             idUser,

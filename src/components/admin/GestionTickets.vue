@@ -8,7 +8,11 @@ const ticketsModStore = useTicketsModStore();
 
 const contact = computed(() => ticketsModStore.getContact);
 
-const report = computed(() => ticketsModStore.getReport);
+const reportComArticle = computed(() => ticketsModStore.getReportArt);
+
+setTimeout(() => {
+    console.log(report.value);
+}, 500);
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -27,7 +31,8 @@ const choixTicket = () => {
         typeContact.value = true;
         typeReport.value = false;
     } else if (typeTicket.value === "Ticket de report") {
-        ticketsModStore.fetchReport();
+        ticketsModStore.fetchReportArticle();
+        ticketsModStore.fetchReportAttr();
         typeReport.value = true;
         typeContact.value = false;
     }
@@ -313,13 +318,12 @@ const deleteReport = (id) => {
                                         :key="data.id"
                                         class="hover:bg-gray-100"
                                     >
-                                        <div>
-                                            <td
-                                                class="whitespace-nowrap px-3 py-4 text-base"
-                                            >
-                                                {{ data.title }}
-                                            </td>
-                                        </div>
+                                        <td
+                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                        >
+                                            {{ data.title }}
+                                        </td>
+
                                         <td
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
@@ -336,7 +340,7 @@ const deleteReport = (id) => {
                                         <td
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
-                                            {{ data.User.email }}
+                                            {{ data }}
                                         </td>
                                         <td
                                             v-if="data.ref_commentAttr == null"
@@ -358,7 +362,7 @@ const deleteReport = (id) => {
                                                 data.ref_commentArticles == null
                                             "
                                         >
-                                            <textarea
+                                            <!-- <textarea
                                                 disabled
                                                 rows="3"
                                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
@@ -366,17 +370,17 @@ const deleteReport = (id) => {
                                                     data.CommentAttraction
                                                         .content
                                                 }}</textarea
-                                            >
+                                            > -->
                                         </td>
                                         <td v-if="data.ref_commentAttr == null">
-                                            <textarea
+                                            <!-- <textarea
                                                 disabled
                                                 rows="3"
                                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                                                 >{{
                                                     data.CommentArticle.content
                                                 }}</textarea
-                                            >
+                                            > -->
                                         </td>
 
                                         <td

@@ -5,13 +5,15 @@ export const useTicketsModStore = defineStore("ticketsMod", {
     state: () => ({
         ticketsdict: {},
         contactDict: {},
-        reportDict: {},
+        reportArtDict: {},
+        reportAttrDict: {},
     }),
 
     getters: {
         getTickets: (state) => Object.values(state.ticketsdict),
         getContact: (state) => Object.values(state.contactDict),
-        getReport: (state) => Object.values(state.reportDict),
+        getReportArt: (state) => Object.values(state.reportArtDict),
+        getReportAttr: (state) => Object.values(state.reportAttrDict),
         getTicketsById: (state) => (id) => state.ticketsdict[id],
     },
 
@@ -57,28 +59,27 @@ export const useTicketsModStore = defineStore("ticketsMod", {
             });
         },
 
-        async fetchReport() {
+        async fetchReportArticle() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/report/",
+                url: "http://localhost:3000/api/reportArt/",
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                this.reportDict = res.data;
+                this.reportArtDict = res.data;
             });
         },
 
-        async createReport(
+        async createReportArticle(
             title,
             description,
             ref_user,
-            ref_commentArticles,
-            ref_commentAttr
+            ref_commentArticles
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/report/",
+                url: "http://localhost:3000/api/reportArt/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -87,22 +88,63 @@ export const useTicketsModStore = defineStore("ticketsMod", {
                     description,
                     ref_user,
                     ref_commentArticles,
-                    ref_commentAttr,
                 },
             }).then((res) => {
-                this.reportDict = res.data;
+                this.reportArtDict = res.data;
             });
         },
 
-        async deleteReport(id) {
+        async deleteReportArticle(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/report/${id}`,
+                url: `http://localhost:3000/api/reportArt/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
-                this.reportDict = res.data;
+                this.reportArtDict = res.data;
+            });
+        },
+
+        async fetchReportAttr() {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: "http://localhost:3000/api/reportAttr/",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.reportAttrDict = res.data;
+            });
+        },
+
+        async createReportAttr(title, description, ref_user, ref_review) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: "http://localhost:3000/api/reportAttr/",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: {
+                    title,
+                    description,
+                    ref_user,
+                    ref_review,
+                },
+            }).then((res) => {
+                this.reportAttrDict = res.data;
+            });
+        },
+
+        async deleteReportAttr(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/reportAttr/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.reportAttrDict = res.data;
             });
         },
     },
