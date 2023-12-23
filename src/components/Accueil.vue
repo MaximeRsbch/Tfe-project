@@ -5,6 +5,7 @@ import { computed, onMounted, ref } from "vue";
 import GeoErrorModal from "./GeoErrorModal.vue";
 import MapFeatures from "./MapFeatures.vue";
 import RatingStars from "./attractions/RatingStars.vue";
+import Calendar from "../components/calendar/Calendar.vue";
 import Swal from "sweetalert2";
 import { Mapbox_API_KEY } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
@@ -196,6 +197,7 @@ const showParcLegende = ref(null);
 const showpeople = ref(null);
 const latitude = ref(null);
 const longitude = ref(null);
+const showCalendar = ref(null);
 
 const showAttractionName = ref(null);
 const showHeightAlone = ref(null);
@@ -216,6 +218,8 @@ const showRestoOpen = ref(null);
 const showRestoClose = ref(null);
 const showRestoDesc = ref(null);
 const showRestoImg = ref(null);
+
+const parcid = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
@@ -342,6 +346,7 @@ const plotInfoParc = () => {
                     showParcLegende.value = parc.legende;
                     latitude.value = parc.latitude;
                     longitude.value = parc.longitude;
+                    parcid.value = parc.id;
 
                     const averageWaitTime = calculateAverageWaitTime(
                         parc.Attractions
@@ -387,7 +392,6 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
-            console.log(attraction.ImageAttractions);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -526,7 +530,7 @@ const toggleFavorite = async () => {
             confirmButtonText: "Ok",
         }).then((result) => {
             if (result.isConfirmed) {
-                // Do any additional actions if needed
+                window.location.reload();
             }
         });
     } else {
@@ -642,6 +646,10 @@ setTimeout(() => {
         userFavorite.value = user.value[users].Favoris;
     }
 }, 300);
+
+const goToCalendarParc = () => {
+    router.push({ name: "calendar" });
+};
 </script>
 
 <template>
@@ -705,6 +713,23 @@ setTimeout(() => {
                                 alt="Image parc"
                                 class="w-[408px] h-[272px]]"
                             />
+                        </div>
+
+                        <div class="flex justify-center">
+                            <RouterLink
+                                v-if="parcid !== undefined"
+                                v-bind:to="{
+                                    name: 'calendar',
+                                    params: {
+                                        id: parcid,
+                                    },
+                                }"
+                                ><p
+                                    class="mt-3 text-md text-black hover:text-[#344d59]"
+                                >
+                                    Cliquez ici pour voir le calendrier du parc
+                                </p></RouterLink
+                            >
                         </div>
 
                         <div class="pt-4 pl-4">
@@ -919,7 +944,6 @@ setTimeout(() => {
                                 </p>
                                 <p v-if="showWaitTime !== 0">
                                     Temps d'attente moyen dans cet attraction :
-                                    {{ showWaitTime }}
                                     <span
                                         class="text-green-500"
                                         v-if="showWaitTime < 20"
@@ -945,8 +969,7 @@ setTimeout(() => {
                                 </p>
                                 <p v-if="showIsOpen === true">
                                     Attraction
-                                    <span class="text-green-500">ouverte</span
-                                    >ouverte
+                                    <span class="text-green-500">ouverte</span>
                                 </p>
                             </div>
                         </div>
