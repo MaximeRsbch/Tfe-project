@@ -6,6 +6,7 @@ import { onMounted, computed, ref } from "vue";
 import { BASE_URL } from "../../common/config.js";
 import jwtDecode from "jwt-decode";
 import { useRoute, useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 const articlesStore = useArticlesStore();
 const usersStore = useUsersStore();
@@ -83,8 +84,12 @@ async function addComment() {
         ref_article.value
     );
     if (body === undefined) {
-        alert("Votre commentaire a bien été ajouté");
-        router.go();
+        Swal.fire({
+            icon: "success",
+            title: "Votre commentaire a bien été ajouté",
+            showConfirmButton: true,
+        });
+        articlesStore.fetchArticleComments(id);
     }
 }
 

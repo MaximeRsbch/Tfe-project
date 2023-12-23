@@ -218,6 +218,7 @@ const showRestoOpen = ref(null);
 const showRestoClose = ref(null);
 const showRestoDesc = ref(null);
 const showRestoImg = ref(null);
+const showComm = ref(null);
 
 const parcid = ref(null);
 
@@ -392,6 +393,7 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
+            console.log(attraction);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -416,6 +418,7 @@ const plotInfoAttraction = () => {
                     showDescription.value = attraction.description;
                     showFavorite.value = attraction.Favoris;
                     showImageAttraction.value = attraction.ImageAttractions;
+                    showComm.value = attraction.showCommentaires;
 
                     attractionstore.fetchCommentAttraction(attraction.id);
                     attractionstore.fetchRatingAttraction(attraction.id);
@@ -565,7 +568,7 @@ const RemoveFav = async () => {
             confirmButtonText: "Ok",
         }).then((result) => {
             if (result.isConfirmed) {
-                // Do any additional actions if needed
+                window.location.reload();
             }
         });
     } else {
@@ -973,7 +976,7 @@ const goToCalendarParc = () => {
                                 </p>
                             </div>
                         </div>
-                        <div v-if="isAvisSelected">
+                        <div v-if="isAvisSelected || showComm === true">
                             <div class="pl-4">
                                 <div
                                     class="pt-6"
@@ -1019,6 +1022,10 @@ const goToCalendarParc = () => {
                                     Rédiger un avis
                                 </button>
                             </div>
+                        </div>
+                        <div v-if="showComm === false">
+                            Les commentaires ont été désactivés pour cette
+                            attraction.
                         </div>
                     </div>
                 </div>

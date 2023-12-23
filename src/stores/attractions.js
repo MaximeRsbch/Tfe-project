@@ -224,5 +224,17 @@ export const useAttractionsStore = defineStore("attractions", {
                 this.favoriteDict = res.data;
             });
         },
+
+        async deleteAllFavoriteAttraction(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/favoris/all/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.favoriteDict = res.data;
+            });
+        },
     },
 });

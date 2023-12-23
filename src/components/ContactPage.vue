@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import jwtDecode from "jwt-decode";
 import { useTicketsModStore } from "../stores/ticketsmod.js";
+import Swal from "sweetalert2";
 
 const ticketsModStore = useTicketsModStore();
 
@@ -17,6 +18,11 @@ const description = ref("");
 
 const createContact = () => {
     ticketsModStore.createContact(title.value, description.value, id.value);
+    Swal.fire({
+        icon: "success",
+        title: "Votre demande a bien été envoyée",
+        showConfirmButton: false,
+    });
 };
 </script>
 

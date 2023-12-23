@@ -6,6 +6,7 @@ import { useTypesStore } from "../../stores/types";
 import { useParcsStore } from "../../stores/parcs";
 import { useAttractionsStore } from "../../stores/attractions";
 import MapSearchAttraction from "./MapSearchAttraction.vue";
+import Swal from "sweetalert2";
 
 const typesStore = useTypesStore();
 const parcsStore = useParcsStore();
@@ -213,22 +214,50 @@ const saveImageToConstant = () => {
     imageInput.value = null;
 };
 
-const createAttraction = () => {
-    attractionsStore.createAttraction(
-        id.value,
-        nom.value,
-        minHeight.value,
-        maxHeight.value,
-        latitude.value,
-        longitude.value,
-        description.value,
-        id_type.value,
-        id_parc.value
-    );
+const comment = ref(false);
 
-    setTimeout(() => {
-        attractionsStore.createImageAttraction(img.value, id.value);
-    }, 500);
+const showComment = () => {
+    comment.value = !comment.value;
+    console.log(comment.value);
+};
+
+const createAttraction = () => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous êtes sur le point d'ajouter une attraction",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, ajouter l'attraction",
+        cancelButtonText: "Non, annuler",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            attractionsStore.createAttraction(
+                id.value,
+                nom.value,
+                minHeight.value,
+                maxHeight.value,
+                latitude.value,
+                longitude.value,
+                description.value,
+                id_type.value,
+                id_parc.value,
+                img.value,
+                false,
+                comment.value
+            );
+
+            setTimeout(() => {
+                attractionsStore.createImageAttraction(img.value, id.value);
+            }, 500);
+            Swal.fire(
+                "Attraction ajoutée !",
+                "L'attraction a bien été ajoutée",
+                "success"
+            );
+        } else {
+            Swal.fire("Annulé", "L'attraction n'a pas été ajoutée", "error");
+        }
+    });
 };
 </script>
 
@@ -330,6 +359,17 @@ const createAttraction = () => {
                             {{ dataParc.nom }}
                         </option>
                     </select>
+                </div>
+
+                <div class="form-control">
+                    <label class="label cursor-pointer">
+                        <span class="label-text">Commentaires</span>
+                        <input
+                            @change="showComment"
+                            type="checkbox"
+                            class="checkbox"
+                        />
+                    </label>
                 </div>
             </div>
 

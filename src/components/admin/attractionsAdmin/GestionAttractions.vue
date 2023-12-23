@@ -68,6 +68,8 @@ const deleteAttraction = (id) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 attractionsStore.deleteAttraction(id);
+
+                attractionsStore.fetchAttractions();
                 Swal.fire(
                     "Supprimé !",
                     "L'attraction a bien été supprimé.",

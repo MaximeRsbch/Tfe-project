@@ -5,6 +5,7 @@ import { useUsersStore } from "../../stores/users.js";
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import jwtDecode from "jwt-decode";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 
@@ -107,6 +108,11 @@ const createArticle = async () => {
             comment.value,
             id.value
         );
+        Swal.fire({
+            icon: "success",
+            title: "Votre article a bien été ajouté",
+            showConfirmButton: true,
+        });
     } else {
         alert("Vous n'avez pas les droits pour ajouter un article à ce parc");
     }
