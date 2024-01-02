@@ -22,32 +22,6 @@ const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
 
-const deleteParc = (id) => {
-    Swal.fire({
-        title: "Êtes-vous sûr ?",
-        text: "Vous ne pourrez pas revenir en arrière !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Oui, supprimer !",
-        cancelButtonText: "Non, annuler !",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                "Supprimé !",
-                "Votre parc a bien été supprimé.",
-                "success"
-            );
-            if (parcsStore.deleteParc(id)) {
-                setTimeout(() => {
-                    window.location.reload();
-                }, 700);
-            }
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire("Annulé", "Votre parc n'a pas été supprimé :)", "error");
-        }
-    });
-};
-
 const usersModoParc = ref("");
 
 setTimeout(() => {
@@ -214,31 +188,7 @@ setTimeout(() => {
                                             >
                                                 {{ parc.endHour }}
                                             </td>
-                                            <td
-                                                v-if="
-                                                    role === 'admin' ||
-                                                    parc.id === usersModoParc
-                                                "
-                                                class="whitespace-nowrap px-3 py-4 text-base"
-                                            >
-                                                <button
-                                                    @click="deleteParc(parc.id)"
-                                                    type="button"
-                                                >
-                                                    <div
-                                                        class="image-container"
-                                                    >
-                                                        <img
-                                                            class="w-5 md:w-5 lg:w-full"
-                                                            src="/assets/img/poubelle.png"
-                                                            alt="poubelleImg"
-                                                        />
-                                                        <div class="tooltip">
-                                                            Supprimer Parcs
-                                                        </div>
-                                                    </div>
-                                                </button>
-                                            </td>
+
                                             <td
                                                 v-if="
                                                     role === 'admin' ||
