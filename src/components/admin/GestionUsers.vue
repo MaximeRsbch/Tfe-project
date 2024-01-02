@@ -18,6 +18,11 @@ const users = computed(() => usersStore.getUsers);
 
 const canComment = ref(false);
 
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+const role = tokenDecode.value.role;
 //Fonction qui permet de supprimer un utilisateur
 const deleteUsers = (id) => {
     Swal.fire({
@@ -29,7 +34,7 @@ const deleteUsers = (id) => {
         cancelButtonColor: "#d33",
         confirmButtonText: "Oui, supprimer !",
     }).then((result) => {
-        if (result.isConfirmed && id !== 1) {
+        if ((result.isConfirmed && role !== "admin") || role !== "modo") {
             Swal.fire(
                 "Supprimer",
                 "Cet utilisateur a bien été supprimer.",
@@ -164,10 +169,10 @@ const changeParcValue = (e) => {
 };
 
 const giveRoleModoParc = (Id, username, email, roleUser) => {
-    if (roleUser === "modo") {
+    if (roleUser === "modo" || roleUser === "admin") {
         Swal.fire(
             "Erreur",
-            "Vous ne pouvez pas donner le role ModoParc à un Modo.",
+            "Vous ne pouvez pas donner ce role à un modo ou un admin.",
             "error"
         );
     } else {
@@ -182,15 +187,16 @@ const giveRoleModoParc = (Id, username, email, roleUser) => {
             "success"
         ).then(() => {
             modalModoP.value = !modalModoP.value;
+            usersStore.fetchUsers();
         });
     }
 };
 
 const giveRoleModo = (Id, username, email, roleUser) => {
-    if (roleUser === "modoParc") {
+    if (roleUser === "modo" || roleUser === "admin") {
         Swal.fire(
             "Erreur",
-            "Vous ne pouvez pas donner le role Modo à un ModoParc.",
+            "Vous ne pouvez pas donner ce role à un modo ou un admin.",
             "error"
         );
     } else {
@@ -203,12 +209,6 @@ const giveRoleModo = (Id, username, email, roleUser) => {
         );
     }
 };
-
-const isConnect = computed(() => localStorage.getItem("savedToken"));
-
-const tokenDecode = computed(() => jwtDecode(isConnect.value));
-
-const role = tokenDecode.value.role;
 </script>
 <template>
     <div class="container mx-auto">

@@ -284,7 +284,7 @@ setTimeout(() => {
                 </div>
             </div>
         </div>
-        <div v-if="role !== 'admin'">
+        <div v-if="role == 'user'">
             <h2>
                 Bien essayer, vous êtes pas connecter pour accéder à cette page
             </h2>

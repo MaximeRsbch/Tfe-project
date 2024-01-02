@@ -205,5 +205,17 @@ export const useUsersStore = defineStore("users", {
                 this.modoDict = res.data.data;
             });
         },
+
+        async fetchModoById(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/modo/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.modoDict = res.data.data;
+            });
+        },
     },
 });

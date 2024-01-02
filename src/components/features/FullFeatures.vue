@@ -149,7 +149,7 @@ const reportComment = () => {
             v-if="articles.img_url"
             :src="`${BASE_URL}/${articles.img_url.replace(/\\/g, '/')}`"
             alt="Article Image"
-            class="md:max-w-lg mt-4"
+            class="mt-4 w-11/12 md:w-3/4 lg:w-1/2"
         />
     </div>
     <!-- Récupère et affiche les informations de l'image spécifique-->
@@ -183,7 +183,7 @@ const reportComment = () => {
                     </h3>
                 </div>
             </div>
-            <div class="flex justify-start mt-2 pl-4 max-w-lg md:max-w-3xl">
+            <div class="flex justify-start mt-2 max-w-lg md:max-w-3xl">
                 {{ test.content }}
             </div>
             <div class="grid grid-cols-2 mt-5">
@@ -192,13 +192,14 @@ const reportComment = () => {
                 </div>
                 <div>
                     <button
+                        v-if="test.ref_user == idUser || role === 'admin'"
                         @click="deleteComment(test.id)"
                         class="bg-[#344D59] text-white rounded-md px-4 py-1"
                     >
                         Delete
                     </button>
 
-                    <button @click="openModalReport" class="ml-4">
+                    <button @click="openModalReport" class="ml-4 font-bold">
                         Report
                     </button>
                 </div>
@@ -276,7 +277,7 @@ const reportComment = () => {
                 <button
                     @click="addComment"
                     type="button"
-                    class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                    class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344D59] rounded-md hover:stone-600 focus:outline-none focus:bg-[#344D59]"
                 >
                     Ajouter
                 </button>

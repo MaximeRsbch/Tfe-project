@@ -212,6 +212,7 @@ const showCommentAttraction = ref(null);
 const showRatingid = ref(null);
 const showFavorite = ref(null);
 const showImageAttraction = ref(null);
+const modoRefParc = ref(null);
 
 const showRestoName = ref(null);
 const showRestoOpen = ref(null);
@@ -221,6 +222,8 @@ const showRestoImg = ref(null);
 const showComm = ref(null);
 
 const parcid = ref(null);
+const attractionid = ref(null);
+const parcIdInAttraction = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
@@ -393,7 +396,6 @@ const plotInfoAttraction = () => {
         }
 
         for (const attraction of attractions.value) {
-            console.log(attraction);
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -419,26 +421,26 @@ const plotInfoAttraction = () => {
                     showFavorite.value = attraction.Favoris;
                     showImageAttraction.value = attraction.ImageAttractions;
                     showComm.value = attraction.showCommentaires;
+                    parcIdInAttraction.value = attraction.Parc.id;
+                    attractionid.value = attraction.id;
 
-                    attractionstore.fetchCommentAttraction(attraction.id);
-                    attractionstore.fetchRatingAttraction(attraction.id);
+                    attractionstore.fetchRatingAttraction(attractionid.value);
+                    usersStore.fetchModoById(parcIdInAttraction.value);
 
                     setTimeout(() => {
-                        const commentAttr = computed(
-                            () => attractionstore.getCommentAttraction
-                        );
-                        for (let i = 0; i < commentAttr.value.length; i++) {
-                            if (commentAttr.value[i].id == id) {
-                                showCommentAttraction.value =
-                                    commentAttr.value[i];
-                            }
-                        }
                         const ratingAttr = computed(
                             () => attractionstore.getRatingStarAttraction
                         );
 
+                        const modo = computed(() => usersStore.getModo);
+
+                        setTimeout(() => {
+                            for (let i = 0; i < modo.value.length; i++) {
+                                modoRefParc.value = modo.value[i].ref_parc;
+                            }
+                        }, 300);
+
                         showRatingAttraction.value = ratingAttr.value;
-                        showCommentAttraction.value = commentAttr.value;
                     }, 300);
                 });
         }
@@ -477,12 +479,33 @@ async function AddRating() {
     //     id.value,
     //     showAttractionId.value
     // );
-    attractionstore.createRatingAttraction(
+    const body = attractionstore.createRatingAttraction(
         id.value,
         showAttractionId.value,
         etoile.value,
         content.value
     );
+    if (body) {
+        Swal.fire({
+            title: "Votre avis a bien été ajouté",
+            icon: "success",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                attractionstore.fetchRatingAttraction(attractionid.value);
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Vous devez être connecté pour ajouter un avis",
+            icon: "error",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Handle the user not being logged in
+            }
+        });
+    }
 }
 
 const calculateAverageWaitTime = (attractions) => {
@@ -650,8 +673,29 @@ setTimeout(() => {
     }
 }, 300);
 
-const goToCalendarParc = () => {
-    router.push({ name: "calendar" });
+const deleteCommentAttraction = (id) => {
+    const body = attractionstore.deleteCommentAttraction(id);
+    if (body) {
+        Swal.fire({
+            title: "Commentaire supprimé",
+            icon: "success",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                attractionstore.fetchCommentAttraction(attractionid.value);
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Vous devez être connecté pour supprimer un commentaire",
+            icon: "error",
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Handle the user not being logged in
+            }
+        });
+    }
 };
 </script>
 
@@ -674,7 +718,7 @@ const goToCalendarParc = () => {
         />
 
         <div
-            class="z-[2] absolute top-4 left-[250px] md:top-10 md:left-[1400px]"
+            class="z-[2] absolute top-4 left-[250px] md:top-10 md:left-[1400px] lg:top-20 lg:left-[1000px]"
         >
             <div class="">
                 <button
@@ -878,7 +922,15 @@ const goToCalendarParc = () => {
                                 </div>
                             </div>
                         </div>
-                        <p class="text-sm pl-4">{{ showAverageRating }}/5</p>
+                        <p
+                            v-if="showAverageRating === 0"
+                            class="text-sm pl-4 font-bold"
+                        >
+                            Aucune note n'a été donnée à cette attraction
+                        </p>
+                        <p v-if="showAverageRating !== 0" class="text-sm pl-4">
+                            {{ showAverageRating }}/5
+                        </p>
                         <p class="text-sm pl-4" v-if="showTypeAttraction === 1">
                             Sensation
                         </p>
@@ -976,8 +1028,8 @@ const goToCalendarParc = () => {
                                 </p>
                             </div>
                         </div>
-                        <div v-if="isAvisSelected || showComm === true">
-                            <div class="pl-4">
+                        <div v-if="isAvisSelected">
+                            <div v-if="showComm === true" class="pl-4">
                                 <div
                                     class="pt-6"
                                     v-for="data in showRatingAttraction"
@@ -985,9 +1037,17 @@ const goToCalendarParc = () => {
                                     <p>{{ data.User.username }}</p>
                                     <p class="text-sm">{{ data.rating }}/5</p>
                                     <p>{{ data.content }}</p>
+
                                     <div class="flex justify-end pr-2">
                                         <button
-                                            @click=""
+                                            v-if="
+                                                data.User.id === id ||
+                                                modoRefParc ===
+                                                    parcIdInAttraction
+                                            "
+                                            @click="
+                                                deleteCommentAttraction(data.id)
+                                            "
                                             class="bg-[#344D59] text-white rounded-md px-4 py-1"
                                         >
                                             Delete
@@ -995,26 +1055,29 @@ const goToCalendarParc = () => {
 
                                         <button
                                             @click="openModalReport(data.id)"
-                                            class="ml-4"
+                                            class="ml-4 font-bold"
+                                            title="Signaler un commentaire inapproprié"
                                         >
                                             Report
                                         </button>
                                     </div>
+                                    <div class="relative pt-6">
+                                        <div
+                                            class="absolute inset-0 flex items-center"
+                                            aria-hidden="true"
+                                        >
+                                            <div
+                                                class="w-full border-t border-gray-300"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="relative pt-6">
-                                <div
-                                    class="absolute inset-0 flex items-center"
-                                    aria-hidden="true"
-                                >
-                                    <div
-                                        class="w-full border-t border-gray-300"
-                                    />
-                                </div>
-                            </div>
-
-                            <div class="flex justify-center pt-4">
+                            <div
+                                v-if="showComm === true"
+                                class="flex justify-center pt-4"
+                            >
                                 <button
                                     class="px-4 py-2 border hover:bg-gray-200 text-black rounded-full"
                                     @click="showRatingModal"
@@ -1022,10 +1085,13 @@ const goToCalendarParc = () => {
                                     Rédiger un avis
                                 </button>
                             </div>
-                        </div>
-                        <div v-if="showComm === false">
-                            Les commentaires ont été désactivés pour cette
-                            attraction.
+                            <div
+                                class="pt-4 pb-4 pl-4"
+                                v-if="showComm === false"
+                            >
+                                Les avis ont été désactivés pour cette
+                                attraction.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1205,6 +1271,5 @@ const goToCalendarParc = () => {
 <style scoped>
 .selected {
     border-bottom: 2px solid blue;
-    border-bottom-width: ;
 }
 </style>

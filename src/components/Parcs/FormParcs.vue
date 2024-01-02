@@ -4,8 +4,11 @@ import { Mapbox_API_KEY } from "../../common/config.js";
 import { ref, onMounted, computed } from "vue";
 import { useParcsStore } from "../../stores/parcs.js";
 import MapSearchParc from "./MapSearchParc.vue";
+import Swal from "sweetalert2";
+import { useRouter } from "vue-router";
 
 const parcsStore = useParcsStore();
+const router = useRouter();
 
 let map;
 
@@ -98,20 +101,47 @@ const saveImageToConstant = () => {
 };
 
 async function createParc() {
-    const body = await parcsStore.createParc(
-        id.value,
-        nomparc.value,
-        ouverture.value,
-        fermeture.value,
-        latitude.value,
-        longitude.value,
-        ticket.value,
-        img.value,
-        legende.value,
-        toilettes.value,
-        resto.value,
-        magasins.value
-    );
+    Swal.fire({
+        title: "Êtes-vous sûr?",
+        text: "Vous êtes sur le point d'ajouter un parc d'attraction",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Oui, ajouter le parc",
+        cancelButtonText: "Annuler",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            parcsStore
+                .createParc(
+                    id.value,
+                    nomparc.value,
+                    ticket.value,
+                    toilettes.value,
+                    resto.value,
+                    magasins.value,
+                    ouverture.value,
+                    fermeture.value,
+                    latitude.value,
+                    longitude.value,
+                    legende.value,
+                    img.value
+                )
+                .then(() => {
+                    Swal.fire({
+                        title: "Parc ajouté",
+                        text: "Le parc a bien été ajouté",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Ok",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            router.push({ name: "home" });
+                        }
+                    });
+                });
+        }
+    });
 }
 
 const coords = ref(null);

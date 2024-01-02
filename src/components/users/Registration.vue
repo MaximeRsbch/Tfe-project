@@ -27,8 +27,8 @@ async function createUsers() {
         );
     } else {
         Swal.fire({
-            title: "Inscription réussie !",
-            text: "Vous pouvez désormais vous connecter",
+            title: "Inscription presque réussie !",
+            text: "Vous avez reçu un mail pour valider votre compte !",
             icon: "success",
             confirmButtonText: "Cool !",
         });

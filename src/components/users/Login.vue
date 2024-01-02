@@ -1,11 +1,27 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useUsersStore } from "../../stores/users.js";
 import Swal from "sweetalert2";
 
 const router = useRouter();
 const usersStore = useUsersStore();
+
+onMounted(() => {
+    usersStore.fetchUsers();
+});
+
+const user = computed(() => usersStore.getUsers);
+
+const userVerified = ref();
+const userEmail = ref();
+
+setTimeout(() => {
+    for (let i = 0; i < user.value.length; i++) {
+        userEmail.value = user.value[i].email;
+        userVerified.value = user.value[i].isVerified;
+    }
+}, 300);
 
 const goToRegistration = () => {
     router.push({ name: "registration" });
@@ -22,9 +38,15 @@ async function recupUser() {
             title: "Oops...",
             text: "Veuillez renseigner un mot de passe ou une adresse mail valide !",
         });
+    } else if (userVerified.value === true) {
+        const body = await usersStore.loginUser(password.value, email.value);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Votre compte n'est pas vérifié !",
+        });
     }
-
-    const body = await usersStore.loginUser(password.value, email.value);
 }
 </script>
 

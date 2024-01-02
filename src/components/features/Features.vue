@@ -41,11 +41,10 @@ const choixParc = () => {
 
     //On récup les attractions du parc choisit
     articlesStore.fetchAllArticles(idParc);
-    setTimeout(() => {
-        const articles = computed(() => articlesStore.getArticles);
 
-        article.value = articles.value;
-    }, 300);
+    const articles = computed(() => articlesStore.getArticles);
+
+    article.value = articles.value;
 
     //On récup les notes de chaque attraction
 };
@@ -98,7 +97,10 @@ const choixParc = () => {
                     Aucun article n'est disponible pour ce parc
                 </h2>
 
-                <div v-if="role === 'admin'" class="pt-10">
+                <div
+                    v-if="role === 'admin' || role === 'modoParc'"
+                    class="pt-10"
+                >
                     <button
                         class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
                     >

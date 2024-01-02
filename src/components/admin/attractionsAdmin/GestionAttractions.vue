@@ -29,12 +29,17 @@ const choixParc = () => {
             document.getElementById("parc").selectedIndex
         ].id;
 
+    console.log(idParc);
+
     //On récup les attractions du parc choisit
     attractionsStore.fetchAttractionsParc(idParc);
 
     const attractions = computed(() => attractionsStore.getAttractions);
 
-    attraction.value = attractions.value;
+    setTimeout(() => {
+        attraction.value = attractions.value;
+        console.log(attraction.value);
+    }, 300);
 
     //On récup les notes de chaque attraction
 };
@@ -250,6 +255,15 @@ const deleteAttraction = (id) => {
                                             :key="data.id"
                                             class="hover:bg-gray-100"
                                         >
+                                            <div
+                                                v-if="
+                                                    data.ref_parc !==
+                                                    usersModoParc
+                                                "
+                                            >
+                                                Vous ne pouvez pas voir les
+                                                informations de ce parc
+                                            </div>
                                             <td
                                                 v-if="
                                                     data.ref_parc ===
@@ -364,7 +378,7 @@ const deleteAttraction = (id) => {
                 </div>
             </div>
         </div>
-        <div v-if="role !== 'admin'">
+        <div v-if="role == 'user'">
             <h2>
                 Bien essayer, vous êtes pas connecter pour accéder à cette page
             </h2>
