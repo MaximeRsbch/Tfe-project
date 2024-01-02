@@ -33,6 +33,7 @@ export const useArticlesStore = defineStore("articles", {
                 },
             }).then((res) => {
                 this.articlesDict = res.data.data;
+                console.log(res.data.data);
             });
         },
 

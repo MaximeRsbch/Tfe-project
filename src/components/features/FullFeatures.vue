@@ -131,6 +131,13 @@ const reportComment = () => {
         );
     }
 };
+
+function formatCreatedAt(createdAt) {
+    const date = new Date(createdAt);
+    // Format the date as per your requirement
+    const formattedDate = date.toLocaleString(); // Adjust the format as needed
+    return formattedDate;
+}
 </script>
 
 <template>
@@ -188,7 +195,7 @@ const reportComment = () => {
             </div>
             <div class="grid grid-cols-2 mt-5">
                 <div class="text-sm pl-4 md:pl-0">
-                    {{ test.createdAt }}
+                    {{ formatCreatedAt(test.createdAt) }}
                 </div>
                 <div>
                     <button

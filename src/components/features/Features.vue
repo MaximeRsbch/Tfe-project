@@ -39,12 +39,16 @@ const choixParc = () => {
             document.getElementById("parc").selectedIndex
         ].id;
 
+    console.log(idParc);
+
     //On récup les attractions du parc choisit
     articlesStore.fetchAllArticles(idParc);
 
-    const articles = computed(() => articlesStore.getArticles);
+    setTimeout(() => {
+        const articles = computed(() => articlesStore.getArticles);
 
-    article.value = articles.value;
+        article.value = articles.value;
+    }, 200);
 
     //On récup les notes de chaque attraction
 };
