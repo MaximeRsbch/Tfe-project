@@ -212,6 +212,20 @@ export const useParcsStore = defineStore("parcs", {
             });
         },
 
+        async deleteMagasins(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/magasins/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.magasinsdict = res.data;
+            });
+        },
+
         async fetchRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
@@ -259,6 +273,20 @@ export const useParcsStore = defineStore("parcs", {
             }).then((res) => {
                 this.restaurantsdict = res.data;
                 console.log(res.data);
+            });
+        },
+
+        async deleteRestaurants(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/restaurants/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
+                this.restaurantsdict = res.data;
             });
         },
 

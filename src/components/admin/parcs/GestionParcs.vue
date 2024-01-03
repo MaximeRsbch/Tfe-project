@@ -30,6 +30,103 @@ setTimeout(() => {
         usersModoParc.value = user.ref_parc;
     }
 }, 300);
+
+const parc = ref("");
+const restaurant = ref("");
+const magasin = ref("");
+const parcId = ref("");
+
+const choixParc = () => {
+    //On récup l'id du parc choisit dans le select
+    const idParc =
+        document.getElementById("parc").options[
+            document.getElementById("parc").selectedIndex
+        ].id;
+
+    console.log(idParc);
+    parcId.value = idParc;
+
+    //On récup les resto du parc choisit
+    parcsStore.fetchRestaurants(parcId.value);
+
+    const restaurants = computed(() => parcsStore.getRestaurants);
+
+    setTimeout(() => {
+        restaurant.value = restaurants.value;
+        console.log(restaurant.value);
+    }, 300);
+
+    //On récup les magasin du parc choisit
+
+    parcsStore.fetchMagasins(parcId.value);
+
+    const magasins = computed(() => parcsStore.getMagasins);
+
+    setTimeout(() => {
+        magasin.value = magasins.value;
+        console.log(magasin.value);
+    }, 300);
+};
+
+const deleteRestaurant = (id) => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                "Supprimé !",
+                "L'attraction a bien été supprimé.",
+                "success"
+            );
+            parcsStore.deleteRestaurants(id);
+            restaurant.value = restaurant.value.filter(
+                (item) => item.id !== id
+            );
+
+            // Rappeler fetchRestaurants pour obtenir les données à jour
+            parcsStore.fetchRestaurants(parcId.value);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                "Annulé",
+                "L'attraction n'a pas été supprimé :)",
+                "error"
+            );
+        }
+    });
+};
+
+const deleteMagasin = (id) => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                "Supprimé !",
+                "L'attraction a bien été supprimé.",
+                "success"
+            );
+            parcsStore.deleteMagasins(id);
+            magasin.value = magasin.value.filter((item) => item.id !== id);
+            parcsStore.fetchMagasins(parcId.value);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                "Annulé",
+                "L'attraction n'a pas été supprimé :)",
+                "error"
+            );
+        }
+    });
+};
 </script>
 <template>
     <div class="container mx-auto">
@@ -221,6 +318,377 @@ setTimeout(() => {
 
                                                         <div class="tooltip">
                                                             Modifier parc
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center pt-10">
+                    <h2 class="text-xl">Gestion des restaurants et magasin</h2>
+                </div>
+
+                <div>
+                    <div class="flex justify-center">
+                        <select
+                            v-model="parc"
+                            @change="choixParc"
+                            id="parc"
+                            class="block px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-[#344d59] focus:ring-[#344d59] focus:ring-opacity-40 focus:outline-none focus:ring"
+                        >
+                            <option v-for="data in parcs" :id="data.id">
+                                {{ data.nom }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex flex-col container mx-auto pb-10">
+                    <div class="overflow-x-auto">
+                        <div
+                            class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
+                        >
+                            <div
+                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
+                            >
+                                <table
+                                    class="min-w-full divide-y divide-gray-300"
+                                >
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Nom du resto
+                                                </a>
+                                            </th>
+
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Heures d'ouverture
+                                                </a>
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Heures de fermeture
+                                                </a>
+                                            </th>
+                                            <th
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
+                                                scope="col"
+                                                class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Suppression Resto
+                                                </a>
+                                            </th>
+                                            <th
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
+                                                scope="col"
+                                                class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Modifier Resto
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody
+                                        class="divide-y divide-gray-200 bg-white"
+                                    >
+                                        <!--Affiche les info de tous les users-->
+                                        <tr
+                                            v-for="data in restaurant"
+                                            :key="data.id"
+                                            class="hover:bg-gray-100"
+                                        >
+                                            <div>
+                                                <td
+                                                    class="whitespace-nowrap px-3 py-4 text-base"
+                                                >
+                                                    {{ data.name }}
+                                                </td>
+                                            </div>
+
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                {{ data.beginHour }}
+                                            </td>
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                {{ data.endHour }}
+                                            </td>
+
+                                            <td
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    data.ref_parc ===
+                                                        usersModoParc
+                                                "
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                <button
+                                                    @click="
+                                                        deleteRestaurant(
+                                                            data.id
+                                                        )
+                                                    "
+                                                    type="button"
+                                                >
+                                                    <div
+                                                        class="image-container"
+                                                    >
+                                                        <img
+                                                            class="w-5 md:w-5 lg:w-full"
+                                                            src="/assets/img/poubelle.png"
+                                                            alt="poubelleImg"
+                                                        />
+                                                        <div class="tooltip">
+                                                            Supprimer resto
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </td>
+
+                                            <td
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    data.id === usersModoParc
+                                                "
+                                                class="whitespace-nowrap py-4 pr-10 text-base"
+                                            >
+                                                <button type="button">
+                                                    <div
+                                                        class="image-container"
+                                                    >
+                                                        <RouterLink
+                                                            v-if="
+                                                                data.id !==
+                                                                undefined
+                                                            "
+                                                            v-bind:to="{
+                                                                name: 'modifParcs',
+                                                                params: {
+                                                                    id: data.id,
+                                                                },
+                                                            }"
+                                                        >
+                                                            <img
+                                                                class="w-5 md:w-5 lg:w-full"
+                                                                src="/assets/img/modif.png"
+                                                                alt="modoPImg"
+                                                            />
+                                                        </RouterLink>
+
+                                                        <div class="tooltip">
+                                                            Modifier resto
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex flex-col container mx-auto pb-10">
+                    <div class="overflow-x-auto">
+                        <div
+                            class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
+                        >
+                            <div
+                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
+                            >
+                                <table
+                                    class="min-w-full divide-y divide-gray-300"
+                                >
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Nom du magasin
+                                                </a>
+                                            </th>
+
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Heures d'ouverture
+                                                </a>
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Heures de fermeture
+                                                </a>
+                                            </th>
+                                            <th
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
+                                                scope="col"
+                                                class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Suppression Magasin
+                                                </a>
+                                            </th>
+                                            <th
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    role === 'modoParc'
+                                                "
+                                                scope="col"
+                                                class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+                                            >
+                                                <a
+                                                    class="group inline-flex text-base"
+                                                >
+                                                    Modifier Magasin
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody
+                                        class="divide-y divide-gray-200 bg-white"
+                                    >
+                                        <!--Affiche les info de tous les users-->
+                                        <tr
+                                            v-for="data in magasin"
+                                            :key="data.id"
+                                            class="hover:bg-gray-100"
+                                        >
+                                            <div>
+                                                <td
+                                                    class="whitespace-nowrap px-3 py-4 text-base"
+                                                >
+                                                    {{ data.name }}
+                                                </td>
+                                            </div>
+
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                {{ data.beginHour }}
+                                            </td>
+                                            <td
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                {{ data.endHour }}
+                                            </td>
+
+                                            <td
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    data.ref_parc ===
+                                                        usersModoParc
+                                                "
+                                                class="whitespace-nowrap px-3 py-4 text-base"
+                                            >
+                                                <button
+                                                    @click="
+                                                        deleteMagasin(data.id)
+                                                    "
+                                                    type="button"
+                                                >
+                                                    <div
+                                                        class="image-container"
+                                                    >
+                                                        <img
+                                                            class="w-5 md:w-5 lg:w-full"
+                                                            src="/assets/img/poubelle.png"
+                                                            alt="poubelleImg"
+                                                        />
+                                                        <div class="tooltip">
+                                                            Supprimer magasin
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </td>
+
+                                            <td
+                                                v-if="
+                                                    role === 'admin' ||
+                                                    data.id === usersModoParc
+                                                "
+                                                class="whitespace-nowrap py-4 pr-10 text-base"
+                                            >
+                                                <button type="button">
+                                                    <div
+                                                        class="image-container"
+                                                    >
+                                                        <RouterLink
+                                                            v-if="
+                                                                data.id !==
+                                                                undefined
+                                                            "
+                                                            v-bind:to="{
+                                                                name: 'modifParcs',
+                                                                params: {
+                                                                    id: data.id,
+                                                                },
+                                                            }"
+                                                        >
+                                                            <img
+                                                                class="w-5 md:w-5 lg:w-full"
+                                                                src="/assets/img/modif.png"
+                                                                alt="modoPImg"
+                                                            />
+                                                        </RouterLink>
+
+                                                        <div class="tooltip">
+                                                            Modifier magasin
                                                         </div>
                                                     </div>
                                                 </button>
