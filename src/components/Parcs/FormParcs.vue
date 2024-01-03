@@ -5,7 +5,7 @@ import { ref, onMounted, computed } from "vue";
 import { useParcsStore } from "../../stores/parcs.js";
 import MapSearchParc from "./MapSearchParc.vue";
 import Swal from "sweetalert2";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const parcsStore = useParcsStore();
 const router = useRouter();
@@ -242,11 +242,32 @@ const closeSearchResults = () => {
 const removeResult = () => {
     map.removeLayer(resultMarker.value);
 };
+
+const goBack = () => {
+    router.go(-1);
+};
 </script>
 
 <template>
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-        <h2 class="text-lg font-semibold text-gray-700">
+        <button @click="goBack" class="text-blue-500 hover:underline">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="inline-block w-4 h-4 mr-2"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                ></path>
+            </svg>
+            Retour
+        </button>
+        <h2 class="text-lg font-semibold text-gray-700 pt-4">
             Ajout d'un parc d'attraction
         </h2>
 

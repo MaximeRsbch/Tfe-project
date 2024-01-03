@@ -7,10 +7,13 @@ import { useParcsStore } from "../../stores/parcs";
 import { useAttractionsStore } from "../../stores/attractions";
 import MapSearchAttraction from "./MapSearchAttraction.vue";
 import Swal from "sweetalert2";
+import { useRouter, useRoute } from "vue-router";
 
 const typesStore = useTypesStore();
 const parcsStore = useParcsStore();
 const attractionsStore = useAttractionsStore();
+
+const router = useRouter();
 
 let map;
 
@@ -259,11 +262,32 @@ const createAttraction = () => {
         }
     });
 };
+
+const goBack = () => {
+    router.go(-1);
+};
 </script>
 
 <template>
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-        <h2 class="text-lg font-semibold text-gray-700">
+        <button @click="goBack" class="text-blue-500 hover:underline">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="inline-block w-4 h-4 mr-2"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                ></path>
+            </svg>
+            Retour
+        </button>
+        <h2 class="text-lg font-semibold text-gray-700 pt-4">
             Ajout d'une attraction
         </h2>
 
