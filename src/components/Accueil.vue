@@ -5,7 +5,9 @@ import { computed, onMounted, ref } from "vue";
 import GeoErrorModal from "./GeoErrorModal.vue";
 import MapFeatures from "./MapFeatures.vue";
 import RatingStars from "./attractions/RatingStars.vue";
+
 import Calendar from "../components/calendar/Calendar.vue";
+import DropDownMenuAjout from "./DropDownMenuAjout.vue";
 import Swal from "sweetalert2";
 import { Mapbox_API_KEY } from "../common/config.js";
 import { useParcsStore } from "../stores/parcs.js";
@@ -219,7 +221,15 @@ const showRestoOpen = ref(null);
 const showRestoClose = ref(null);
 const showRestoDesc = ref(null);
 const showRestoImg = ref(null);
+const showCarteUrl = ref(null);
 const showComm = ref(null);
+
+const showModalMagasin = ref(null);
+const showMagasinName = ref(null);
+const showMagasinOpen = ref(null);
+const showMagasinClose = ref(null);
+const showMagasinDesc = ref(null);
+const showMagasinImg = ref(null);
 
 const parcid = ref(null);
 const attractionid = ref(null);
@@ -252,62 +262,52 @@ const plotInfoParc = () => {
             iconSize: [32, 32],
         });
 
+        const MagasinsMarker = leaflet.icon({
+            iconUrl: "../assets/img/shop.png",
+            iconSize: [32, 32],
+        });
+
         for (const parc of parcs.value) {
             if (parc.showWC == true) {
-                parcstore.fetchToilettes(parc.id);
-                setTimeout(() => {
-                    const toilettes = computed(() => parcstore.getToilettes);
-                    for (const toilette of toilettes.value) {
-                        leaflet
-                            .marker([toilette.latitude, toilette.longitude], {
-                                icon: toiletteMarker,
-                            })
-                            .addTo(map);
-                    }
-                }, 300);
-            }
-            if (parc.showResto == true) {
-                parcstore.fetchRestaurants(parc.id);
-                setTimeout(() => {
-                    const restaurants = computed(
-                        () => parcstore.getRestaurants
-                    );
-
-                    for (const restaurant of restaurants.value) {
-                        leaflet
-                            .marker(
-                                [restaurant.latitude, restaurant.longitude],
-                                {
-                                    icon: restoMarker,
-                                }
-                            )
-                            .addTo(map)
-                            .on("click", function (e) {
-                                showModalResto.value = true;
-                                showParcResults.value = false;
-                                showAttractionResults.value = false;
-
-                                showRestoName.value = restaurant.name;
-                                showRestoOpen.value = restaurant.beginHour;
-                                showRestoClose.value = restaurant.endHour;
-                                showRestoDesc.value = restaurant.description;
-                                showRestoImg.value = restaurant.carte_img;
-                            });
-                    }
-                }, 300);
-            }
-            parcstore.fetchSecours(parc.id);
-            setTimeout(() => {
-                const secours = computed(() => parcstore.getSecours);
-
-                for (const secour of secours.value) {
+                for (const toilette of parc.Toilettes) {
                     leaflet
-                        .marker([secour.latitude, secour.longitude], {
-                            icon: SecoursMarker,
+                        .marker([toilette.latitude, toilette.longitude], {
+                            icon: toiletteMarker,
                         })
                         .addTo(map);
                 }
-            }, 300);
+            }
+            for (const secours of parc.Secours) {
+                leaflet
+                    .marker([secours.latitude, secours.longitude], {
+                        icon: SecoursMarker,
+                    })
+                    .addTo(map);
+            }
+
+            if (parc.showResto === true) {
+                for (const Resto of parc.Restaurants) {
+                    leaflet
+                        .marker([Resto.latitude, Resto.longitude], {
+                            icon: restoMarker,
+                        })
+                        .addTo(map)
+                        .on("click", function (e) {
+                            showModalResto.value = true;
+                            showModalMagasin.value = false;
+                            showModalResults.value = false;
+                            showParcResults.value = false;
+                            showAttractionResults.value = false;
+
+                            showRestoName.value = Resto.name;
+                            showRestoOpen.value = Resto.beginHour;
+                            showRestoClose.value = Resto.endHour;
+                            showRestoDesc.value = Resto.description;
+                            showRestoImg.value = Resto.carte_img;
+                            showCarteUrl.value = Resto.url_carte;
+                        });
+                }
+            }
 
             parcstore.fetchInfos(parc.id);
             setTimeout(() => {
@@ -322,19 +322,28 @@ const plotInfoParc = () => {
                 }
             }, 300);
             if (parc.showMagasins) {
-                parcstore.fetchMagasins(parc.id);
-                setTimeout(() => {
-                    const magasins = computed(() => parcstore.getMagasins);
+                for (const Magasin of parc.Magasins) {
+                    leaflet
+                        .marker([Magasin.latitude, Magasin.longitude], {
+                            icon: MagasinsMarker,
+                        })
+                        .addTo(map)
+                        .on("click", function (e) {
+                            showModalMagasin.value = true;
+                            showModalResto.value = false;
+                            showModalResults.value = false;
+                            showParcResults.value = false;
+                            showAttractionResults.value = false;
 
-                    for (const magasin of magasins.value) {
-                        leaflet
-                            .marker([magasin.latitude, magasin.longitude], {
-                                icon: InfoMarker,
-                            })
-                            .addTo(map);
-                    }
-                }, 300);
+                            showMagasinName.value = Magasin.name;
+                            showMagasinOpen.value = Magasin.beginHour;
+                            showMagasinClose.value = Magasin.endHour;
+                            showMagasinDesc.value = Magasin.description;
+                            showMagasinImg.value = Magasin.img_url;
+                        });
+                }
             }
+
             leaflet
                 .marker([parc.latitude, parc.longitude], { icon: customMarker })
                 .addTo(map)
@@ -342,6 +351,9 @@ const plotInfoParc = () => {
                     showModalResults.value = true;
                     showParcResults.value = true;
                     showAttractionResults.value = false;
+                    showModalMagasin.value = false;
+                    showModalResto.value = false;
+
                     showParcName.value = parc.nom;
                     showParcPrice.value = parc.ticketPrice;
                     showParcBeginHour.value = parc.beginHour;
@@ -406,6 +418,8 @@ const plotInfoAttraction = () => {
                     showModalResults.value = true;
                     showAttractionResults.value = true;
                     showParcResults.value = false;
+                    showModalMagasin.value = false;
+                    showModalResto.value = false;
 
                     //Pour attraction
 
@@ -456,6 +470,10 @@ const removeRatingResults = () => {
 };
 const removeRestoResults = () => {
     showModalResto.value = false;
+};
+
+const removeMagasinResults = () => {
+    showModalMagasin.value = false;
 };
 
 const goToAddParc = () => {
@@ -632,7 +650,6 @@ const goToFormAttraction = () => {
 
 const title = ref("");
 const contentReport = ref("");
-const ref_commentArticles = ref(null);
 
 const ModalReport = ref(false);
 
@@ -697,6 +714,10 @@ const deleteCommentAttraction = (id) => {
         });
     }
 };
+
+const carteResto = () => {
+    window.open(showCarteUrl.value);
+};
 </script>
 
 <template>
@@ -720,18 +741,7 @@ const deleteCommentAttraction = (id) => {
         <div
             class="z-[2] absolute top-4 left-[250px] md:top-10 md:left-[1400px] lg:top-20 lg:left-[1000px]"
         >
-            <div class="">
-                <button
-                    @click="goToAddParc"
-                    class="bg-white px-3 py-2 text-white rounded-md"
-                >
-                    <img
-                        src="/assets/img/add-icon.png"
-                        class="w-full lg:w-full"
-                        alt=""
-                    />
-                </button>
-            </div>
+            <DropDownMenuAjout />
         </div>
 
         <div
@@ -1211,56 +1221,147 @@ const deleteCommentAttraction = (id) => {
                 <p class="text-xs mb-1"></p>
             </div>
         </div>
+
         <div
             v-if="showModalResto"
-            class="h-full w-full absolute z-10 flex justify-start items-start pt-32"
+            class="h-full absolute z-10 flex justify-start items-start pt-16 pl-2"
         >
             <div
-                class="flex flex-col bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
+                class="flex flex-col bg-white w-[80%] sm:w-[400px] rounded-md max-h-[74vh] overflow-y-auto"
             >
-                <i
-                    @click="removeRestoResults"
-                    class="fa-regular fa-circle-xmark flex justify-end"
-                ></i>
-
-                <div class="">
-                    <h2 class="text-2xl">{{ showRestoName }}</h2>
+                <div class="relative z-10 flex justify-end top-6 right-2">
+                    <i
+                        @click="removeRestoResults"
+                        class="fa-solid fa-xmark fa-2xl text-gray-200 hover:text-[#344d59] fixed"
+                    ></i>
                 </div>
                 <div>
-                    <p class="text-sm">
-                        {{ showRestoDesc }}
-                    </p>
-                </div>
-                <div class="pt-5">
-                    <h2>Ici se trouvera la carte</h2>
-                    <img
-                        class="relative z-10 object-cover w-full rounded-md h-96"
-                        v-if="showRestoImg"
-                        :src="`${BASE_URL}/${showRestoImg.replace(/\\/g, '/')}`"
-                        alt=""
-                    />
-                </div>
-                <div class="pt-5">
-                    <div v-if="heureLocale < '10'">
-                        <span class="text-red-700">Fermé</span> - Ouverture à
-                        {{ showRestoOpen }}
+                    <div>
+                        <h2 class="text-2xl pl-4 pt-4 pb-4">
+                            {{ showRestoName }}
+                        </h2>
+                        <hr />
                     </div>
-                    <div v-if="heureLocale > '18'">
-                        <span class="text-red-700">Fermé</span> - Ouverture à
-                        {{ showRestoOpen }}
-                    </div>
-                    <div v-if="heureLocale < '18' && heureLocale > '10'">
-                        <span class="text-green-500">Ouvert</span> - Fermeture à
-                        {{ showRestoClose }}
-                    </div>
-                </div>
 
-                <div v-if="!isConnect">
-                    <h2 class="text-red-600">
-                        Connectez vous pour accéder à cette option !
-                    </h2>
+                    <div class="pt-8">
+                        <p
+                            class="text-sm flex justify-center text-justify pb-4 px-10"
+                        >
+                            {{ showRestoDesc }}
+                        </p>
+                        <hr />
+
+                        <div class="pt-5">
+                            <h2 class="pl-4 pb-4">Carte du restaurant :</h2>
+                            <img
+                                v-if="showRestoImg"
+                                :src="`${BASE_URL}/${showRestoImg.replace(
+                                    /\\/g,
+                                    '/'
+                                )}`"
+                                alt="Image attraction"
+                                class="w-[408px] h-[272px]]"
+                            />
+                        </div>
+
+                        <div class="pl-4 pt-4 pb-4">
+                            <p>
+                                Lien de la carte complète :
+                                <button
+                                    class="text-blue-500 underline"
+                                    @click="carteResto"
+                                >
+                                    Ici
+                                </button>
+                            </p>
+                        </div>
+
+                        <hr />
+
+                        <div class="pt-5 pb-5 pl-4">
+                            <div v-if="heureLocale < '10'">
+                                <span class="text-red-700">Fermé</span> -
+                                Ouverture à
+                                {{ showRestoOpen }}
+                            </div>
+                            <div v-if="heureLocale > '18'">
+                                <span class="text-red-700">Fermé</span> -
+                                Ouverture à
+                                {{ showRestoOpen }}
+                            </div>
+                            <div
+                                v-if="heureLocale < '18' && heureLocale > '10'"
+                            >
+                                <span class="text-green-500">Ouvert</span> -
+                                Fermeture à
+                                {{ showRestoClose }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-xs mb-1"></p>
+            </div>
+        </div>
+
+        <div
+            v-if="showModalMagasin"
+            class="h-full absolute z-10 flex justify-start items-start pt-16 pl-2"
+        >
+            <div
+                class="flex flex-col bg-white w-[80%] sm:w-[400px] rounded-md max-h-[74vh] overflow-y-auto"
+            >
+                <div class="relative z-10 flex justify-end top-6 right-2">
+                    <i
+                        @click="removeMagasinResults"
+                        class="fa-solid fa-xmark fa-2xl text-gray-200 hover:text-[#344d59] fixed"
+                    ></i>
+                </div>
+                <div>
+                    <img
+                        v-if="showMagasinImg"
+                        :src="`${BASE_URL}/${showMagasinImg.replace(
+                            /\\/g,
+                            '/'
+                        )}`"
+                        alt="Image attraction"
+                        class="w-[408px] h-[272px]]"
+                    />
+
+                    <div>
+                        <h2 class="text-2xl pl-4 pt-4 pb-4">
+                            {{ showMagasinName }}
+                        </h2>
+                        <hr />
+                    </div>
+
+                    <div class="pt-8">
+                        <p
+                            class="text-sm flex justify-center text-justify pb-4 px-10"
+                        >
+                            {{ showMagasinDesc }}
+                        </p>
+                        <hr />
+
+                        <div class="pt-5 pb-5">
+                            <div v-if="heureLocale < '10'">
+                                <span class="text-red-700">Fermé</span> -
+                                Ouverture à
+                                {{ showMagasinOpen }}
+                            </div>
+                            <div v-if="heureLocale > '18'">
+                                <span class="text-red-700">Fermé</span> -
+                                Ouverture à
+                                {{ showMagasinOpen }}
+                            </div>
+                            <div
+                                v-if="heureLocale < '18' && heureLocale > '10'"
+                            >
+                                <span class="text-green-500">Ouvert</span> -
+                                Fermeture à
+                                {{ showMagasinClose }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

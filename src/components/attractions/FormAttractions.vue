@@ -1,7 +1,7 @@
 <script setup>
 import leaflet from "leaflet";
 import { Mapbox_API_KEY } from "../../common/config.js";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useTypesStore } from "../../stores/types";
 import { useParcsStore } from "../../stores/parcs";
 import { useAttractionsStore } from "../../stores/attractions";

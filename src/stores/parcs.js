@@ -176,6 +176,42 @@ export const useParcsStore = defineStore("parcs", {
             });
         },
 
+        async createMagasins(
+            name,
+            latitude,
+            longitude,
+            beginHour,
+            endHour,
+            img,
+            description,
+            ref_parc
+        ) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: "http://localhost:3000/api/magasins/",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    name,
+                    latitude,
+                    longitude,
+                    beginHour,
+                    endHour,
+                    img,
+                    description,
+                    ref_parc,
+                },
+            }).then((res) => {
+                this.magasinsdict = res.data;
+                console.log(res.data);
+            });
+        },
+
         async fetchRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
@@ -185,6 +221,44 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.restaurantsdict = res.data;
+            });
+        },
+
+        async createRestaurants(
+            name,
+            latitude,
+            longitude,
+            beginHour,
+            endHour,
+            img,
+            description,
+            url_carte,
+            ref_parc
+        ) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: "http://localhost:3000/api/restaurants/",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    name,
+                    latitude,
+                    longitude,
+                    beginHour,
+                    endHour,
+                    img,
+                    description,
+                    url_carte,
+                    ref_parc,
+                },
+            }).then((res) => {
+                this.restaurantsdict = res.data;
+                console.log(res.data);
             });
         },
 

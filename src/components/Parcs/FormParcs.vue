@@ -116,16 +116,16 @@ async function createParc() {
                 .createParc(
                     id.value,
                     nomparc.value,
-                    ticket.value,
-                    toilettes.value,
-                    resto.value,
-                    magasins.value,
                     ouverture.value,
                     fermeture.value,
                     latitude.value,
                     longitude.value,
+                    ticket.value,
+                    img.value,
                     legende.value,
-                    img.value
+                    toilettes.value,
+                    resto.value,
+                    magasins.value
                 )
                 .then(() => {
                     Swal.fire({
