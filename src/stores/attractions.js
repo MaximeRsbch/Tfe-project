@@ -50,6 +50,7 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
+                console.log(res.data);
             });
         },
 
@@ -99,6 +100,7 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
+                console.log(res.data);
             });
         },
 

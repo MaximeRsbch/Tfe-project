@@ -162,6 +162,8 @@ function changeTypeValue() {
 }
 
 const attractions = ref(null);
+const attractionSimple = ref(null);
+const attractionTheme = ref(null);
 
 function changeParcValue() {
     //recup l'id du choix du parc
@@ -177,7 +179,7 @@ function changeParcValue() {
     setTimeout(() => {
         const getAttractions = computed(() => attractionsStore.getAttractions);
         attractions.value = getAttractions.value;
-    }, 3000);
+    }, 300);
 }
 
 function changeAttractionValue() {
@@ -221,7 +223,6 @@ const comment = ref(false);
 
 const showComment = () => {
     comment.value = !comment.value;
-    console.log(comment.value);
 };
 
 const createAttraction = () => {
@@ -299,27 +300,15 @@ const goBack = () => {
 
                 <select
                     @change="changeAttractionValue"
-                    v-if="attractions != ''"
                     name="selectAttraction"
                     v-model="nom"
                     id="nom"
                     class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                 >
-                    <option
-                        v-for="dataAttraction in attractions"
-                        :id="dataAttraction.id"
-                    >
-                        {{ dataAttraction.name }}
+                    <option v-for="data in attractions" :id="data.id">
+                        {{ data.name }}
                     </option>
                 </select>
-                <select
-                    @change="changeAttractionValue"
-                    v-if="attractions == ''"
-                    name="selectAttraction"
-                    v-model="nom"
-                    id="nom"
-                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                ></select>
             </div>
 
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
