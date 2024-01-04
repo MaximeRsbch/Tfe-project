@@ -122,7 +122,7 @@ const choixParc = () => {
                     <div class="image-container">
                         <img
                             src="/assets/img/addBtn.png"
-                            class="w-full md:w-5 lg:w-full"
+                            class="w-full md:w-full lg:w-full"
                             alt=""
                         />
                         <div class="tooltip">Ajouter un article</div>

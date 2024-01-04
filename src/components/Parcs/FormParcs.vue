@@ -442,7 +442,7 @@ const goBack = () => {
             <div class="flex justify-end mt-6">
                 <button
                     type="submit"
-                    class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                    class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:bg-[#344d59]"
                 >
                     Ajouter le parc
                 </button>

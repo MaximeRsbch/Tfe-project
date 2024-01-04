@@ -50,7 +50,7 @@ const selectResult = (result) => {
 </script>
 <template>
     <div
-        class="w-70 md:w-20 right-1 absolute md:top-[600px] md:left-[200px] z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
+        class="w-full md:w-auto absolute md:top-[650px] md:left-[200px] lg:top-[685px] lg:left-[330px] xl:top-[685px] xl:left-[530px] z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
     >
         <!-- Search-->
         <div class="relative flex-1 md:min-w-[350px]">

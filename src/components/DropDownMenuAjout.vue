@@ -26,11 +26,7 @@ const goToAddMagasin = () => {
     <Menu as="div" class="relative inline-block text-left">
         <div>
             <MenuButton class="bg-white px-3 py-2 text-white rounded-md">
-                <img
-                    src="/assets/img/add-icon.png"
-                    class="w-full lg:w-full"
-                    alt=""
-                />
+                <img src="/assets/img/add-icon.png" class="w-full" alt="" />
             </MenuButton>
         </div>
 

@@ -721,7 +721,7 @@ const carteResto = () => {
 </script>
 
 <template>
-    <div class="h-screen relative overflow-x-hidden">
+    <div class="relative overflow-x-hidden">
         <GeoErrorModal
             @closeGeoError="closeGeoError"
             v-if="geoError"
@@ -739,17 +739,17 @@ const carteResto = () => {
         />
 
         <div
-            class="z-[2] absolute top-4 left-[250px] md:top-10 md:left-[1400px] lg:top-20 lg:left-[1000px]"
+            class="z-[2] absolute top-4 left-[250px] md:top-20 md:left-[700px] lg:top-20 lg:left-[950px] xl:top-20 xl:left-[1350px]"
         >
             <DropDownMenuAjout />
         </div>
 
         <div
             v-if="showModalResults"
-            class="h-full absolute z-10 flex justify-start items-start pt-16 pl-2"
+            class="h-full absolute z-10 flex justify-start items-start pt-32 md:pt-16 pl-6 md:pl-2"
         >
             <div
-                class="flex flex-col bg-white w-[80%] sm:w-[400px] rounded-md max-h-[74vh] overflow-y-auto"
+                class="flex flex-col bg-white w-[280px] sm:w-[400px] rounded-md max-h-[66vh] md:max-h-[74vh] overflow-y-auto"
             >
                 <div class="relative z-10 flex justify-end top-6 right-2">
                     <i
@@ -793,7 +793,9 @@ const carteResto = () => {
                             <h1 class="text-2xl">{{ showParcName }}</h1>
                         </div>
                         <div class="flex justify-end pr-4">
-                            <div class="absolute z-10 top-20 left-4">
+                            <div
+                                class="absolute z-10 top-36 md:top-20 left-8 md:left-4"
+                            >
                                 <button
                                     @click="goToFormAttraction"
                                     class="bg-[#344d59] text-white px-4 py-2 rounded-lg"
@@ -884,7 +886,7 @@ const carteResto = () => {
                             </h2>
                             <div class="flex justify-end pr-4">
                                 <div
-                                    class="absolute z-10 top-20 left-8"
+                                    class="absolute z-10 top-36 md:top-20 left-8"
                                     v-for="data in showFavorite"
                                 >
                                     <div v-if="data.ref_user !== id">
@@ -902,7 +904,7 @@ const carteResto = () => {
                                 </div>
 
                                 <div
-                                    class="absolute z-10 top-20 left-8"
+                                    class="absolute z-10 top-36 md:top-20 left-8"
                                     v-if="showFavorite.length === 0"
                                 >
                                     <button @click="toggleFavorite">
@@ -1365,7 +1367,7 @@ const carteResto = () => {
             </div>
         </div>
 
-        <div id="map" class="h-full z-[1]"></div>
+        <div id="map" class="h-[606px] z-[1]"></div>
     </div>
 </template>
 
