@@ -51,10 +51,6 @@ setTimeout(() => {
 
 const user = computed(() => usersStore.getUsersById);
 
-const goToFeatures = () => {
-    router.push({ name: "features" });
-};
-
 const title = ref("");
 const content = ref("");
 const ref_user = ref("");
@@ -65,6 +61,8 @@ const isConnect = computed(() => localStorage.getItem("savedToken"));
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const idUser = tokenDecode.value.id_user;
+
+const role = tokenDecode.value.role;
 
 async function addComment() {
     if (isConnect.value == null) {
@@ -138,18 +136,33 @@ function formatCreatedAt(createdAt) {
     const formattedDate = date.toLocaleString(); // Adjust the format as needed
     return formattedDate;
 }
+
+const goBack = () => {
+    router.go(-1);
+};
 </script>
 
 <template>
-    <div class="mt-10 pl-4">
-        <button @click="goToFeatures">
-            <img
-                src="/assets/img/fleche.png"
-                alt="Retour aux articles"
-                class="w-20 mr-2"
-            />
-        </button>
-    </div>
+    <button
+        @click="goBack"
+        class="text-blue-500 pt-10 pl-4 text-xl hover:underline"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="inline-block w-4 h-4 mr-2"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            ></path>
+        </svg>
+        Retour
+    </button>
 
     <div class="flex justify-center">
         <img
@@ -164,6 +177,7 @@ function formatCreatedAt(createdAt) {
         <div>
             <h1 class="text-center md:text-4xl text-3xl pt-4">
                 {{ articles.title }}
+                {{ articles.showCommentaires }}
             </h1>
             <div class="flex justify-center">
                 <p class="pt-4 max-w-5xl text-center pb-5">
@@ -172,10 +186,13 @@ function formatCreatedAt(createdAt) {
             </div>
         </div>
     </div>
-    <div class="flex justify-center pt-20">
+    <div
+        v-if="articles.showCommentaires === true"
+        class="flex justify-center pt-20"
+    >
         <h2 class="md:text-4xl text-2xl">Espace commentaire</h2>
     </div>
-    <div class="pt-10">
+    <div v-if="articles.showCommentaires === true" class="pt-10">
         <div
             class="mx-auto container max-w-xl"
             v-for="test in articleCommentaire"
@@ -289,6 +306,13 @@ function formatCreatedAt(createdAt) {
                     Ajouter
                 </button>
             </div>
+        </div>
+    </div>
+    <div v-else>
+        <div class="flex justify-center pt-10">
+            <h2 class="md:text-4xl text-2xl">
+                Les commentaires sont désactivés
+            </h2>
         </div>
     </div>
 </template>
