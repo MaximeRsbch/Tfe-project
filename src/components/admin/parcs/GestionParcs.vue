@@ -499,7 +499,7 @@ const deleteMagasin = (id) => {
                                                                 undefined
                                                             "
                                                             v-bind:to="{
-                                                                name: 'modifParcs',
+                                                                name: 'modifRestaurant',
                                                                 params: {
                                                                     id: data.id,
                                                                 },
@@ -674,7 +674,7 @@ const deleteMagasin = (id) => {
                                                                 undefined
                                                             "
                                                             v-bind:to="{
-                                                                name: 'modifParcs',
+                                                                name: 'modifMagasin',
                                                                 params: {
                                                                     id: data.id,
                                                                 },

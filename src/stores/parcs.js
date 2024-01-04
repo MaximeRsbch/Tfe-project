@@ -19,6 +19,7 @@ export const useParcsStore = defineStore("parcs", {
         getToilettes: (state) => Object.values(state.toilettesdict),
         getMagasins: (state) => Object.values(state.magasinsdict),
         getRestaurants: (state) => Object.values(state.restaurantsdict),
+        getRestaurantsById: (state) => (id) => state.restaurantsdict[id],
         getSecours: (state) => Object.values(state.secoursdict),
         getInfos: (state) => Object.values(state.infosdict),
         getEvenements: (state) => Object.values(state.evenementdict),
@@ -176,6 +177,18 @@ export const useParcsStore = defineStore("parcs", {
         async fetchMagasins(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
+                url: `http://localhost:3000/api/magasins/all/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.magasinsdict = res.data;
+            });
+        },
+
+        async fetchMagasinsById(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
                 url: `http://localhost:3000/api/magasins/${id}`,
                 headers: {
                     "Content-Type": "application/json",
@@ -235,7 +248,52 @@ export const useParcsStore = defineStore("parcs", {
             });
         },
 
+        async updateMagasins(
+            id,
+            name,
+            latitude,
+            longitude,
+            beginHour,
+            endHour,
+            description
+        ) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/magasins/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    id,
+                    name,
+                    latitude,
+                    longitude,
+                    beginHour,
+                    endHour,
+                    description,
+                },
+            }).then((res) => {
+                this.magasinsdict = res.data;
+                console.log(res.data);
+            });
+        },
+
         async fetchRestaurants(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/restaurants/all/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.restaurantsdict = res.data;
+            });
+        },
+
+        async fetchRestaurantsById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
                 url: `http://localhost:3000/api/restaurants/${id}`,
@@ -296,6 +354,39 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.restaurantsdict = res.data;
+            });
+        },
+
+        async updateRestaurants(
+            id,
+            name,
+            latitude,
+            longitude,
+            beginHour,
+            endHour,
+            description
+        ) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/restaurants/`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    id,
+                    name,
+                    latitude,
+                    longitude,
+                    beginHour,
+                    endHour,
+                    description,
+                },
+            }).then((res) => {
+                this.restaurantsdict = res.data;
+                console.log(res.data);
             });
         },
 

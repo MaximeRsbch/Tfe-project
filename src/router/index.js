@@ -21,6 +21,8 @@ import EvenementsPageView from "../views/EvenementsPageView.vue";
 import CalendarPageView from "../views/CalendarPageView.vue";
 import AddMagasinView from "../views/AddMagasinsView.vue";
 import AddRestoView from "../views/AddRestoView.vue";
+import ModifRestaurantView from "../views/ModifRestaurantView.vue";
+import ModifMagasinView from "../views/ModifMagasinView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +72,16 @@ const router = createRouter({
             path: "/parcs/:id",
             name: "modifParcs",
             component: ModifParcsView,
+        },
+        {
+            path: "/parcs/magasin/:id",
+            name: "modifMagasin",
+            component: ModifMagasinView,
+        },
+        {
+            path: "/parcs/restaurant/:id",
+            name: "modifRestaurant",
+            component: ModifRestaurantView,
         },
         {
             path: "/attractions",
