@@ -433,7 +433,44 @@ export const useParcsStore = defineStore("parcs", {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
+                this.calendardict = res.data.data;
+                console.log(res.data.data);
+            });
+        },
+
+        async deleteCalendar(id) {
+            const response = await CapacitorHttp.request({
+                method: "DELETE",
+                url: `http://localhost:3000/api/parcs/calendar/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+            }).then((res) => {
                 this.calendardict = res.data;
+                console.log(res.data);
+            });
+        },
+
+        async addCalendar(day, beginHour, endHour, ref_parc) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: `http://localhost:3000/api/parcs/calendar`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    day,
+                    beginHour,
+                    endHour,
+                    ref_parc,
+                },
+            }).then((res) => {
+                this.calendardict = res.data;
+                console.log(res.data);
             });
         },
     },
