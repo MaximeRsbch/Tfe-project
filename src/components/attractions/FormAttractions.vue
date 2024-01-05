@@ -8,6 +8,7 @@ import { useAttractionsStore } from "../../stores/attractions";
 import MapSearchAttraction from "./MapSearchAttraction.vue";
 import Swal from "sweetalert2";
 import { useRouter, useRoute } from "vue-router";
+import jwtDecode from "jwt-decode";
 
 const typesStore = useTypesStore();
 const parcsStore = useParcsStore();
@@ -267,194 +268,218 @@ const createAttraction = () => {
 const goBack = () => {
     router.go(-1);
 };
+
+const parcs = computed(() => parcsStore.getParcs);
+
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+const role = tokenDecode.value.role;
 </script>
 
 <template>
-    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-        <button @click="goBack" class="text-blue-500 hover:underline">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="inline-block w-4 h-4 mr-2"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                ></path>
-            </svg>
-            Retour
-        </button>
-        <h2 class="text-lg font-semibold text-gray-700 pt-4">
-            Ajout d'une attraction
-        </h2>
-
-        <form @submit.prevent="createAttraction">
-            <div class="pt-5">
-                <label class="text-gray-700" for="nom"
-                    >Nom de l'attraction</label
+    <div>
+        <section
+            v-if="role !== 'user'"
+            class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md"
+        >
+            <button @click="goBack" class="text-blue-500 hover:underline">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    class="inline-block w-4 h-4 mr-2"
                 >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    ></path>
+                </svg>
+                Retour
+            </button>
+            <h2 class="text-lg font-semibold text-gray-700 pt-4">
+                Ajout d'une attraction
+            </h2>
 
-                <select
-                    @change="changeAttractionValue"
-                    name="selectAttraction"
-                    v-model="nom"
-                    id="nom"
-                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                >
-                    <option v-for="data in attractions" :id="data.id">
-                        {{ data.name }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div>
-                    <label class="text-gray-700" for="minHeight"
-                        >Taille minimum seul</label
+            <form @submit.prevent="createAttraction">
+                <div class="pt-5">
+                    <label class="text-gray-700" for="nom"
+                        >Nom de l'attraction</label
                     >
-                    <input
-                        id="minHeight"
-                        v-model="minHeight"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="maxHeight"
-                        >Taille minimum accompagné</label
-                    >
-                    <input
-                        id="tailminaaccomp"
-                        v-model="maxHeight"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="ref_type">Types</label>
 
                     <select
-                        @change="changeTypeValue"
-                        name="selectTypes"
-                        id="ref_type"
-                        v-model="ref_type"
+                        @change="changeAttractionValue"
+                        name="selectAttraction"
+                        v-model="nom"
+                        id="nom"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     >
-                        <option
-                            v-for="dataType in recuptypes"
-                            :id="dataType.id"
-                        >
-                            {{ dataType.name }}
+                        <option v-for="data in attractions" :id="data.id">
+                            {{ data.name }}
                         </option>
                     </select>
                 </div>
 
-                <div>
-                    <label class="text-gray-700" for="ref_parc">Parcs</label>
-
-                    <select
-                        @change="changeParcValue"
-                        name="selectParcs"
-                        id="ref_parc"
-                        v-model="ref_parc"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    >
-                        <option
-                            v-for="dataParc in recupparcs"
-                            :id="dataParc.id"
+                <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                    <div>
+                        <label class="text-gray-700" for="minHeight"
+                            >Taille minimum seul</label
                         >
-                            {{ dataParc.nom }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="form-control">
-                    <label class="label cursor-pointer">
-                        <span class="label-text">Commentaires</span>
                         <input
-                            @change="showComment"
-                            type="checkbox"
-                            class="checkbox"
+                            id="minHeight"
+                            v-model="minHeight"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                         />
-                    </label>
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="maxHeight"
+                            >Taille minimum accompagné</label
+                        >
+                        <input
+                            id="tailminaaccomp"
+                            v-model="maxHeight"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="ref_type"
+                            >Types</label
+                        >
+
+                        <select
+                            @change="changeTypeValue"
+                            name="selectTypes"
+                            id="ref_type"
+                            v-model="ref_type"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        >
+                            <option
+                                v-for="dataType in recuptypes"
+                                :id="dataType.id"
+                            >
+                                {{ dataType.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="ref_parc"
+                            >Parcs</label
+                        >
+
+                        <select
+                            @change="changeParcValue"
+                            name="selectParcs"
+                            id="ref_parc"
+                            v-model="ref_parc"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        >
+                            <option
+                                v-for="dataParc in recupparcs"
+                                :id="dataParc.id"
+                            >
+                                {{ dataParc.nom }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Commentaires</span>
+                            <input
+                                @change="showComment"
+                                type="checkbox"
+                                class="checkbox"
+                            />
+                        </label>
+                    </div>
                 </div>
-            </div>
 
-            <MapSearchAttraction
-                @getGeolocation="getGeoLocation"
-                @plotResult="plotResult"
-                @toggleSearchResults="toggleSearchResults"
-                @removeResult="removeResult"
-                :coords="coords"
-                :fetchCoords="fetchCoords"
-                :searchResults="searchResults"
-            />
+                <MapSearchAttraction
+                    @getGeolocation="getGeoLocation"
+                    @plotResult="plotResult"
+                    @toggleSearchResults="toggleSearchResults"
+                    @removeResult="removeResult"
+                    :coords="coords"
+                    :fetchCoords="fetchCoords"
+                    :searchResults="searchResults"
+                />
 
-            <div class="pt-10">
-                <div id="map" class="h-96 w-full z-[1]"></div>
-            </div>
+                <div class="pt-10">
+                    <div id="map" class="h-96 w-full z-[1]"></div>
+                </div>
 
-            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div>
-                    <label class="text-gray-700" for="latitude">Latitude</label>
+                <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                    <div>
+                        <label class="text-gray-700" for="latitude"
+                            >Latitude</label
+                        >
+                        <input
+                            id="latitude"
+                            v-model="latitude"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="longitude"
+                            >Longitude</label
+                        >
+                        <input
+                            id="longitude"
+                            v-model="longitude"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+                </div>
+
+                <div class="pt-10">
                     <input
-                        id="latitude"
-                        v-model="latitude"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        id="image"
+                        type="file"
+                        ref="imageInput"
+                        @change="saveImageToConstant"
+                        class="block w-full mt-2"
                     />
                 </div>
 
-                <div>
-                    <label class="text-gray-700" for="longitude"
-                        >Longitude</label
+                <div class="pt-10">
+                    <label class="text-gray-700" for="description"
+                        >Description</label
                     >
-                    <input
-                        id="longitude"
-                        v-model="longitude"
-                        type="text"
+
+                    <textarea
+                        id="description"
+                        v-model="description"
+                        rows="5"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     />
                 </div>
-            </div>
 
-            <div class="pt-10">
-                <input
-                    id="image"
-                    type="file"
-                    ref="imageInput"
-                    @change="saveImageToConstant"
-                    class="block w-full mt-2"
-                />
-            </div>
-
-            <div class="pt-10">
-                <label class="text-gray-700" for="description"
-                    >Description</label
-                >
-
-                <textarea
-                    id="description"
-                    v-model="description"
-                    rows="5"
-                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                />
-            </div>
-
-            <div class="flex justify-end mt-6">
-                <button
-                    type="submit"
-                    class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
-                >
-                    Ajouter l'attraction
-                </button>
-            </div>
-        </form>
-    </section>
+                <div class="flex justify-end mt-6">
+                    <button
+                        type="submit"
+                        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                    >
+                        Ajouter l'attraction
+                    </button>
+                </div>
+            </form>
+        </section>
+        <div v-if="role === 'user'" class="flex justify-center pt-10">
+            <h2 class="text-2xl">
+                Vous n'avez pas les droits pour accèder à cette page
+            </h2>
+        </div>
+    </div>
 </template>

@@ -258,8 +258,8 @@ const addDate = () => {
                 </div>
             </div>
 
-            <div v-else>
-                <span>Aucune information disponible</span>
+            <div v-else class="flex justify-center pt-10 text-xl">
+                <span>Aucune information disponible à cette date</span>
             </div>
         </div>
     </div>

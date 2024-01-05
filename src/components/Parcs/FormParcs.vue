@@ -6,6 +6,7 @@ import { useParcsStore } from "../../stores/parcs.js";
 import MapSearchParc from "./MapSearchParc.vue";
 import Swal from "sweetalert2";
 import { useRouter, useRoute } from "vue-router";
+import jwtDecode from "jwt-decode";
 
 const parcsStore = useParcsStore();
 const router = useRouter();
@@ -246,207 +247,228 @@ const removeResult = () => {
 const goBack = () => {
     router.go(-1);
 };
+
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+const role = tokenDecode.value.role;
 </script>
 
 <template>
-    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-        <button @click="goBack" class="text-blue-500 hover:underline">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="inline-block w-4 h-4 mr-2"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                ></path>
-            </svg>
-            Retour
-        </button>
-        <h2 class="text-lg font-semibold text-gray-700 pt-4">
-            Ajout d'un parc d'attraction
-        </h2>
-
-        <form @submit.prevent="createParc">
-            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div class="hidden">
-                    <label class="text-gray-700" for="id">Id du parc</label>
-                    <input
-                        v-if="id == ''"
-                        id="id"
-                        value="Veuillez choisir un parc"
-                        disabled="disabled"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-
-                    <input
-                        v-if="id != ''"
-                        id="id"
-                        v-model="id"
-                        disabled="disabled"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="nomparc"
-                        >Nom du parc</label
-                    >
-
-                    <select
-                        @change="ChangeNomParc($event.target.value)"
-                        id="nomparc"
-                        v-model="nomparc"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    >
-                        <option v-for="data in recupqueuetime" :id="data.id">
-                            {{ data.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="ticket"
-                        >Prix du ticket</label
-                    >
-                    <input
-                        id="ticket"
-                        v-model="ticket"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-                <div>
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">Toilettes</span>
-                            <input
-                                @change="showWC"
-                                type="checkbox"
-                                class="checkbox"
-                            />
-                        </label>
-                    </div>
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">Restaurants</span>
-                            <input
-                                @change="showResto"
-                                type="checkbox"
-                                class="checkbox"
-                            />
-                        </label>
-                    </div>
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">Magasins</span>
-                            <input
-                                @change="showMagasins"
-                                type="checkbox"
-                                class="checkbox"
-                            />
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="ouverture"
-                        >Heures d'ouverture</label
-                    >
-                    <input
-                        id="ouverture"
-                        v-model="ouverture"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="fermeture"
-                        >Heures de fermeture</label
-                    >
-                    <input
-                        id="fermeture"
-                        v-model="fermeture"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-            </div>
-
-            <MapSearchParc
-                @getGeolocation="getGeoLocation"
-                @plotResult="plotResult"
-                @toggleSearchResults="toggleSearchResults"
-                @removeResult="removeResult"
-                :coords="coords"
-                :fetchCoords="fetchCoords"
-                :searchResults="searchResults"
-            />
-
-            <div class="pt-10">
-                <div id="map" class="h-96 w-full z-[1]"></div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div>
-                    <label class="text-gray-700" for="latitude">Latitude</label>
-                    <input
-                        id="latitude"
-                        v-model="latitude"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-
-                <div>
-                    <label class="text-gray-700" for="longitude"
-                        >Longitude</label
-                    >
-                    <input
-                        id="longitude"
-                        v-model="longitude"
-                        type="text"
-                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                    />
-                </div>
-            </div>
-
-            <div class="pt-10">
-                <input
-                    id="image"
-                    type="file"
-                    ref="imageInput"
-                    @change="saveImageToConstant"
-                    class="block w-full mt-2"
-                />
-            </div>
-
-            <div class="pt-10">
-                <label class="text-gray-700" for="legende">Légendes</label>
-
-                <textarea
-                    id="legende"
-                    v-model="legende"
-                    rows="5"
-                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                />
-            </div>
-
-            <div class="flex justify-end mt-6">
-                <button
-                    type="submit"
-                    class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:bg-[#344d59]"
+    <div>
+        <section
+            v-if="role !== 'user'"
+            class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md"
+        >
+            <button @click="goBack" class="text-blue-500 hover:underline">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    class="inline-block w-4 h-4 mr-2"
                 >
-                    Ajouter le parc
-                </button>
-            </div>
-        </form>
-    </section>
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    ></path>
+                </svg>
+                Retour
+            </button>
+            <h2 class="text-lg font-semibold text-gray-700 pt-4">
+                Ajout d'un parc d'attraction
+            </h2>
+
+            <form @submit.prevent="createParc">
+                <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                    <div class="hidden">
+                        <label class="text-gray-700" for="id">Id du parc</label>
+                        <input
+                            v-if="id == ''"
+                            id="id"
+                            value="Veuillez choisir un parc"
+                            disabled="disabled"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+
+                        <input
+                            v-if="id != ''"
+                            id="id"
+                            v-model="id"
+                            disabled="disabled"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="nomparc"
+                            >Nom du parc</label
+                        >
+
+                        <select
+                            @change="ChangeNomParc($event.target.value)"
+                            id="nomparc"
+                            v-model="nomparc"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        >
+                            <option
+                                v-for="data in recupqueuetime"
+                                :id="data.id"
+                            >
+                                {{ data.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="ticket"
+                            >Prix du ticket</label
+                        >
+                        <input
+                            id="ticket"
+                            v-model="ticket"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+                    <div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Toilettes</span>
+                                <input
+                                    @change="showWC"
+                                    type="checkbox"
+                                    class="checkbox"
+                                />
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Restaurants</span>
+                                <input
+                                    @change="showResto"
+                                    type="checkbox"
+                                    class="checkbox"
+                                />
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Magasins</span>
+                                <input
+                                    @change="showMagasins"
+                                    type="checkbox"
+                                    class="checkbox"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="ouverture"
+                            >Heures d'ouverture</label
+                        >
+                        <input
+                            id="ouverture"
+                            v-model="ouverture"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="fermeture"
+                            >Heures de fermeture</label
+                        >
+                        <input
+                            id="fermeture"
+                            v-model="fermeture"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+                </div>
+
+                <MapSearchParc
+                    @getGeolocation="getGeoLocation"
+                    @plotResult="plotResult"
+                    @toggleSearchResults="toggleSearchResults"
+                    @removeResult="removeResult"
+                    :coords="coords"
+                    :fetchCoords="fetchCoords"
+                    :searchResults="searchResults"
+                />
+
+                <div class="pt-10">
+                    <div id="map" class="h-96 w-full z-[1]"></div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                    <div>
+                        <label class="text-gray-700" for="latitude"
+                            >Latitude</label
+                        >
+                        <input
+                            id="latitude"
+                            v-model="latitude"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="text-gray-700" for="longitude"
+                            >Longitude</label
+                        >
+                        <input
+                            id="longitude"
+                            v-model="longitude"
+                            type="text"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+                </div>
+
+                <div class="pt-10">
+                    <input
+                        id="image"
+                        type="file"
+                        ref="imageInput"
+                        @change="saveImageToConstant"
+                        class="block w-full mt-2"
+                    />
+                </div>
+
+                <div class="pt-10">
+                    <label class="text-gray-700" for="legende">Légendes</label>
+
+                    <textarea
+                        id="legende"
+                        v-model="legende"
+                        rows="5"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                    />
+                </div>
+
+                <div class="flex justify-end mt-6">
+                    <button
+                        type="submit"
+                        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:bg-[#344d59]"
+                    >
+                        Ajouter le parc
+                    </button>
+                </div>
+            </form>
+        </section>
+        <div v-if="role === 'user'" class="flex justify-center pt-10">
+            <h2 class="text-2xl">
+                Vous n'avez pas les droits pour accèder à cette page
+            </h2>
+        </div>
+    </div>
 </template>

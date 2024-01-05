@@ -79,6 +79,7 @@ export const useUsersStore = defineStore("users", {
                 },
             }).then((res) => {
                 this.fetchUsers();
+                console.log(res);
             });
         },
 

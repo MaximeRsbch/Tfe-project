@@ -26,10 +26,33 @@ const ticketsStore = useTicketsModStore();
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
+if (sessionStorage.getItem("savedToken") === null) {
+    Swal.fire({
+        title: "Oups...",
+        text: "Vous êtes pas connecter",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Je veux me connecter",
+        cancelButtonText: "Je ne veux pas me connecter",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.push("/login");
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        } else {
+            window.location.reload();
+        }
+    });
+}
+
 let map;
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 const id = computed(() => tokenDecode.value.id_user);
+const role = computed(() => tokenDecode.value.role);
 
 const showAttractionId = ref(null);
 
@@ -759,7 +782,7 @@ const carteResto = () => {
                 </div>
 
                 <div v-if="showParcResults">
-                    <div v-if="isConnect">
+                    <div>
                         <div>
                             <img
                                 v-if="showParcImage"
@@ -792,7 +815,10 @@ const carteResto = () => {
                         <div class="pt-4 pl-4">
                             <h1 class="text-2xl">{{ showParcName }}</h1>
                         </div>
-                        <div class="flex justify-end pr-4">
+                        <div
+                            v-if="role !== 'user'"
+                            class="flex justify-end pr-4"
+                        >
                             <div
                                 class="absolute z-10 top-36 md:top-20 left-8 md:left-4"
                             >
@@ -1108,7 +1134,7 @@ const carteResto = () => {
                     </div>
                 </div>
 
-                <div v-if="!isConnect">
+                <div>
                     <h2 class="text-red-600">
                         Connectez vous pour accéder à cette option !
                     </h2>
@@ -1215,7 +1241,7 @@ const carteResto = () => {
                     </button>
                 </div>
 
-                <div v-if="!isConnect">
+                <div>
                     <h2 class="text-red-600">
                         Connectez vous pour accéder à cette option !
                     </h2>

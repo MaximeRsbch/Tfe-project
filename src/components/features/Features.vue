@@ -6,6 +6,7 @@ import { BASE_URL } from "../../common/config.js";
 import jwtDecode from "jwt-decode";
 import { RouterLink, useRouter } from "vue-router";
 import "../../style/BulleTexte.css";
+import Swal from "sweetalert2";
 
 const articlesStore = useArticlesStore();
 const parcsStore = useParcsStore();
@@ -19,6 +20,27 @@ const router = useRouter();
 //Verif si l'user est co ou non
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
+if (sessionStorage.getItem("savedToken") === null) {
+    Swal.fire({
+        title: "Oups...",
+        text: "Vous êtes pas connecter",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Je veux me connecter",
+        cancelButtonText: "Je ne veux pas me connecter",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.push("/login");
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        } else {
+            window.location.reload();
+        }
+    });
+}
 const goToArticleForm = () => {
     router.push({ name: "addArticles" });
 };
@@ -55,13 +77,6 @@ const choixParc = () => {
 </script>
 
 <template>
-    <div class="mx-auto container px-4 md:px-10 lg:px-4">
-        <div v-if="!isConnect">
-            <h1 class="flex justify-center items-center">
-                Veuillez vous connecter pour accéder à cette page !
-            </h1>
-        </div>
-    </div>
     <div class="container px-6 pt-10 mx-auto">
         <div class="text-center">
             <h1
@@ -92,7 +107,7 @@ const choixParc = () => {
             </div>
         </div>
 
-        <div v-if="isConnect">
+        <div>
             <div
                 class="text-center pt-20"
                 v-if="article.length == 0 && parc !== ''"

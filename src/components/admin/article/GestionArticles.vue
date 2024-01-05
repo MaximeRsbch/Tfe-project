@@ -310,9 +310,9 @@ setTimeout(() => {
                 </div>
             </div>
         </div>
-        <div v-if="role !== 'admin'">
-            <h2>
-                Bien essayer, vous êtes pas connecter pour accéder à cette page
+        <div v-if="role === 'user'" class="flex justify-center pt-10">
+            <h2 class="text-2xl">
+                Vous n'avez pas les droits pour accèder à cette page
             </h2>
         </div>
     </div>

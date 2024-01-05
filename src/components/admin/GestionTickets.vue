@@ -434,4 +434,10 @@ const deleteContact = (id) => {
             </div>
         </div>
     </div>
+    <div v-else>
+        <h1 class="text-center pt-10 text-4xl">Accès refusé</h1>
+        <p class="text-center pb-10 text-2xl">
+            Vous n'avez pas les droits pour accéder à cette page
+        </p>
+    </div>
 </template>

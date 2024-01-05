@@ -6,6 +6,7 @@ import { useParcsStore } from "../../stores/parcs.js";
 import MapSearchMagasin from "./MapSearchMagasin.vue";
 import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
+import jwtDecode from "jwt-decode";
 
 const parcsStore = useParcsStore();
 const router = useRouter();
@@ -39,6 +40,14 @@ onMounted(() => {
 
     parcsStore.fetchParcs();
 });
+
+const parcs = computed(() => parcsStore.getParcs);
+
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+
+const role = tokenDecode.value.role;
 
 const recupparcs = computed(() => parcsStore.getParcs);
 
@@ -215,7 +224,10 @@ const goBack = () => {
 
 <template>
     <div class="pt-10 pb-10">
-        <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
+        <section
+            v-if="role !== 'user'"
+            class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md"
+        >
             <button @click="goBack" class="text-blue-500 hover:underline">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -376,5 +388,10 @@ const goBack = () => {
                 </div>
             </form>
         </section>
+        <div v-if="role === 'user'" class="flex justify-center pt-10">
+            <h2 class="text-2xl">
+                Vous n'avez pas les droits pour accèder à cette page
+            </h2>
+        </div>
     </div>
 </template>

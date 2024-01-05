@@ -1,6 +1,8 @@
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { useRouter } from "vue-router";
+import { computed } from "vue";
+import jwtDecode from "jwt-decode";
 
 const router = useRouter();
 
@@ -21,9 +23,20 @@ const goToAddMagasin = () => {
         name: "addmagasin",
     });
 };
+
+const isConnect = computed(() => localStorage.getItem("savedToken"));
+
+const tokenDecode = computed(() => jwtDecode(isConnect.value));
+const role = computed(() => tokenDecode.value.role);
+
+console.log(role.value);
 </script>
 <template>
-    <Menu as="div" class="relative inline-block text-left">
+    <Menu
+        v-if="role !== 'user'"
+        as="div"
+        class="relative inline-block text-left"
+    >
         <div>
             <MenuButton class="bg-white px-3 py-2 text-white rounded-md">
                 <img src="/assets/img/add-icon.png" class="w-full" alt="" />

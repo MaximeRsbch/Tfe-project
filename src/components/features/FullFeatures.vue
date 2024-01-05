@@ -91,8 +91,27 @@ async function addComment() {
     }
 }
 
-async function deleteComment(id) {
-    const body = await articlesStore.deleteArticleComments(id);
+async function deleteComment(idComment) {
+    Swal.fire({
+        title: "Êtes-vous sûr de vouloir supprimer ce commentaire ?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: `Oui`,
+        denyButtonText: `Non`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire("Supprimé !", "", "success");
+            articlesStore.deleteArticleComments(idComment);
+            setTimeout(() => {
+                articleCommentaire.value = articleCommentaire.value.filter(
+                    (item) => item.id !== id
+                );
+                articlesStore.fetchArticleComments(id);
+            }, 200);
+        } else if (result.isDenied) {
+            Swal.fire("Annulé", "", "info");
+        }
+    });
 }
 
 const ModalReport = ref(false);
