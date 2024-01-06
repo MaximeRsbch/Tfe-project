@@ -5,6 +5,7 @@ import { computed, onMounted, ref } from "vue";
 import { useTypesStore } from "../../stores/types";
 import { useParcsStore } from "../../stores/parcs";
 import { useAttractionsStore } from "../../stores/attractions";
+import { useUsersStore } from "../../stores/users";
 import MapSearchAttraction from "./MapSearchAttraction.vue";
 import Swal from "sweetalert2";
 import { useRouter, useRoute } from "vue-router";
@@ -13,8 +14,12 @@ import jwtDecode from "jwt-decode";
 const typesStore = useTypesStore();
 const parcsStore = useParcsStore();
 const attractionsStore = useAttractionsStore();
+const usersStore = useUsersStore();
 
 const router = useRouter();
+const route = useRoute();
+
+const idParc = route.params.id;
 
 let map;
 
@@ -43,10 +48,13 @@ onMounted(() => {
 
     typesStore.fetchTypes();
     parcsStore.fetchParcs();
+    attractionsStore.fetchAttractionsQueuetimes(idParc);
+    usersStore.fetchModoParc();
 });
 
 const recuptypes = computed(() => typesStore.getTypes);
-const recupparcs = computed(() => parcsStore.getParcs);
+
+const getAttractions = computed(() => attractionsStore.getAttractions);
 
 const id = ref("");
 const nom = ref("");
@@ -63,6 +71,16 @@ const ref_parc = ref("");
 const coords = ref(null);
 const fetchCoords = ref(null);
 const geoMarker = ref(null);
+
+const usersModoParc = ref("");
+
+setTimeout(() => {
+    const users = computed(() => usersStore.getModoParc);
+
+    for (const user of users.value) {
+        usersModoParc.value = user.ref_parc;
+    }
+}, 300);
 
 const getGeoLocation = () => {
     if (coords.value) {
@@ -162,26 +180,8 @@ function changeTypeValue() {
     id_type.value = idType;
 }
 
-const attractions = ref(null);
 const attractionSimple = ref(null);
 const attractionTheme = ref(null);
-
-function changeParcValue() {
-    //recup l'id du choix du parc
-    const idParc =
-        document.getElementById("ref_parc").options[
-            document.getElementById("ref_parc").selectedIndex
-        ].id;
-    id_parc.value = idParc;
-
-    //on recherche l'id des attractions grace à l'id du parc
-    attractionsStore.fetchAttractionsQueuetimes(id_parc.value);
-    //ensuite on recup les attractions
-    setTimeout(() => {
-        const getAttractions = computed(() => attractionsStore.getAttractions);
-        attractions.value = getAttractions.value;
-    }, 300);
-}
 
 function changeAttractionValue() {
     const idAttraction =
@@ -245,7 +245,7 @@ const createAttraction = () => {
                 longitude.value,
                 description.value,
                 id_type.value,
-                id_parc.value,
+                idParc,
                 img.value,
                 false,
                 comment.value
@@ -279,7 +279,7 @@ const role = tokenDecode.value.role;
 </script>
 
 <template>
-    <div>
+    <div v-if="idParc === usersModoParc || role === 'admin'">
         <section
             v-if="role !== 'user'"
             class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md"
@@ -318,7 +318,7 @@ const role = tokenDecode.value.role;
                         id="nom"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                     >
-                        <option v-for="data in attractions" :id="data.id">
+                        <option v-for="data in getAttractions" :id="data.id">
                             {{ data.name }}
                         </option>
                     </select>
@@ -366,27 +366,6 @@ const role = tokenDecode.value.role;
                                 :id="dataType.id"
                             >
                                 {{ dataType.name }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="text-gray-700" for="ref_parc"
-                            >Parcs</label
-                        >
-
-                        <select
-                            @change="changeParcValue"
-                            name="selectParcs"
-                            id="ref_parc"
-                            v-model="ref_parc"
-                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                        >
-                            <option
-                                v-for="dataParc in recupparcs"
-                                :id="dataParc.id"
-                            >
-                                {{ dataParc.nom }}
                             </option>
                         </select>
                     </div>
@@ -480,6 +459,11 @@ const role = tokenDecode.value.role;
             <h2 class="text-2xl">
                 Vous n'avez pas les droits pour accèder à cette page
             </h2>
+        </div>
+    </div>
+    <div v-if="usersModoParc !== idParc || role !== 'admin'">
+        <div class="flex justify-center pt-10">
+            <h2 class="text-2xl">Vous n'êtes pas modérateur de ce parc</h2>
         </div>
     </div>
 </template>

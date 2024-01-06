@@ -26,7 +26,7 @@ const ticketsStore = useTicketsModStore();
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
-if (sessionStorage.getItem("savedToken") === null) {
+if (!isConnect.value) {
     Swal.fire({
         title: "Oups...",
         text: "Vous êtes pas connecter",
@@ -823,10 +823,19 @@ const carteResto = () => {
                                 class="absolute z-10 top-36 md:top-20 left-8 md:left-4"
                             >
                                 <button
-                                    @click="goToFormAttraction"
                                     class="bg-[#344d59] text-white px-4 py-2 rounded-lg"
                                 >
-                                    Ajouter une attraction
+                                    <RouterLink
+                                        v-if="parcid !== undefined"
+                                        v-bind:to="{
+                                            name: 'attractionform',
+                                            params: {
+                                                id: parcid,
+                                            },
+                                        }"
+                                    >
+                                        Ajouter une attraction
+                                    </RouterLink>
                                 </button>
                             </div>
                         </div>
@@ -1134,11 +1143,6 @@ const carteResto = () => {
                     </div>
                 </div>
 
-                <div>
-                    <h2 class="text-red-600">
-                        Connectez vous pour accéder à cette option !
-                    </h2>
-                </div>
                 <p class="text-xs mb-1"></p>
             </div>
         </div>
@@ -1241,11 +1245,6 @@ const carteResto = () => {
                     </button>
                 </div>
 
-                <div>
-                    <h2 class="text-red-600">
-                        Connectez vous pour accéder à cette option !
-                    </h2>
-                </div>
                 <p class="text-xs mb-1"></p>
             </div>
         </div>

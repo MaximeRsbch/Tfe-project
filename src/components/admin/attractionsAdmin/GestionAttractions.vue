@@ -258,7 +258,8 @@ const deleteAttraction = (id) => {
                                             <div
                                                 v-if="
                                                     data.ref_parc !==
-                                                    usersModoParc
+                                                        usersModoParc ||
+                                                    role !== 'admin'
                                                 "
                                             >
                                                 Vous ne pouvez pas voir les
@@ -357,14 +358,27 @@ const deleteAttraction = (id) => {
                                                     <div
                                                         class="image-container"
                                                     >
-                                                        <img
-                                                            class="w-5 md:w-5 lg:w-full"
-                                                            src="/assets/img/modif.png"
-                                                            alt="modoPImg"
-                                                        />
+                                                        <RouterLink
+                                                            v-if="
+                                                                data.id !==
+                                                                undefined
+                                                            "
+                                                            v-bind:to="{
+                                                                name: 'modifattraction',
+                                                                params: {
+                                                                    id: data.id,
+                                                                },
+                                                            }"
+                                                        >
+                                                            <img
+                                                                class="w-5 md:w-5 lg:w-full"
+                                                                src="/assets/img/modif.png"
+                                                                alt="modoPImg"
+                                                            />
+                                                        </RouterLink>
 
                                                         <div class="tooltip">
-                                                            Modifier Attractions
+                                                            Modifier attraction
                                                         </div>
                                                     </div>
                                                 </button>

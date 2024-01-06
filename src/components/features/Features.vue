@@ -20,7 +20,7 @@ const router = useRouter();
 //Verif si l'user est co ou non
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
-if (sessionStorage.getItem("savedToken") === null) {
+if (!isConnect.value) {
     Swal.fire({
         title: "Oups...",
         text: "Vous êtes pas connecter",

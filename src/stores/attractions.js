@@ -68,6 +68,40 @@ export const useAttractionsStore = defineStore("attractions", {
             });
         },
 
+        async updateAttraction(
+            id,
+            name,
+            minHeight,
+            maxHeight,
+            latitude,
+            longitude,
+            description,
+            showCommentaires
+        ) {
+            const response = await CapacitorHttp.request({
+                method: "PUT",
+                url: `http://localhost:3000/api/attractions/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+                data: {
+                    id,
+                    name,
+                    minHeight,
+                    maxHeight,
+                    latitude,
+                    longitude,
+                    description,
+                    showCommentaires,
+                },
+            }).then((res) => {
+                this.attractionsDict = res.data;
+                console.log(res.data);
+            });
+        },
+
         async fetchAttractions() {
             const response = await CapacitorHttp.request({
                 method: "GET",
@@ -88,6 +122,18 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
+            });
+        },
+
+        async fetchAttraction(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/attractions/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.attractionsDict = res;
             });
         },
 

@@ -23,6 +23,7 @@ import AddMagasinView from "../views/AddMagasinsView.vue";
 import AddRestoView from "../views/AddRestoView.vue";
 import ModifRestaurantView from "../views/ModifRestaurantView.vue";
 import ModifMagasinView from "../views/ModifMagasinView.vue";
+import ModifAttractionView from "../views/ModifAttractionView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -109,7 +110,7 @@ const router = createRouter({
             component: ParcsFormView,
         },
         {
-            path: "/attractionform",
+            path: "/attractionform/:id",
             name: "attractionform",
             component: AttractionsFormView,
         },
@@ -147,6 +148,11 @@ const router = createRouter({
             path: "/addresto",
             name: "addresto",
             component: AddRestoView,
+        },
+        {
+            path: "/modifattraction/:id",
+            name: "modifattraction",
+            component: ModifAttractionView,
         },
     ],
 });
