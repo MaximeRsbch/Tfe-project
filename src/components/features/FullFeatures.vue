@@ -117,11 +117,11 @@ async function deleteComment(idComment) {
 const ModalReport = ref(false);
 
 const openModalReport = () => {
+    ModalReport.value = true;
     setTimeout(() => {
         window.scrollTo(0, document.body.scrollHeight);
         document.body.style.overflow = "hidden";
     }, 100);
-    ModalReport.value = true;
 };
 
 const removeModalReport = () => {
@@ -140,12 +140,27 @@ const reportComment = () => {
         alert("Vous devez écrire un commentaire");
         return;
     } else {
-        ticketsStore.createReportArticle(
-            title.value,
-            contentReport.value,
-            idUser,
-            articleCom.value.id
-        );
+        Swal.fire({
+            title: "Êtes-vous sûr de vouloir signaler ce commentaire ?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Oui`,
+            denyButtonText: `Non`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire("Signalé !", "", "success");
+                ticketsStore.createReportArticle(
+                    title.value,
+                    contentReport.value,
+                    idUser,
+                    articleCom.value.id
+                );
+                ModalReport.value = false;
+                document.body.style.overflow = "auto";
+            } else if (result.isDenied) {
+                Swal.fire("Annulé", "", "info");
+            }
+        });
     }
 };
 
@@ -248,62 +263,60 @@ const goBack = () => {
                 </div>
             </div>
 
-            <div class="flex justify-center items-center scroll-auto">
-                <div
-                    v-if="ModalReport"
-                    class="h-screen w-full absolute z-10 flex justify-center items-center bg-black/50"
-                >
-                    <div
-                        class="bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md"
-                    >
-                        <i
-                            @click="removeModalReport"
-                            class="fa-regular fa-circle-xmark flex justify-end"
-                        ></i>
-
-                        <div class="flex justify-center pb-5">
-                            <h2 class="text-2xl">Signaler</h2>
-                        </div>
-
-                        <div class="mx-auto container max-w-xl pb-10">
-                            <input
-                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                                v-model="title"
-                                placeholder="Raison du signalement"
-                                type="text"
-                            />
-                        </div>
-
-                        <div class="mx-auto container max-w-xl pb-10">
-                            <textarea
-                                id="content"
-                                v-model="contentReport"
-                                placeholder="Donner votre avis sur cet attraction ;)"
-                                minlength="10"
-                                maxlength="500"
-                                rows="5"
-                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-                            />
-                        </div>
-
-                        <div class="flex justify-end">
-                            <button
-                                @click="reportComment"
-                                type="button"
-                                class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
-                            >
-                                Report
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="relative pt-10">
                 <div
                     class="absolute inset-0 flex items-center"
                     aria-hidden="true"
                 >
                     <div class="w-full border-t border-gray-300" />
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center items-center scroll-auto">
+            <div
+                v-if="ModalReport"
+                class="h-screen w-full absolute z-10 flex justify-center items-center bg-black/50"
+            >
+                <div class="bg-white w-[80%] sm:w-[450px] px-6 py-4 rounded-md">
+                    <i
+                        @click="removeModalReport"
+                        class="fa-regular fa-circle-xmark flex justify-end"
+                    ></i>
+
+                    <div class="flex justify-center pb-5">
+                        <h2 class="text-2xl">Signaler</h2>
+                    </div>
+
+                    <div class="mx-auto container max-w-xl pb-10">
+                        <input
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                            v-model="title"
+                            placeholder="Raison du signalement"
+                            type="text"
+                        />
+                    </div>
+
+                    <div class="mx-auto container max-w-xl pb-10">
+                        <textarea
+                            id="content"
+                            v-model="contentReport"
+                            placeholder="Donner votre avis sur cet attraction ;)"
+                            minlength="10"
+                            maxlength="500"
+                            rows="5"
+                            class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+                        />
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button
+                            @click="reportComment"
+                            type="button"
+                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                        >
+                            Report
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
