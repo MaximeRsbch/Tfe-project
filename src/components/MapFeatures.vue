@@ -40,6 +40,7 @@ const search = () => {
             searchData.value = getData.data.features;
         }
     }, 750);
+    searchQuery.value = searchQuery.value.replace(/[^a-zA-Z]/g, "");
 };
 
 const selectResult = (result) => {

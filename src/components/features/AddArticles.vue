@@ -65,6 +65,8 @@ const saveImageToConstant = () => {
 
     // Vous pouvez également réinitialiser l'élément d'entrée de fichier si nécessaire
     imageInput.value = null;
+
+    console.log(img.value);
 };
 
 const comment = ref(false);
@@ -110,7 +112,11 @@ const createArticle = async () => {
             showConfirmButton: true,
         });
     } else {
-        alert("Vous n'avez pas les droits pour ajouter un article à ce parc");
+        Swal.fire({
+            icon: "error",
+            title: "Vous n'avez pas les droits pour ajouter un article",
+            showConfirmButton: true,
+        });
     }
 };
 

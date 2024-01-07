@@ -44,6 +44,12 @@ const createContact = () => {
         });
     }
 };
+
+const validateInput = () => {
+    // Remplacez tous les caractères non alphabétiques par une chaîne vide
+    description.value = description.value.replace(/[^a-zA-Z]/g, "");
+    title.value = title.value.replace(/[^a-zA-Z]/g, "");
+};
 </script>
 
 <template>
@@ -68,6 +74,7 @@ const createContact = () => {
                         >
                         <input
                             v-model="title"
+                            @input="validateInput"
                             type="text"
                             class="block w-full px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                         />
@@ -78,9 +85,11 @@ const createContact = () => {
                             >Message</label
                         >
                         <textarea
+                            type="text"
                             v-model="description"
                             class="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-48 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                             placeholder="Message"
+                            @input="validateInput"
                         ></textarea>
                     </div>
 
