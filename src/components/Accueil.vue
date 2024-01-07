@@ -499,10 +499,6 @@ const removeMagasinResults = () => {
     showModalMagasin.value = false;
 };
 
-const goToAddParc = () => {
-    router.push("/parcsform");
-};
-
 const showRatingModal = () => {
     showModalRating.value = true;
 };
@@ -515,38 +511,27 @@ const handleRatingSelected = (rating) => {
 };
 
 async function AddRating() {
-    // attractionstore.createCommentAttraction(
-    //     content.value,
-    //     id.value,
-    //     showAttractionId.value
-    // );
-    const body = attractionstore.createRatingAttraction(
-        id.value,
-        showAttractionId.value,
-        etoile.value,
-        content.value
-    );
-    if (body) {
-        Swal.fire({
-            title: "Votre avis a bien été ajouté",
-            icon: "success",
-            confirmButtonText: "Ok",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                attractionstore.fetchRatingAttraction(attractionid.value);
-            }
-        });
-    } else {
-        Swal.fire({
-            title: "Vous devez être connecté pour ajouter un avis",
-            icon: "error",
-            confirmButtonText: "Ok",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Handle the user not being logged in
-            }
-        });
-    }
+    Swal.fire({
+        title: "Êtes-vous sûr de vouloir ajouter cette note ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Annuler",
+        confirmButtonText: "Oui, ajouter",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire("Ajouté !", "Votre note a bien été ajoutée.", "success");
+            attractionstore.createRatingAttraction(
+                id.value,
+                attractionid.value,
+                etoile.value,
+                content.value
+            );
+
+            window.location.reload();
+        }
+    });
 }
 
 const calculateAverageWaitTime = (attractions) => {
@@ -714,28 +699,28 @@ setTimeout(() => {
 }, 300);
 
 const deleteCommentAttraction = (id) => {
-    const body = attractionstore.deleteCommentAttraction(id);
-    if (body) {
-        Swal.fire({
-            title: "Commentaire supprimé",
-            icon: "success",
-            confirmButtonText: "Ok",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                attractionstore.fetchCommentAttraction(attractionid.value);
-            }
-        });
-    } else {
-        Swal.fire({
-            title: "Vous devez être connecté pour supprimer un commentaire",
-            icon: "error",
-            confirmButtonText: "Ok",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Handle the user not being logged in
-            }
-        });
-    }
+    Swal.fire({
+        title: "Êtes-vous sûr de vouloir supprimer ce commentaire ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Annuler",
+        confirmButtonText: "Oui, supprimer",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                "Supprimé !",
+                "Votre commentaire a bien été supprimé.",
+                "success"
+            );
+            attractionstore.deleteCommentAttraction(id);
+
+            showRatingAttraction.value = showRatingAttraction.value.filter(
+                (item) => item.id !== id
+            );
+        }
+    });
 };
 
 const carteResto = () => {
