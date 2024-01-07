@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useArticlesStore } from "../../stores/articles.js";
 import { useParcsStore } from "../../stores/parcs.js";
+import { useUsersStore } from "../../stores/users.js";
 import { BASE_URL } from "../../common/config.js";
 import jwtDecode from "jwt-decode";
 import { RouterLink, useRouter } from "vue-router";
@@ -10,10 +11,23 @@ import Swal from "sweetalert2";
 
 const articlesStore = useArticlesStore();
 const parcsStore = useParcsStore();
+const usersStore = useUsersStore();
 
 onMounted(() => {
     parcsStore.fetchParcs();
+    usersStore.fetchModoParc();
 });
+
+const modoP = ref("");
+const modoParc = computed(() => usersStore.getModoParc);
+
+setTimeout(() => {
+    for (let i = 0; i < modoParc.value.length; i++) {
+        if (modoParc.value[i].id !== tokenDecode.value.id) {
+            modoP.value = modoParc.value[i].ref_parc;
+        }
+    }
+}, 200);
 
 const router = useRouter();
 
@@ -41,14 +55,12 @@ if (!isConnect.value) {
         }
     });
 }
-const goToArticleForm = () => {
-    router.push({ name: "addArticles" });
-};
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
 
+const parcId = ref("");
 const parc = ref("");
 const article = ref("");
 
@@ -61,7 +73,7 @@ const choixParc = () => {
             document.getElementById("parc").selectedIndex
         ].id;
 
-    console.log(idParc);
+    parcId.value = idParc;
 
     //On récup les attractions du parc choisit
     articlesStore.fetchAllArticles(idParc);
@@ -71,8 +83,6 @@ const choixParc = () => {
 
         article.value = articles.value;
     }, 200);
-
-    //On récup les notes de chaque attraction
 };
 </script>
 
@@ -117,7 +127,11 @@ const choixParc = () => {
                 </h2>
 
                 <div
-                    v-if="role === 'admin' || role === 'modoParc'"
+                    v-if="
+                        role === 'admin' ||
+                        role === 'modoParc' ||
+                        modoP === parcId
+                    "
                     class="pt-10"
                 >
                     <button
@@ -128,21 +142,34 @@ const choixParc = () => {
                         >
                     </button>
                 </div>
+                <div v-else>
+                    <h2 class="text-2xl">
+                        Vous n'êtes pas modérateur de ce parc
+                    </h2>
+                </div>
             </div>
         </div>
 
         <div v-if="article.length > 0">
-            <div v-if="role === 'admin'" class="flex justify-end">
-                <button @click="goToArticleForm">
-                    <div class="image-container">
-                        <img
-                            src="/assets/img/addBtn.png"
-                            class="w-full md:w-full lg:w-full"
-                            alt=""
-                        />
-                        <div class="tooltip">Ajouter un article</div>
-                    </div>
-                </button>
+            <div>
+                <div
+                    v-if="
+                        (role === 'modoParc' && modoP === parcId) ||
+                        role === 'admin'
+                    "
+                    class="flex justify-end"
+                >
+                    <button>
+                        <div class="image-container">
+                            <img
+                                src="/assets/img/addBtn.png"
+                                class="w-full md:w-full lg:w-full"
+                                alt=""
+                            />
+                            <div class="tooltip">Ajouter un article</div>
+                        </div>
+                    </button>
+                </div>
             </div>
         </div>
 

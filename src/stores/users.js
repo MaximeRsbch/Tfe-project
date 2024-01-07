@@ -195,6 +195,18 @@ export const useUsersStore = defineStore("users", {
             });
         },
 
+        async fetchModoParcById(id) {
+            const response = await CapacitorHttp.request({
+                method: "GET",
+                url: `http://localhost:3000/api/modoparc/all/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.modoPDict = res.data.data;
+            });
+        },
+
         async fetchModo() {
             const response = await CapacitorHttp.request({
                 method: "GET",
