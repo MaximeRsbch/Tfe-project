@@ -69,34 +69,60 @@ const deleteContact = (id) => {
     });
 };
 
-// const deleteReport = (id) => {
-//     Swal.fire({
-//         title: "Êtes-vous sûr ?",
-//         text: "Vous ne pourrez pas revenir en arrière !",
-//         icon: "warning",
-//         showCancelButton: true,
-//         confirmButtonText: "Oui, supprimer !",
-//         cancelButtonText: "Non, annuler !",
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             ticketsModStore.deleteReport(id);
+const deleteReportAttr = (id) => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ticketsModStore.deleteReportAttr(id);
 
-//             Swal.fire(
-//                 "Supprimé !",
-//                 "Le ticket a bien été supprimé.",
-//                 "success"
-//             );
-//             setTimeout(() => {
-//                 window.location.reload();
-//             }, 500);
-//         } else if (result.dismiss === Swal.DismissReason.cancel) {
-//             Swal.fire("Annulé", "Le ticket n'a pas été supprimé :)", "error");
-//         }
-//     });
-// };
+            Swal.fire(
+                "Supprimé !",
+                "Le ticket a bien été supprimé.",
+                "success"
+            );
+            setTimeout(() => {
+                window.location.reload();
+            }, 700);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Annulé", "Le ticket n'a pas été supprimé :)", "error");
+        }
+    });
+};
+
+const deleteReportArt = (id) => {
+    Swal.fire({
+        title: "Êtes-vous sûr ?",
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Oui, supprimer !",
+        cancelButtonText: "Non, annuler !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ticketsModStore.deleteReportArticle(id);
+
+            Swal.fire(
+                "Supprimé !",
+                "Le ticket a bien été supprimé.",
+                "success"
+            );
+            setTimeout(() => {
+                window.location.reload();
+            }, 700);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Annulé", "Le ticket n'a pas été supprimé :)", "error");
+        }
+    });
+};
 </script>
 <template>
-    <div v-if="role === 'admin' || role === 'modo'">
+    <div v-if="role === 'admin' || role === 'modo'" class="pb-10">
         <div>
             <h1 class="text-center pt-10 text-4xl">Gestion des tickets</h1>
             <p class="text-center pb-10 text-2xl">
@@ -356,7 +382,9 @@ const deleteContact = (id) => {
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             <button
-                                                @click="deleteReport(data.id)"
+                                                @click="
+                                                    deleteReportAttr(data.id)
+                                                "
                                                 type="button"
                                             >
                                                 <img
@@ -415,7 +443,9 @@ const deleteContact = (id) => {
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             <button
-                                                @click="deleteReport(data.id)"
+                                                @click="
+                                                    deleteReportArt(data.id)
+                                                "
                                                 type="button"
                                             >
                                                 <img

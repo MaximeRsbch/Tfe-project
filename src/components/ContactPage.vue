@@ -17,12 +17,32 @@ const title = ref("");
 const description = ref("");
 
 const createContact = () => {
-    ticketsModStore.createContact(title.value, description.value, id.value);
-    Swal.fire({
-        icon: "success",
-        title: "Votre demande a bien été envoyée",
-        showConfirmButton: false,
-    });
+    if (title.value === "" || description.value === "") {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Veuillez remplir tous les champs",
+        });
+    } else if (description.value.length < 20) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Votre message doit contenir au moins 20 caractères",
+        });
+    } else if (description.value.length > 500) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Votre message doit contenir au maximum 500 caractères",
+        });
+    } else {
+        ticketsModStore.createContact(title.value, description.value, id.value);
+        Swal.fire({
+            icon: "success",
+            title: "Votre demande a bien été envoyée",
+            showConfirmButton: true,
+        });
+    }
 };
 </script>
 
@@ -41,7 +61,7 @@ const createContact = () => {
                     ci-dessous.
                 </p>
 
-                <form class="mt-4">
+                <form class="mt-4" @submit.prevent="createContact">
                     <div class="flex-1">
                         <label class="block mb-2 text-sm text-gray-600"
                             >Titre de votre demande</label
@@ -59,15 +79,12 @@ const createContact = () => {
                         >
                         <textarea
                             v-model="description"
-                            minlength="20"
-                            maxlength="500"
                             class="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-48 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
                             placeholder="Message"
                         ></textarea>
                     </div>
 
                     <button
-                        @click="createContact()"
                         class="w-full px-6 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#344d59] rounded-md hover:bg-[#344d59] focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50"
                     >
                         Envoyer votre demande
