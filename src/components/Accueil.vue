@@ -176,17 +176,8 @@ const plotResult = (coords) => {
     }
 
     // create custom marker
-    const customMarker = leaflet.icon({
-        iconUrl: "/assets/img/map-marker-blue.svg",
-        iconSize: [35, 35],
-    });
 
     // create a marker with coords and custom icon
-    resultMarker.value = leaflet
-        .marker([coords.coordinates[1], coords.coordinates[0]], {
-            icon: customMarker,
-        })
-        .addTo(map);
 
     //set map view to the current location
     map.setView([coords.coordinates[1], coords.coordinates[0]], 17);

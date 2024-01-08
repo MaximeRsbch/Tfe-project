@@ -32,7 +32,7 @@ const search = () => {
             });
             const getData = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/mapbox/${searchQuery.value}?${params}`,
+                url: `http://192.168.0.205:3000/api/mapbox/${searchQuery.value}?${params}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -46,17 +46,6 @@ const search = () => {
 const selectResult = (result) => {
     selectedResult.value = result;
     emit("plotResult", result.geometry);
-};
-
-const removeResults = () => {
-    selectedResult.value = null;
-    emit("removeResult");
-};
-
-const goToPark = () => {
-    window.open(
-        `https://www.google.com/maps/dir/?api=1&destination=${selectedResult.value.latitude},${selectedResult.value.longitude}`
-    );
 };
 </script>
 <template>
@@ -112,35 +101,7 @@ const goToPark = () => {
                         </div>
                     </div>
                 </div>
-                <!-- Selected Search Result -->
-                <div
-                    v-if="selectedResult"
-                    class="mt-2 px-4 py-3 bg-white rounded-md"
-                >
-                    <i
-                        @click="removeResults"
-                        class="fa-regular fa-circle-xmark flex justify-end"
-                    ></i>
-
-                    <h1 class="text-lg">{{ selectedResult.nom }}</h1>
-
-                    <p class="text-xs mb-1">
-                        {{ selectedResult.beginHour }},
-                        {{ selectedResult.endHour }},
-                    </p>
-                    <p class="text-xs">
-                        {{ selectedResult.ticketPrice }}
-                    </p>
-                    <div class="flex justify-center pt-4">
-                        <button
-                            class="bg-stone-500 text-white text-lg px-5 py-2 rounded-xl"
-                            target="_blank"
-                            @click="goToPark"
-                        >
-                            Démarrer la navigation
-                        </button>
-                    </div>
-                </div>
+                <!-- C'est ici que la modal vide s'affiche  -->
             </div>
         </div>
 
