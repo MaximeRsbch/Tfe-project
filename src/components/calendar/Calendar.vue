@@ -3,20 +3,29 @@ import dayjs from "dayjs";
 import { defineAsyncComponent, ref, reactive, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useParcsStore } from "../../stores/parcs.js";
+import { useUsersStore } from "../../stores/users";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
 
 const parcsStore = useParcsStore();
+const usersStore = useUsersStore();
 
 const route = useRoute();
 
 const idParc = route.params.id;
+const modoParcId = ref("");
 
 onMounted(() => {
     parcsStore.fetchCalendar(idParc);
+    usersStore.fetchModoParc();
 });
 
 const calendar = computed(() => parcsStore.getCalendar);
+const modoParc = computed(() => usersStore.getModoParc);
+
+for (let i = 0; i < modoParc.value.length; i++) {
+    modoParcId.value = modoParc.value[i].ref_parc;
+}
 
 const Year = defineAsyncComponent(() => import("./Year.vue"));
 const Month = defineAsyncComponent(() => import("./Month.vue"));
@@ -83,7 +92,7 @@ const deleteSelectedDate = (id) => {
         .then((result) => {
             if (result.isConfirmed) {
                 Swal.fire("Supprimé !", "La date a été supprimée.", "success");
-                parcsStore.deleteCalendar(idParc);
+                parcsStore.deleteCalendar(id);
                 calendar.value = calendar.value.filter(
                     (item) => item.idParc !== idParc
                 );
@@ -114,17 +123,17 @@ const fermeture = ref("");
 const addDate = () => {
     const formattedDate = dayjs(day.value).format("DD-MM-YYYY");
     Swal.fire({
-        title: "Êtes-vous sûr de vouloir supprimer cette date ?",
+        title: "Êtes-vous sûr de vouloir ajouter cette date ?",
         text: "Vous ne pourrez pas revenir en arrière !",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Oui, supprimer !",
+        confirmButtonText: "Oui, ajouter !",
     })
         .then((result) => {
             if (result.isConfirmed) {
-                Swal.fire("Supprimé !", "La date a été supprimée.", "success");
+                Swal.fire("Ajouté !", "La date a été ajoutée.", "success");
                 parcsStore.addCalendar(
                     formattedDate,
                     ouverture.value,
@@ -151,7 +160,7 @@ const addDate = () => {
 </script>
 
 <template>
-    <div class="flex space-x-5 pl-2 pt-2" v-bind="$attrs">
+    <div class="md:flex md:space-x-5 md:pl-2 pt-2" v-bind="$attrs">
         <div class="flex flex-col flex-grow">
             <Year @selected="changeYear" :calendarYear="calendarYear" />
             <Month @selected="changeMonth" />
@@ -162,8 +171,8 @@ const addDate = () => {
             />
         </div>
 
-        <div class="w-1/2 font-semibold">
-            <div v-if="calendar.length !== 0">
+        <div class="md:w-1/2 font-semibold">
+            <div>
                 <template
                     v-if="
                         calendar.some(
@@ -230,7 +239,10 @@ const addDate = () => {
                                     >
                                 </p>
                             </div>
-                            <div class="flex justify-center pt-4">
+                            <div
+                                v-if="role === 'admin' || idParc === modoParcId"
+                                class="flex justify-center pt-4"
+                            >
                                 <button @click="deleteSelectedDate(data.id)">
                                     Supprimer la date
                                 </button>
@@ -248,7 +260,7 @@ const addDate = () => {
 
                     <div class="pt-10 flex justify-center">
                         <button
-                            v-if="role === 'admin'"
+                            v-if="role === 'admin' || idParc === modoParcId"
                             class=""
                             @click="showModalAddDate"
                         >
@@ -257,13 +269,9 @@ const addDate = () => {
                     </div>
                 </div>
             </div>
-
-            <div v-else class="flex justify-center pt-10 text-xl">
-                <span>Aucune information disponible à cette date</span>
-            </div>
         </div>
     </div>
-    <div class="flex md:justify-center items-center scroll-auto">
+    <div class="flex md:justify-center items-center scroll-auto pb-10 md:pb-0">
         <div
             v-if="modalAddDate"
             class="h-screen w-full -top-1 absolute z-30 flex justify-center items-center bg-black/50"
