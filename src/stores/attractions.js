@@ -30,7 +30,7 @@ export const useAttractionsStore = defineStore("attractions", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/attractions/",
+                url: "http://192.168.0.205:3000/api/attractions/",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -57,7 +57,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/attractions/${id}`,
+                url: `http://192.168.0.205:3000/api/attractions/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -80,7 +80,7 @@ export const useAttractionsStore = defineStore("attractions", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/attractions/${id}`,
+                url: `http://192.168.0.205:3000/api/attractions/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -105,7 +105,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchAttractions() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/attractions/",
+                url: "http://192.168.0.205:3000/api/attractions/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -116,7 +116,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchAttractionsParc(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/attractions/${id}/all`,
+                url: `http://192.168.0.205:3000/api/attractions/${id}/all`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -128,7 +128,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/attractions/${id}`,
+                url: `http://192.168.0.205:3000/api/attractions/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -140,7 +140,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchAttractionsQueuetimes(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/attractions/${id}/queuetime`,
+                url: `http://192.168.0.205:3000/api/attractions/${id}/queuetime`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -153,7 +153,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async createImageAttraction(img, ref_attraction) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/attractions/img`,
+                url: `http://192.168.0.205:3000/api/attractions/img`,
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -173,7 +173,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async createCommentAttraction(content, ref_user, ref_attraction) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/commentsattr/`,
+                url: `http://192.168.0.205:3000/api/commentsattr/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -191,7 +191,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async createRatingAttraction(id_user, id_attraction, note, content) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/reviews/`,
+                url: `http://192.168.0.205:3000/api/reviews/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -211,7 +211,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchCommentAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/commentsattr/${id}`,
+                url: `http://192.168.0.205:3000/api/commentsattr/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -223,7 +223,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchRatingAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/reviews/${id}?`,
+                url: `http://192.168.0.205:3000/api/reviews/${id}?`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -235,7 +235,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async createFavoriteAttraction(ref_user, ref_attraction, isFavorite) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/favoris/`,
+                url: `http://192.168.0.205:3000/api/favoris/`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -252,7 +252,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchFavoriteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/favoris/all/${id}`,
+                url: `http://192.168.0.205:3000/api/favoris/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -264,7 +264,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteFavoriteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/favoris/${id}`,
+                url: `http://192.168.0.205:3000/api/favoris/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -276,7 +276,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteAllFavoriteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/favoris/all/${id}`,
+                url: `http://192.168.0.205:3000/api/favoris/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -288,7 +288,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteCommentAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/reviews/${id}`,
+                url: `http://192.168.0.205:3000/api/reviews/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },

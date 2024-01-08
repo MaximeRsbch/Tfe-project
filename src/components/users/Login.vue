@@ -17,9 +17,14 @@ const userVerified = ref();
 const userEmail = ref();
 
 setTimeout(() => {
+    const userVerificationStatus = [];
+
     for (let i = 0; i < user.value.length; i++) {
-        userEmail.value = user.value[i].email;
-        userVerified.value = user.value[i].isVerified;
+        const currentUser = user.value[i];
+        userVerificationStatus.push({
+            email: currentUser.email,
+            isVerified: currentUser.isVerified,
+        });
     }
 }, 300);
 
@@ -38,7 +43,20 @@ async function recupUser() {
             title: "Oops...",
             text: "Veuillez renseigner un mot de passe ou une adresse mail valide !",
         });
-    } else if (userVerified.value === true) {
+    }
+
+    const currentUser = user.value.find((u) => u.email === email.value);
+
+    if (!currentUser) {
+        return Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Utilisateur non trouvé !",
+        });
+    }
+
+    if (currentUser.isVerified) {
+        // L'utilisateur est vérifié, vous pouvez maintenant procéder à la connexion.
         const body = await usersStore.loginUser(password.value, email.value);
     } else {
         Swal.fire({

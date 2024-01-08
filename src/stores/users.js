@@ -18,7 +18,7 @@ export const useUsersStore = defineStore("users", {
         async loginUser(password, email) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/auth/login",
+                url: "http://192.168.0.205:3000/api/auth/login",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -40,7 +40,7 @@ export const useUsersStore = defineStore("users", {
         async createUser(password, email, username) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/auth/register",
+                url: "http://192.168.0.205:3000/api/auth/register",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -59,7 +59,7 @@ export const useUsersStore = defineStore("users", {
         async fetchUsers() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/users",
+                url: "http://192.168.0.205:3000/api/users",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -71,7 +71,7 @@ export const useUsersStore = defineStore("users", {
         async deleteUser(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/users/${id}`,
+                url: `http://192.168.0.205:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -86,7 +86,7 @@ export const useUsersStore = defineStore("users", {
         async updateUser(id, username, email) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/users/${id}`,
+                url: `http://192.168.0.205:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -104,7 +104,7 @@ export const useUsersStore = defineStore("users", {
         async fetchOneUser(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/users/${id}`,
+                url: `http://192.168.0.205:3000/api/users/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -116,7 +116,7 @@ export const useUsersStore = defineStore("users", {
         async muteUser(id, canComment) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/users/mute/${id}`,
+                url: `http://192.168.0.205:3000/api/users/mute/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -133,7 +133,7 @@ export const useUsersStore = defineStore("users", {
         async giveRoleModoParc(username, email, ref_user, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/modoparc/`,
+                url: `http://192.168.0.205:3000/api/modoparc/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -151,7 +151,7 @@ export const useUsersStore = defineStore("users", {
         async giveRoleModo(username, email, ref_user, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/modo/`,
+                url: `http://192.168.0.205:3000/api/modo/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -169,7 +169,7 @@ export const useUsersStore = defineStore("users", {
         async changeUserRole(id, role) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/users/role/${id}`,
+                url: `http://192.168.0.205:3000/api/users/role/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -186,7 +186,7 @@ export const useUsersStore = defineStore("users", {
         async fetchModoParc() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/modoparc/`,
+                url: `http://192.168.0.205:3000/api/modoparc/`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -198,7 +198,7 @@ export const useUsersStore = defineStore("users", {
         async fetchModoParcById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/modoparc/all/${id}`,
+                url: `http://192.168.0.205:3000/api/modoparc/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -210,7 +210,7 @@ export const useUsersStore = defineStore("users", {
         async fetchModo() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/modo/`,
+                url: `http://192.168.0.205:3000/api/modo/`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -222,7 +222,7 @@ export const useUsersStore = defineStore("users", {
         async fetchModoById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/modo/${id}`,
+                url: `http://192.168.0.205:3000/api/modo/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },

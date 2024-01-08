@@ -30,7 +30,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchParcs() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/parcs/all",
+                url: "http://192.168.0.205:3000/api/parcs/all",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -42,7 +42,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchParcById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/parcs/${id}`,
+                url: `http://192.168.0.205:3000/api/parcs/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -54,7 +54,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchQueuetimeParc() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/parcs/all/queuetime",
+                url: "http://192.168.0.205:3000/api/parcs/all/queuetime",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -79,7 +79,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/parcs",
+                url: "http://192.168.0.205:3000/api/parcs",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -110,7 +110,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteParc(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/parcs/${id}`,
+                url: `http://192.168.0.205:3000/api/parcs/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -136,7 +136,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/parcs/`,
+                url: `http://192.168.0.205:3000/api/parcs/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -165,7 +165,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchToilettes(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/toilettes/${id}`,
+                url: `http://192.168.0.205:3000/api/toilettes/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -177,7 +177,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchMagasins(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/magasins/all/${id}`,
+                url: `http://192.168.0.205:3000/api/magasins/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -189,7 +189,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchMagasinsById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/magasins/${id}`,
+                url: `http://192.168.0.205:3000/api/magasins/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -210,7 +210,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/magasins/",
+                url: "http://192.168.0.205:3000/api/magasins/",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -237,7 +237,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteMagasins(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/magasins/${id}`,
+                url: `http://192.168.0.205:3000/api/magasins/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -259,7 +259,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/magasins/`,
+                url: `http://192.168.0.205:3000/api/magasins/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -284,7 +284,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/restaurants/all/${id}`,
+                url: `http://192.168.0.205:3000/api/restaurants/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -296,7 +296,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchRestaurantsById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/restaurants/${id}`,
+                url: `http://192.168.0.205:3000/api/restaurants/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -318,7 +318,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://localhost:3000/api/restaurants/",
+                url: "http://192.168.0.205:3000/api/restaurants/",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -346,7 +346,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/restaurants/${id}`,
+                url: `http://192.168.0.205:3000/api/restaurants/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -368,7 +368,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://localhost:3000/api/restaurants/`,
+                url: `http://192.168.0.205:3000/api/restaurants/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -393,7 +393,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchSecours(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/secours/all/${id}`,
+                url: `http://192.168.0.205:3000/api/secours/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -404,7 +404,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchInfos(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/info/all/${id}`,
+                url: `http://192.168.0.205:3000/api/info/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -416,7 +416,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchEvenements(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/evenements/all/${id}`,
+                url: `http://192.168.0.205:3000/api/evenements/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -428,7 +428,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchCalendar(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/parcs/calendar/${id}`,
+                url: `http://192.168.0.205:3000/api/parcs/calendar/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -441,7 +441,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteCalendar(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://localhost:3000/api/parcs/calendar/${id}`,
+                url: `http://192.168.0.205:3000/api/parcs/calendar/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -456,7 +456,7 @@ export const useParcsStore = defineStore("parcs", {
         async addCalendar(day, beginHour, endHour, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://localhost:3000/api/parcs/calendar`,
+                url: `http://192.168.0.205:3000/api/parcs/calendar`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:

@@ -14,7 +14,7 @@ export const useTypesStore = defineStore("types", {
         async fetchTypes() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://localhost:3000/api/typesattr/",
+                url: "http://192.168.0.205:3000/api/typesattr/",
                 headers: {
                     "Content-Type": "application/json",
                 },
