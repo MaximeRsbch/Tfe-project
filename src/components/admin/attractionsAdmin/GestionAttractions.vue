@@ -29,8 +29,6 @@ const choixParc = () => {
             document.getElementById("parc").selectedIndex
         ].id;
 
-    console.log(idParc);
-
     //On récup les attractions du parc choisit
     attractionsStore.fetchAttractionsParc(idParc);
 
@@ -38,7 +36,6 @@ const choixParc = () => {
 
     setTimeout(() => {
         attraction.value = attractions.value;
-        console.log(attraction.value);
     }, 300);
 
     //On récup les notes de chaque attraction
@@ -80,6 +77,9 @@ const deleteAttraction = (id) => {
                     "L'attraction a bien été supprimé.",
                     "success"
                 );
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 Swal.fire(
                     "Annulé",
@@ -98,16 +98,17 @@ const deleteAttraction = (id) => {
 };
 </script>
 <template>
-    <div class="container mx-auto">
+    <div class="container mx-auto pb-10">
         <div v-if="attractions.length === 0" class="text-center text-5xl pt-10">
             <h2>Aucune attractions n'a encore été créée !</h2>
+            <p>pour en ajouter une, rendez-vous sur la page d'accueil</p>
             <div class="pt-10">
                 <button
                     class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
                 >
-                    <RouterLink :to="{ name: 'attractionform' }"
-                        >Ajouter une attraction</RouterLink
-                    >
+                    <RouterLink :to="{ name: 'home' }">
+                        Retourner à l'accueil
+                    </RouterLink>
                 </button>
             </div>
         </div>
@@ -144,16 +145,20 @@ const deleteAttraction = (id) => {
                 >
                     <div
                         v-if="attraction.length === 0"
-                        class="text-center text-5xl pt-10"
+                        class="text-center text-4xl pt-10"
                     >
-                        <h2>Aucune attraction n'a encore été créée !</h2>
+                        <h2>Aucune attractions n'a encore été créée !</h2>
+                        <p>
+                            pour en ajouter une, rendez-vous sur la page
+                            d'accueil
+                        </p>
                         <div class="pt-10">
                             <button
                                 class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
                             >
-                                <RouterLink :to="{ name: 'attractionform' }"
-                                    >Ajouter une attraction</RouterLink
-                                >
+                                <RouterLink :to="{ name: 'home' }">
+                                    Retourner à l'accueil
+                                </RouterLink>
                             </button>
                         </div>
                     </div>
@@ -255,16 +260,6 @@ const deleteAttraction = (id) => {
                                             :key="data.id"
                                             class="hover:bg-gray-100"
                                         >
-                                            <div
-                                                v-if="
-                                                    data.ref_parc !==
-                                                        usersModoParc ||
-                                                    role !== 'admin'
-                                                "
-                                            >
-                                                Vous ne pouvez pas voir les
-                                                informations de ce parc
-                                            </div>
                                             <td
                                                 v-if="
                                                     data.ref_parc ===

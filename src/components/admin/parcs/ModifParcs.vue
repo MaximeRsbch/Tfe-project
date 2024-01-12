@@ -54,7 +54,6 @@ setTimeout(() => {
 
     for (let i = 0; i < parc.value.length; i++) {
         if (parc.value[i].id == idParc) {
-            console.log(parc.value[i]);
             id.value = parc.value[i].id;
             nomparc.value = parc.value[i].nom;
             ticket.value = parc.value[i].ticketPrice;
@@ -117,7 +116,7 @@ async function updateParc() {
                 resto.value,
                 magasins.value
             );
-            console.log(img.value);
+
             Swal.fire("Modifié !", "", "success");
         } else if (result.isDenied) {
             Swal.fire("Modifications non effectuées", "", "info");

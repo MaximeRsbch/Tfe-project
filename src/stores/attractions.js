@@ -26,11 +26,13 @@ export const useAttractionsStore = defineStore("attractions", {
             longitude,
             description,
             type,
-            parc
+            parc,
+            isFavorite,
+            showCommentaires
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://192.168.0.205:3000/api/attractions/",
+                url: "https://maximerossbach.be/api/attractions/",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -47,6 +49,8 @@ export const useAttractionsStore = defineStore("attractions", {
                     description,
                     type,
                     parc,
+                    isFavorite,
+                    showCommentaires,
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
@@ -57,7 +61,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/attractions/${id}`,
+                url: `https://maximerossbach.be/api/attractions/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -80,7 +84,7 @@ export const useAttractionsStore = defineStore("attractions", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://192.168.0.205:3000/api/attractions/${id}`,
+                url: `https://maximerossbach.be/api/attractions/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -98,14 +102,13 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
 
         async fetchAttractions() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://192.168.0.205:3000/api/attractions/",
+                url: "https://maximerossbach.be/api/attractions/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -116,7 +119,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchAttractionsParc(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/attractions/${id}/all`,
+                url: `https://maximerossbach.be/api/attractions/${id}/all`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -128,7 +131,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/attractions/${id}`,
+                url: `https://maximerossbach.be/api/attractions/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -140,20 +143,19 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchAttractionsQueuetimes(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/attractions/${id}/queuetime`,
+                url: `https://maximerossbach.be/api/attractions/${id}/queuetime`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
 
         async createImageAttraction(img, ref_attraction) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://192.168.0.205:3000/api/attractions/img`,
+                url: `https://maximerossbach.be/api/attractions/img`,
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -166,14 +168,13 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
-                console.log(res.data);
             });
         },
 
         async createCommentAttraction(content, ref_user, ref_attraction) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://192.168.0.205:3000/api/commentsattr/`,
+                url: `https://maximerossbach.be/api/commentsattr/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -191,7 +192,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async createRatingAttraction(id_user, id_attraction, note, content) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://192.168.0.205:3000/api/reviews/`,
+                url: `https://maximerossbach.be/api/reviews/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -205,13 +206,14 @@ export const useAttractionsStore = defineStore("attractions", {
                 },
             }).then((res) => {
                 this.attractionsDict = res.data;
+                console.log(res.data);
             });
         },
 
         async fetchCommentAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/commentsattr/${id}`,
+                url: `https://maximerossbach.be/api/commentsattr/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -223,7 +225,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchRatingAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/reviews/${id}?`,
+                url: `https://maximerossbach.be/api/reviews/${id}?`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -235,7 +237,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async createFavoriteAttraction(ref_user, ref_attraction, isFavorite) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://192.168.0.205:3000/api/favoris/`,
+                url: `https://maximerossbach.be/api/favoris/`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -252,7 +254,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchFavoriteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/favoris/all/${id}`,
+                url: `https://maximerossbach.be/api/favoris/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -264,7 +266,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteFavoriteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/favoris/${id}`,
+                url: `https://maximerossbach.be/api/favoris/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -276,7 +278,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteAllFavoriteAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/favoris/all/${id}`,
+                url: `https://maximerossbach.be/api/favoris/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -288,13 +290,12 @@ export const useAttractionsStore = defineStore("attractions", {
         async deleteCommentAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/reviews/${id}`,
+                url: `https://maximerossbach.be/api/reviews/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
                 this.commentsDict = res.data;
-                console.log(res.data);
             });
         },
     },

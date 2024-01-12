@@ -30,7 +30,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchParcs() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://192.168.0.205:3000/api/parcs/all",
+                url: "https://maximerossbach.be/api/parcs/all",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -42,7 +42,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchParcById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/parcs/${id}`,
+                url: `https://maximerossbach.be/api/parcs/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -54,7 +54,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchQueuetimeParc() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://192.168.0.205:3000/api/parcs/all/queuetime",
+                url: "https://maximerossbach.be/api/parcs/all/queuetime",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -79,7 +79,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://192.168.0.205:3000/api/parcs",
+                url: "https://maximerossbach.be/api/parcs",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -103,14 +103,13 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
-                console.log(res.data);
             });
         },
 
         async deleteParc(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/parcs/${id}`,
+                url: `https://maximerossbach.be/api/parcs/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -136,7 +135,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://192.168.0.205:3000/api/parcs/`,
+                url: `https://maximerossbach.be/api/parcs/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -158,16 +157,35 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
-                console.log(res.data);
             });
         },
 
         async fetchToilettes(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/toilettes/${id}`,
+                url: `https://maximerossbach.be/api/toilettes/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.toilettesdict = res.data;
+            });
+        },
+
+        async createToilettes(latitude, longitude, ref_parc) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: "https://maximerossbach.be/api/toilettes",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    latitude,
+                    longitude,
+                    ref_parc,
                 },
             }).then((res) => {
                 this.toilettesdict = res.data;
@@ -177,7 +195,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchMagasins(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/magasins/all/${id}`,
+                url: `https://maximerossbach.be/api/magasins/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -189,7 +207,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchMagasinsById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/magasins/${id}`,
+                url: `https://maximerossbach.be/api/magasins/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -210,7 +228,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://192.168.0.205:3000/api/magasins/",
+                url: "https://maximerossbach.be/api/magasins/",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -230,14 +248,13 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.magasinsdict = res.data;
-                console.log(res.data);
             });
         },
 
         async deleteMagasins(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/magasins/${id}`,
+                url: `https://maximerossbach.be/api/magasins/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -259,7 +276,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://192.168.0.205:3000/api/magasins/`,
+                url: `https://maximerossbach.be/api/magasins/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -277,14 +294,13 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.magasinsdict = res.data;
-                console.log(res.data);
             });
         },
 
         async fetchRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/restaurants/all/${id}`,
+                url: `https://maximerossbach.be/api/restaurants/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -296,7 +312,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchRestaurantsById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/restaurants/${id}`,
+                url: `https://maximerossbach.be/api/restaurants/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -318,7 +334,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "http://192.168.0.205:3000/api/restaurants/",
+                url: "https://maximerossbach.be/api/restaurants/",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -339,14 +355,13 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.restaurantsdict = res.data;
-                console.log(res.data);
             });
         },
 
         async deleteRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/restaurants/${id}`,
+                url: `https://maximerossbach.be/api/restaurants/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -368,7 +383,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://192.168.0.205:3000/api/restaurants/`,
+                url: `https://maximerossbach.be/api/restaurants/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -386,14 +401,13 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.restaurantsdict = res.data;
-                console.log(res.data);
             });
         },
 
         async fetchSecours(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/secours/all/${id}`,
+                url: `https://maximerossbach.be/api/secours/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -401,12 +415,53 @@ export const useParcsStore = defineStore("parcs", {
                 this.secoursdict = res.data;
             });
         },
+
+        async createSecours(latitude, longitude, ref_parc) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: "https://maximerossbach.be/api/secours/",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    latitude,
+                    longitude,
+                    ref_parc,
+                },
+            }).then((res) => {
+                this.secoursdict = res.data;
+            });
+        },
+
         async fetchInfos(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/info/all/${id}`,
+                url: `https://maximerossbach.be/api/info/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
+                },
+            }).then((res) => {
+                this.infosdict = res.data;
+            });
+        },
+
+        async createInfos(latitude, longitude, ref_parc) {
+            const response = await CapacitorHttp.request({
+                method: "POST",
+                url: "https://maximerossbach.be/api/info/",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("savedToken"),
+                },
+
+                data: {
+                    latitude,
+                    longitude,
+                    ref_parc,
                 },
             }).then((res) => {
                 this.infosdict = res.data;
@@ -416,7 +471,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchEvenements(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/evenements/all/${id}`,
+                url: `https://maximerossbach.be/api/evenements/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -428,20 +483,19 @@ export const useParcsStore = defineStore("parcs", {
         async fetchCalendar(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/parcs/calendar/${id}`,
+                url: `https://maximerossbach.be/api/parcs/calendar/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
                 this.calendardict = res.data.data;
-                console.log(res.data.data);
             });
         },
 
         async deleteCalendar(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/parcs/calendar/${id}`,
+                url: `https://maximerossbach.be/api/parcs/calendar/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -449,14 +503,13 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.calendardict = res.data;
-                console.log(res.data);
             });
         },
 
         async addCalendar(day, beginHour, endHour, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://192.168.0.205:3000/api/parcs/calendar`,
+                url: `https://maximerossbach.be/api/parcs/calendar`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -470,7 +523,6 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.calendardict = res.data;
-                console.log(res.data);
             });
         },
     },

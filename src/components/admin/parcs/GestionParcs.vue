@@ -43,7 +43,7 @@ const choixParc = () => {
             document.getElementById("parc").selectedIndex
         ].id;
 
-    console.log(idParc);
+    
     parcId.value = idParc;
 
     //On récup les resto du parc choisit
@@ -53,7 +53,7 @@ const choixParc = () => {
 
     setTimeout(() => {
         restaurant.value = restaurants.value;
-        console.log(restaurant.value);
+        
     }, 300);
 
     //On récup les magasin du parc choisit
@@ -64,7 +64,7 @@ const choixParc = () => {
 
     setTimeout(() => {
         magasin.value = magasins.value;
-        console.log(magasin.value);
+        
     }, 300);
 };
 

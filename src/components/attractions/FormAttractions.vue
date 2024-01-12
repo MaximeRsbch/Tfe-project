@@ -65,8 +65,6 @@ const longitude = ref("");
 const description = ref("");
 const id_type = ref("");
 const ref_type = ref("");
-const id_parc = ref("");
-const ref_parc = ref("");
 
 const coords = ref(null);
 const fetchCoords = ref(null);
@@ -180,9 +178,6 @@ function changeTypeValue() {
     id_type.value = idType;
 }
 
-const attractionSimple = ref(null);
-const attractionTheme = ref(null);
-
 function changeAttractionValue() {
     const idAttraction =
         document.getElementById("nom").options[
@@ -221,6 +216,7 @@ const saveImageToConstant = () => {
 };
 
 const comment = ref(false);
+const isFavorite = ref(false);
 
 const showComment = () => {
     comment.value = !comment.value;
@@ -246,8 +242,7 @@ const createAttraction = () => {
                 description.value,
                 id_type.value,
                 idParc,
-                img.value,
-                false,
+                isFavorite.value,
                 comment.value
             );
 
@@ -259,6 +254,11 @@ const createAttraction = () => {
                 "L'attraction a bien été ajoutée",
                 "success"
             );
+            setTimeout(() => {
+                router.push({
+                    name: "home",
+                });
+            }, 1000);
         } else {
             Swal.fire("Annulé", "L'attraction n'a pas été ajoutée", "error");
         }
@@ -268,8 +268,6 @@ const createAttraction = () => {
 const goBack = () => {
     router.go(-1);
 };
-
-const parcs = computed(() => parcsStore.getParcs);
 
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
@@ -448,7 +446,7 @@ const role = tokenDecode.value.role;
                 <div class="flex justify-end mt-6">
                     <button
                         type="submit"
-                        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-stone-500 rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:[#344d59]"
                     >
                         Ajouter l'attraction
                     </button>

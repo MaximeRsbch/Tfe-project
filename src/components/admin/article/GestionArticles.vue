@@ -36,7 +36,7 @@ const choixParc = () => {
             document.getElementById("parc").selectedIndex
         ].id;
 
-    console.log(idParc);
+    
 
     //On récup les attractions du parc choisit
     articlesStore.fetchAllArticles(idParc);

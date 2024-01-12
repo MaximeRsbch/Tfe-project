@@ -5,8 +5,6 @@ import { computed, onMounted, ref } from "vue";
 import GeoErrorModal from "./GeoErrorModal.vue";
 import MapFeatures from "./MapFeatures.vue";
 import RatingStars from "./attractions/RatingStars.vue";
-
-import Calendar from "../components/calendar/Calendar.vue";
 import DropDownMenuAjout from "./DropDownMenuAjout.vue";
 import Swal from "sweetalert2";
 import { Mapbox_API_KEY } from "../common/config.js";
@@ -150,7 +148,7 @@ const getLocErro = (err) => {
 const plotGeolocation = (coords) => {
     // create custom marker
     const customMarker = leaflet.icon({
-        iconUrl: "/assets/img/map-marker-red.svg",
+        iconUrl: "/assets/img/map-marker-black.svg",
         iconSize: [35, 35],
     });
 
@@ -197,7 +195,6 @@ const removeResult = () => {
     map.removeLayer(resultMarker.value);
 };
 
-const attractionMarkers = ref(null);
 const showModalResults = ref(false);
 const showModalRating = ref(false);
 const showAttractionResults = ref(null);
@@ -213,7 +210,6 @@ const showParcLegende = ref(null);
 const showpeople = ref(null);
 const latitude = ref(null);
 const longitude = ref(null);
-const showCalendar = ref(null);
 
 const showAttractionName = ref(null);
 const showHeightAlone = ref(null);
@@ -224,7 +220,9 @@ const showWaitTime = ref(null);
 const showIsOpen = ref(null);
 const showAverageRating = ref(null);
 const showRatingAttraction = ref(null);
-const showCommentAttraction = ref(null);
+const showCalendarDay = ref(null);
+const showOpenCalendar = ref(null);
+const showCloseCalendar = ref(null);
 const showRatingid = ref(null);
 const showFavorite = ref(null);
 const showImageAttraction = ref(null);
@@ -378,6 +376,18 @@ const plotInfoParc = () => {
                     longitude.value = parc.longitude;
                     parcid.value = parc.id;
 
+                    parcstore.fetchCalendar(parc.id);
+
+                    const recupcalendar = computed(() => parcstore.getCalendar);
+
+                    setTimeout(() => {
+                        for (const calendar of recupcalendar.value) {
+                            showCalendarDay.value = calendar.day;
+                            showOpenCalendar.value = calendar.beginHour;
+                            showCloseCalendar.value = calendar.endHour;
+                        }
+                    }, 300);
+
                     const averageWaitTime = calculateAverageWaitTime(
                         parc.Attractions
                     );
@@ -396,32 +406,41 @@ const calculateAverageRating = (attraction) => {
             (sum, review) => sum + review.rating,
             0
         );
+
         const averageRating = totalRating / ratings.length;
-        return averageRating;
+
+        // Utilisez toFixed(2) pour limiter à deux chiffres après la virgule
+        const roundedAverageRating = averageRating.toFixed(2);
+
+        // Convertissez la chaîne en nombre si nécessaire
+        return parseFloat(roundedAverageRating);
     }
 
-    return 0; // Default rating if no ratings are available
+    return 0;
 };
 
 const plotInfoAttraction = () => {
     setTimeout(() => {
-        let customMarker;
-
-        if (showIsOpen.value == true) {
-            const customMarkerOpen = leaflet.icon({
-                iconUrl: "../assets/img/map-marker-blue.svg",
-                iconSize: [32, 32],
-            });
-            customMarker = customMarkerOpen;
-        } else {
-            const customMarkerClose = leaflet.icon({
-                iconUrl: "../assets/img/map-marker-red.svg",
-                iconSize: [32, 32],
-            });
-            customMarker = customMarkerClose;
-        }
-
         for (const attraction of attractions.value) {
+            let customMarker;
+
+            if (attraction.is_open === true) {
+                customMarker = leaflet.icon({
+                    iconUrl: "../assets/img/map-marker-green.svg",
+                    iconSize: [32, 32],
+                });
+            } else if (attraction.is_open === false) {
+                customMarker = leaflet.icon({
+                    iconUrl: "../assets/img/map-marker-red.svg",
+                    iconSize: [32, 32],
+                });
+            } else {
+                customMarker = leaflet.icon({
+                    iconUrl: "../assets/img/map-marker-black.svg",
+                    iconSize: [32, 32],
+                });
+            }
+
             const averageRating = calculateAverageRating(attraction);
             leaflet
                 .marker([attraction.latitude, attraction.longitude], {
@@ -519,8 +538,9 @@ async function AddRating() {
                 etoile.value,
                 content.value
             );
-
-            window.location.reload();
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
         }
     });
 }
@@ -542,9 +562,10 @@ const calculateAverageWaitTime = (attractions) => {
     return "Aucune attraction disponible"; // Retournez 0 si aucune attraction n'est disponible
 };
 
-const dateLocale = new Date();
+const maintenant = new Date();
+const options = { hour: "2-digit", minute: "2-digit" };
 
-const heureLocale = ref(dateLocale.toLocaleTimeString());
+const heureLocale = ref(maintenant.toLocaleTimeString("fr-FR", options));
 
 const isAttractionFavorite = ref(false);
 
@@ -643,10 +664,6 @@ const goToPark = () => {
     );
 };
 
-const goToFormAttraction = () => {
-    router.push("/attractionform");
-};
-
 const title = ref("");
 const contentReport = ref("");
 
@@ -717,6 +734,25 @@ const deleteCommentAttraction = (id) => {
 const carteResto = () => {
     window.open(showCarteUrl.value);
 };
+
+function formaterDate(date) {
+    var jour = date.getDate();
+    var mois = date.getMonth() + 1; // Les mois commencent à 0, donc ajoutez 1
+    var annee = date.getFullYear();
+
+    // Ajouter un zéro devant le jour si nécessaire
+    jour = jour < 10 ? "0" + jour : jour;
+
+    // Ajouter un zéro devant le mois si nécessaire
+    mois = mois < 10 ? "0" + mois : mois;
+
+    // Retourner la date formatée
+    return jour + "-" + mois + "-" + annee;
+}
+
+// Utilisation de la fonction avec la date actuelle
+var aujourdHui = new Date();
+var dateFormatee = formaterDate(aujourdHui);
 </script>
 
 <template>
@@ -780,12 +816,13 @@ const carteResto = () => {
                                         id: parcid,
                                     },
                                 }"
-                                ><p
-                                    class="mt-3 text-md text-black hover:text-[#344d59]"
+                            >
+                                <p
+                                    class="mt-3 text-md text-black hover:text-blue-500"
                                 >
                                     Cliquez ici pour voir le calendrier du parc
-                                </p></RouterLink
-                            >
+                                </p>
+                            </RouterLink>
                         </div>
 
                         <div class="pt-4 pl-4">
@@ -816,7 +853,10 @@ const carteResto = () => {
                             </div>
                         </div>
                         <div class="pb-4 flex justify-center pt-4">
-                            <button @click="goToPark">
+                            <button
+                                @click="goToPark"
+                                class="hover:text-blue-500"
+                            >
                                 Démarrer la navigation
                             </button>
                         </div>
@@ -844,36 +884,64 @@ const carteResto = () => {
                         <hr />
 
                         <div class="pt-4 pl-4 pb-4">
-                            <div v-if="heureLocale < '11'">
-                                <span class="text-red-700">Fermé</span> -
-                                Ouverture à
-                                {{ showParcBeginHour }}
+                            <h2 class="text-lg pb-4">Horaires d'aujourd'hui</h2>
+                            <div v-if="showCalendarDay === dateFormatee">
+                                <div v-if="heureLocale < showOpenCalendar">
+                                    <span class="text-red-700">Fermé</span> -
+                                    Ouverture à
+                                    {{ showOpenCalendar }}
+                                </div>
+                                <div v-if="heureLocale > showCloseCalendar">
+                                    <span class="text-red-700">Fermé</span> -
+                                    Ouverture à
+                                    {{ showOpenCalendar }}
+                                </div>
+                                <div
+                                    v-if="
+                                        heureLocale > showOpenCalendar &&
+                                        heureLocale < showCloseCalendar
+                                    "
+                                >
+                                    <span class="text-green-500">Ouvert</span> -
+                                    Fermeture à
+                                    {{ showCloseCalendar }}
+                                </div>
                             </div>
-                            <div v-if="heureLocale > '19'">
-                                <span class="text-red-700">Fermé</span> -
-                                Ouverture à
-                                {{ showParcBeginHour }}
-                            </div>
-                            <div
-                                v-if="heureLocale < '19' && heureLocale > '11'"
-                            >
-                                <span class="text-green-500">Ouvert</span> -
-                                Fermeture à
-                                {{ showParcEndHour }}
+                            <div v-else>
+                                <p>
+                                    Aucun horaire n'est disponible pour ce parc
+                                </p>
                             </div>
                         </div>
 
                         <hr />
 
-                        <p class="text-lg pl-4 pt-4 pb-4">
-                            {{ showpeople }}
+                        <p class="text-2xl pl-4 pt-4 pb-4">
+                            <span
+                                v-if="showpeople > 50"
+                                class="text-red-500 pr-2"
+                            >
+                                {{ showpeople }}
+                            </span>
+                            <span
+                                v-if="showpeople < 50 && showpeople > 20"
+                                class="text-orange-500 pr-2"
+                            >
+                                {{ showpeople }}
+                            </span>
+                            <span
+                                v-if="showpeople < 20"
+                                class="text-green-500 pr-2"
+                            >
+                                {{ showpeople }}
+                            </span>
                             <span
                                 v-if="
                                     showpeople !==
                                     'Aucune attraction disponible'
                                 "
                                 class="text-sm"
-                                >d'attente en moyenne</span
+                                >min d'attente en moyenne</span
                             >
                         </p>
                     </div>
@@ -1020,7 +1088,7 @@ const carteResto = () => {
                                 <p v-if="showWaitTime === 0">
                                     Temps d'attente inconnu
                                 </p>
-                                <p v-if="showWaitTime !== 0">
+                                <p v-if="showWaitTime !== 0" class="text-md">
                                     Temps d'attente moyen dans cet attraction :
                                     <span
                                         class="text-green-500"
@@ -1029,7 +1097,10 @@ const carteResto = () => {
                                     >
                                     <span
                                         class="text-orange-500"
-                                        v-if="showWaitTime < 50"
+                                        v-if="
+                                            showWaitTime < 50 &&
+                                            showWaitTime > 20
+                                        "
                                         >{{ showWaitTime }}</span
                                     >
                                     <span
@@ -1162,7 +1233,7 @@ const carteResto = () => {
                     <button
                         @click="reportComment"
                         type="button"
-                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:[#344d59]"
                     >
                         Report
                     </button>
@@ -1215,7 +1286,7 @@ const carteResto = () => {
                     <button
                         @click="AddRating"
                         type="button"
-                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:[#344d59]"
                     >
                         Publier
                     </button>

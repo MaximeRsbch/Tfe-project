@@ -3,6 +3,7 @@ import { useRouter } from "vue-router";
 import { ref, onMounted, computed } from "vue";
 import { useUsersStore } from "../../stores/users.js";
 import Swal from "sweetalert2";
+import { Browser } from "leaflet";
 
 const router = useRouter();
 const usersStore = useUsersStore();
@@ -13,8 +14,7 @@ onMounted(() => {
 
 const user = computed(() => usersStore.getUsers);
 
-const userVerified = ref();
-const userEmail = ref();
+const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 setTimeout(() => {
     const userVerificationStatus = [];
@@ -55,6 +55,16 @@ async function recupUser() {
         });
     }
 
+    setTimeout(() => {
+        if (user.value.length === 1) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Mot de passe incorrect !",
+            });
+        }
+    }, 300);
+
     if (currentUser.isVerified) {
         // L'utilisateur est vérifié, vous pouvez maintenant procéder à la connexion.
         const body = await usersStore.loginUser(password.value, email.value);
@@ -66,6 +76,8 @@ async function recupUser() {
         });
     }
 }
+
+console.log(sessionStorage.getItem("savedToken"));
 </script>
 
 <template>
@@ -78,12 +90,7 @@ async function recupUser() {
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                <form
-                    class="space-y-6"
-                    @submit.prevent="recupUser"
-                    action="#"
-                    method="POST"
-                >
+                <form class="space-y-6" @submit.prevent="recupUser">
                     <div>
                         <label
                             for="email"

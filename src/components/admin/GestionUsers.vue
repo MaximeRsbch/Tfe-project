@@ -24,7 +24,7 @@ const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const role = tokenDecode.value.role;
 //Fonction qui permet de supprimer un utilisateur
-const deleteUsers = (id) => {
+const deleteUsers = (id, userRole) => {
     Swal.fire({
         title: "Etes vous sure ?",
         text: "Cet utilisateur sera définitivement supprimer !",
@@ -34,20 +34,31 @@ const deleteUsers = (id) => {
         cancelButtonColor: "#d33",
         confirmButtonText: "Oui, supprimer !",
     }).then((result) => {
-        if ((result.isConfirmed && role !== "admin") || role !== "modo") {
-            Swal.fire(
-                "Supprimer",
-                "Cet utilisateur a bien été supprimer.",
-                "success"
-            );
-            usersStore.deleteUser(id);
+        if (result.isConfirmed) {
+            if (
+                (role === "modo" && userRole === "modoParc") ||
+                (role === "modo" && userRole === "modo")
+            ) {
+                Swal.fire(
+                    "Erreur",
+                    "Vous ne pouvez pas supprimer cet utilisateur.",
+                    "error"
+                );
+            } else {
+                Swal.fire(
+                    "Supprimé",
+                    "Cet utilisateur a bien été supprimé.",
+                    "success"
+                );
+                usersStore.deleteUser(id);
+            }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire(
                 "Annulé",
                 "Cet utilisateur n'a pas été supprimé :)",
                 "error"
             );
-        } else if (id === 1) {
+        } else if (id === 1 || role === "modoParc" || role === "modo") {
             Swal.fire(
                 "Erreur",
                 "Vous ne pouvez pas supprimer cet utilisateur.",
@@ -274,7 +285,10 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                             </a>
                                         </th>
                                         <th
-                                            v-if="role === 'admin'"
+                                            v-if="
+                                                role === 'admin' ||
+                                                role === 'modo'
+                                            "
                                             scope="col"
                                             class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -285,7 +299,10 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                             </a>
                                         </th>
                                         <th
-                                            v-if="role === 'admin'"
+                                            v-if="
+                                                role === 'admin' ||
+                                                role === 'modoParc'
+                                            "
                                             scope="col"
                                             class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -307,7 +324,10 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                             </a>
                                         </th>
                                         <th
-                                            v-if="role === 'modo'"
+                                            v-if="
+                                                role === 'modo' ||
+                                                role === 'modo'
+                                            "
                                             scope="col"
                                             class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -318,7 +338,10 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                             </a>
                                         </th>
                                         <th
-                                            v-if="role === 'modo'"
+                                            v-if="
+                                                role === 'modo' ||
+                                                role === 'modo'
+                                            "
                                             scope="col"
                                             class="lg:hidden px-3 py-3.5 text-left text-base font-semibold text-gray-900"
                                         >
@@ -362,11 +385,19 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                             {{ user.role }}
                                         </td>
                                         <td
-                                            v-if="role === 'admin'"
+                                            v-if="
+                                                role === 'admin' ||
+                                                role === 'modo'
+                                            "
                                             class="whitespace-nowrap px-3 py-4 text-base"
                                         >
                                             <button
-                                                @click="deleteUsers(user.id)"
+                                                @click="
+                                                    deleteUsers(
+                                                        user.id,
+                                                        user.role
+                                                    )
+                                                "
                                                 type="button"
                                             >
                                                 <div class="image-container">
@@ -534,7 +565,7 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                                 )
                                             "
                                             type="button"
-                                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:[#344d59]"
                                         >
                                             Ajouter
                                         </button>
@@ -615,7 +646,7 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                                 )
                                             "
                                             type="button"
-                                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                                            class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:[#344d59]"
                                         >
                                             Ajouter
                                         </button>

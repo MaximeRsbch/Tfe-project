@@ -34,7 +34,6 @@ setTimeout(() => {
     const resto = computed(() => parcsStore.getRestaurants);
 
     for (let i = 0; i < resto.value.length; i++) {
-        console.log(resto.value[i]);
         id.value = resto.value[i].id;
         name.value = resto.value[i].name;
         latitude.value = resto.value[i].latitude;

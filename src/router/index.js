@@ -24,6 +24,9 @@ import AddRestoView from "../views/AddRestoView.vue";
 import ModifRestaurantView from "../views/ModifRestaurantView.vue";
 import ModifMagasinView from "../views/ModifMagasinView.vue";
 import ModifAttractionView from "../views/ModifAttractionView.vue";
+import AddToilettesView from "../views/AddToilettesView.vue";
+import AddInfoView from "../views/AddInfoView.vue";
+import AddSecoursView from "../views/AddSecoursView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -153,6 +156,21 @@ const router = createRouter({
             path: "/modifattraction/:id",
             name: "modifattraction",
             component: ModifAttractionView,
+        },
+        {
+            path: "/addtoilettes",
+            name: "addtoilettes",
+            component: AddToilettesView,
+        },
+        {
+            path: "/addinfo",
+            name: "addinfo",
+            component: AddInfoView,
+        },
+        {
+            path: "/addsecours",
+            name: "addsecours",
+            component: AddSecoursView,
         },
     ],
 });

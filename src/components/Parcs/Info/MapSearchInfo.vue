@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { CapacitorHttp } from "@capacitor/core";
-import LoadingSpinner from "../LoadingSpinner.vue";
+import LoadingSpinner from "../../LoadingSpinner.vue";
 
 const props = defineProps({
     coords: Object,
@@ -50,7 +50,7 @@ const selectResult = (result) => {
 </script>
 <template>
     <div
-        class="w-full md:w-auto absolute md:top-[550px] md:left-[200px] lg:top-[600px] lg:left-[380px] z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
+        class="w-full md:w-auto absolute md:top-[350px] md:left-[200px] lg:top-[400px] lg:left-[330px] z-[2] flex gap-4 px-6 py-8 md:px-0 md:py-0 bg-transparent"
     >
         <!-- Search-->
         <div class="relative flex-1 md:min-w-[400px]">

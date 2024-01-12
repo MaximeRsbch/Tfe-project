@@ -6,7 +6,6 @@ import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import jwtDecode from "jwt-decode";
 
-const parcsStore = useParcsStore();
 const attractionsStore = useAttractionsStore();
 
 const route = useRoute();
@@ -41,11 +40,8 @@ const showCommentaire = () => {
 setTimeout(() => {
     const attraction = computed(() => attractionsStore.getAttractions);
 
-    console.log(attraction.value);
-
     for (let i = 0; i < attraction.value.length; i++) {
         if (attraction.value[i].id == idAttraction) {
-            console.log(attraction.value[i]);
             id.value = attraction.value[i].id;
             nom.value = attraction.value[i].nom;
             minHeight.value = attraction.value[i].minHeight;

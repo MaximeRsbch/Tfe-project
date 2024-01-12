@@ -106,7 +106,6 @@ const deleteSelectedDate = (id) => {
                 title: "Oops...",
                 text: "Une erreur est survenue !",
             });
-            console.log(error);
         });
 };
 
@@ -154,7 +153,6 @@ const addDate = () => {
                 title: "Oops...",
                 text: "Une erreur est survenue !",
             });
-            console.log(error);
         });
 };
 </script>
@@ -328,7 +326,7 @@ const addDate = () => {
                     <button
                         @click="addDate"
                         type="button"
-                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                        class="px-4 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:[#344d59]"
                     >
                         Ajouter
                     </button>

@@ -15,7 +15,7 @@ export const useArticlesStore = defineStore("articles", {
         async fetchArticles() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "http://192.168.0.205:3000/api/articles",
+                url: "https://maximerossbach.be/api/articles",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -27,20 +27,19 @@ export const useArticlesStore = defineStore("articles", {
         async fetchAllArticles(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/articles/all/${id}`,
+                url: `https://maximerossbach.be/api/articles/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
             }).then((res) => {
                 this.articlesDict = res.data.data;
-                console.log(res.data.data);
             });
         },
 
         async fetchArticleById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/articles/${id}`,
+                url: `https://maximerossbach.be/api/articles/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -52,7 +51,7 @@ export const useArticlesStore = defineStore("articles", {
         async createArticles(title, content, img, showCommentaires, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://192.168.0.205:3000/api/articles/`,
+                url: `https://maximerossbach.be/api/articles/`,
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -74,7 +73,7 @@ export const useArticlesStore = defineStore("articles", {
         async fetchArticleComments(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://192.168.0.205:3000/api/commentsart/${id}`,
+                url: `https://maximerossbach.be/api/commentsart/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -86,7 +85,7 @@ export const useArticlesStore = defineStore("articles", {
         async createArticleComments(content, ref_user, ref_article) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `http://192.168.0.205:3000/api/commentsart/`,
+                url: `https://maximerossbach.be/api/commentsart/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -105,7 +104,7 @@ export const useArticlesStore = defineStore("articles", {
         async deleteArticleComments(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/commentsart/${id}`,
+                url: `https://maximerossbach.be/api/commentsart/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -119,7 +118,7 @@ export const useArticlesStore = defineStore("articles", {
         async deleteArticle(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `http://192.168.0.205:3000/api/articles/${id}`,
+                url: `https://maximerossbach.be/api/articles/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -133,7 +132,7 @@ export const useArticlesStore = defineStore("articles", {
         async updateArticle(id, title, content, img_url) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `http://192.168.0.205:3000/api/articles/${id}`,
+                url: `https://maximerossbach.be/api/articles/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:

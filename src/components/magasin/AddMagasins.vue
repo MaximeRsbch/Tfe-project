@@ -41,8 +41,6 @@ onMounted(() => {
     parcsStore.fetchParcs();
 });
 
-const parcs = computed(() => parcsStore.getParcs);
-
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
@@ -381,7 +379,7 @@ const goBack = () => {
                 <div class="flex justify-end mt-6">
                     <button
                         type="submit"
-                        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:stone-500"
+                        class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-[#344d59] rounded-md hover:stone-600 focus:outline-none focus:[#344d59]"
                     >
                         Ajouter le magasin
                     </button>

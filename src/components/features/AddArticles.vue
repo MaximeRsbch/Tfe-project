@@ -66,7 +66,7 @@ const saveImageToConstant = () => {
     // Vous pouvez également réinitialiser l'élément d'entrée de fichier si nécessaire
     imageInput.value = null;
 
-    console.log(img.value);
+    
 };
 
 const comment = ref(false);

@@ -24,12 +24,28 @@ const goToAddMagasin = () => {
     });
 };
 
+const goToAddToilettes = () => {
+    router.push({
+        name: "addtoilettes",
+    });
+};
+
+const goToAddInfo = () => {
+    router.push({
+        name: "addinfo",
+    });
+};
+
+const goToAddSecours = () => {
+    router.push({
+        name: "addsecours",
+    });
+};
+
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
 const role = computed(() => tokenDecode.value.role);
-
-console.log(role.value);
 </script>
 <template>
     <Menu
@@ -96,6 +112,48 @@ console.log(role.value);
                             ]"
                         >
                             Ajout d'un magasin
+                        </button>
+                    </MenuItem>
+                    <MenuItem v-if="role === 'admin'" v-slot="{ active }">
+                        <button
+                            @click="goToAddToilettes"
+                            type="button"
+                            :class="[
+                                active
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-700',
+                                'block w-full px-4 py-2 text-left text-sm',
+                            ]"
+                        >
+                            Ajout de toilettes
+                        </button>
+                    </MenuItem>
+                    <MenuItem v-if="role === 'admin'" v-slot="{ active }">
+                        <button
+                            @click="goToAddInfo"
+                            type="button"
+                            :class="[
+                                active
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-700',
+                                'block w-full px-4 py-2 text-left text-sm',
+                            ]"
+                        >
+                            Ajout de point d'info
+                        </button>
+                    </MenuItem>
+                    <MenuItem v-if="role === 'admin'" v-slot="{ active }">
+                        <button
+                            @click="goToAddSecours"
+                            type="button"
+                            :class="[
+                                active
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-700',
+                                'block w-full px-4 py-2 text-left text-sm',
+                            ]"
+                        >
+                            Ajout de poste de secours
                         </button>
                     </MenuItem>
                 </div>
