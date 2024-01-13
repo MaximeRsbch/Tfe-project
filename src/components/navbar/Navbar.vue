@@ -28,10 +28,6 @@ const router = useRouter();
 const goToLogin = () => {
     router.push({ name: "login" });
 };
-
-const goToAdminPannel = () => {
-    router.push({ name: "adminPannel" });
-};
 </script>
 <template>
     <header class="bg-[#344d59] h-[87px] lg:h-[123px]">

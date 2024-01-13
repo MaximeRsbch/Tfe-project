@@ -66,34 +66,6 @@ setTimeout(() => {
     }
 }, 500);
 
-const img = ref("");
-const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier
-
-const saveImageToConstant = () => {
-    // Récupérer l'élément d'entrée de fichier
-    const selectedImage = imageInput.value.files[0];
-
-    if (!selectedImage) {
-        console.log("Aucun fichier sélectionné");
-        return;
-    }
-
-    // Créer un objet FormData pour envoyer le fichier
-    const formData = new FormData();
-    formData.append("file", selectedImage);
-    formData.append("upload_preset", "vue3course");
-
-    // Stocker le fichier dans une constante
-    const imageFile = formData.get("file"); // Vous pouvez également utiliser selectedImage directement
-
-    // Ensuite, envoyez imageFile vers le store ou utilisez-le comme nécessaire
-
-    img.value = imageFile;
-
-    // Vous pouvez également réinitialiser l'élément d'entrée de fichier si nécessaire
-    imageInput.value = null;
-};
-
 async function updateParc() {
     Swal.fire({
         title: "Êtes-vous sûr de vouloir modifier ce parc ?",

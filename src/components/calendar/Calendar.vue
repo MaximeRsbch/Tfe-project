@@ -34,7 +34,6 @@ const Dates = defineAsyncComponent(() => import("./Dates.vue"));
 const selectedDateValue = ref(dayjs().date());
 
 // Ajoutez ceci dans la section <script setup>
-const currentDayName = computed(() => dayjs().format("dddd"));
 
 const selectedValues = reactive({
     month: dayjs().month(),

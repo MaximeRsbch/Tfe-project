@@ -75,11 +75,6 @@ const saveImageToConstant = () => {
     // Récupérer l'élément d'entrée de fichier
     const selectedImage = imageInput.value.files[0];
 
-    if (!selectedImage) {
-        console.log("Aucun fichier sélectionné");
-        return;
-    }
-
     // Créer un objet FormData pour envoyer le fichier
     const formData = new FormData();
     formData.append("file", selectedImage);
@@ -98,59 +93,6 @@ const saveImageToConstant = () => {
 
 const coords = ref(null);
 const fetchCoords = ref(null);
-const geoMarker = ref(null);
-
-const getGeoLocation = () => {
-    if (coords.value) {
-        coords.value = null;
-        sessionStorage.removeItem("coords");
-        map.removeLayer(geoMarker.value);
-        return;
-    }
-    // check session storage for coords
-    if (sessionStorage.getItem("coords")) {
-        coords.value = JSON.parse(sessionStorage.getItem("coords"));
-        plotGeolocation(coords.value);
-        return;
-    }
-
-    fetchCoords.value = true;
-    navigator.geolocation.getCurrentPosition(setCoords, getLocErro);
-};
-
-const setCoords = (pos) => {
-    // stop fetching coords
-    fetchCoords.value = null;
-
-    // set coords in session storage
-    const setSessionCoords = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-    };
-
-    sessionStorage.setItem("coords", JSON.stringify(setSessionCoords));
-
-    //set ref coords value
-    coords.value = setSessionCoords;
-
-    plotGeolocation(coords.value);
-};
-
-const plotGeolocation = (coords) => {
-    // create custom marker
-    const customMarker = leaflet.icon({
-        iconUrl: "/assets/img/map-marker-red.svg",
-        iconSize: [35, 35],
-    });
-
-    // create a marker with coords and custom icon
-    geoMarker.value = leaflet
-        .marker([coords.lat, coords.lng], { icon: customMarker })
-        .addTo(map);
-
-    //set map view to the current location
-    map.setView([coords.lat, coords.lng], 10);
-};
 
 const resultMarker = ref(null);
 const plotResult = (coords) => {
@@ -327,7 +269,6 @@ const goBack = () => {
                 </div>
 
                 <MapSearchMagasin
-                    @getGeolocation="getGeoLocation"
                     @plotResult="plotResult"
                     @toggleSearchResults="toggleSearchResults"
                     @removeResult="removeResult"

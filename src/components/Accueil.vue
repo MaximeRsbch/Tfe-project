@@ -759,10 +759,12 @@ const toolTipAcc = ref(false);
 
 const showToolHeightAlone = () => {
     toolTipAlone.value = !toolTipAlone.value;
+    toolTipAcc.value = false;
 };
 
 const showToolHeightAcc = () => {
     toolTipAcc.value = !toolTipAcc.value;
+    toolTipAlone.value = false;
 };
 </script>
 
@@ -792,6 +794,7 @@ const showToolHeightAcc = () => {
 
         <div
             v-if="showModalResults"
+            id="modal"
             class="h-full absolute z-10 flex justify-start items-start pt-32 md:pt-16 pl-6 md:pl-2"
         >
             <div
@@ -1083,7 +1086,7 @@ const showToolHeightAcc = () => {
                                             id="imageAlone"
                                         />
                                     </button>
-                                    <div v-if="toolTipAlone">
+                                    <div v-if="toolTipAlone" class="relative">
                                         <span class="tooltipSeultext"
                                             >Taille seule</span
                                         >
@@ -1101,7 +1104,7 @@ const showToolHeightAcc = () => {
                                             id="imageWithAdult"
                                         />
                                     </button>
-                                    <div v-if="toolTipAcc">
+                                    <div v-if="toolTipAcc" class="relative">
                                         <span class="tooltipAcctext"
                                             >Taille accompagné</span
                                         >
@@ -1484,9 +1487,9 @@ const showToolHeightAcc = () => {
     padding: 5px 0;
     position: absolute;
     z-index: 10;
-    bottom: 48%;
+    bottom: 120%;
     left: 41%;
-    margin-left: -60px;
+    margin-left: -90px;
     opacity: 1;
     transition: opacity 0.3s;
 }
@@ -1511,9 +1514,9 @@ const showToolHeightAcc = () => {
     padding: 5px 0;
     position: absolute;
     z-index: 10;
-    bottom: 35%;
+    bottom: 130%;
     left: 41%;
-    margin-left: -60px;
+    margin-left: -90px;
     opacity: 1;
     transition: opacity 0.3s;
 }

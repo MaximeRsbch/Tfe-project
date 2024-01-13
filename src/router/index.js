@@ -17,7 +17,6 @@ import ModifArticleView from "../views/ModifArticleView.vue";
 import BestAttraPageView from "../views/BestAttraPageView.vue";
 import ContactPageView from "../views/ContactPageView.vue";
 import TicketsPageView from "../views/ticketsPageView.vue";
-import EvenementsPageView from "../views/EvenementsPageView.vue";
 import CalendarPageView from "../views/CalendarPageView.vue";
 import AddMagasinView from "../views/AddMagasinsView.vue";
 import AddRestoView from "../views/AddRestoView.vue";
@@ -132,11 +131,7 @@ const router = createRouter({
             name: "tickets",
             component: TicketsPageView,
         },
-        {
-            path: "/evenements",
-            name: "evenements",
-            component: EvenementsPageView,
-        },
+
         {
             path: "/calendar/:id",
             name: "calendar",

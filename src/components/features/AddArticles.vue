@@ -46,10 +46,7 @@ const saveImageToConstant = () => {
     // Récupérer l'élément d'entrée de fichier
     const selectedImage = imageInput.value.files[0];
 
-    if (!selectedImage) {
-        console.log("Aucun fichier sélectionné");
-        return;
-    }
+    
 
     // Créer un objet FormData pour envoyer le fichier
     const formData = new FormData();

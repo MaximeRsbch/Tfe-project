@@ -3,7 +3,6 @@ import { useRouter } from "vue-router";
 import { ref, onMounted, computed } from "vue";
 import { useUsersStore } from "../../stores/users.js";
 import Swal from "sweetalert2";
-import { Browser } from "leaflet";
 
 const router = useRouter();
 const usersStore = useUsersStore();
@@ -13,8 +12,6 @@ onMounted(() => {
 });
 
 const user = computed(() => usersStore.getUsers);
-
-const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 setTimeout(() => {
     const userVerificationStatus = [];
@@ -76,8 +73,6 @@ async function recupUser() {
         });
     }
 }
-
-console.log(sessionStorage.getItem("savedToken"));
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import jwtDecode from "jwt-decode";
 import { useTicketsModStore } from "../stores/ticketsmod.js";
 import Swal from "sweetalert2";

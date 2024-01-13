@@ -41,8 +41,6 @@ onMounted(() => {
     parcsStore.fetchParcs();
 });
 
-const parcs = computed(() => parcsStore.getParcs);
-
 const isConnect = computed(() => localStorage.getItem("savedToken"));
 
 const tokenDecode = computed(() => jwtDecode(isConnect.value));
@@ -70,89 +68,8 @@ function changeParcValue() {
     id_parc.value = idParc;
 }
 
-const img = ref("");
-const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référence à l'élément d'entrée de fichier
-
-const saveImageToConstant = () => {
-    // Récupérer l'élément d'entrée de fichier
-    const selectedImage = imageInput.value.files[0];
-
-    if (!selectedImage) {
-        console.log("Aucun fichier sélectionné");
-        return;
-    }
-
-    // Créer un objet FormData pour envoyer le fichier
-    const formData = new FormData();
-    formData.append("file", selectedImage);
-    formData.append("upload_preset", "vue3course");
-
-    // Stocker le fichier dans une constante
-    const imageFile = formData.get("file"); // Vous pouvez également utiliser selectedImage directement
-
-    // Ensuite, envoyez imageFile vers le store ou utilisez-le comme nécessaire
-
-    img.value = imageFile;
-
-    // Vous pouvez également réinitialiser l'élément d'entrée de fichier si nécessaire
-    imageInput.value = null;
-};
-
 const coords = ref(null);
 const fetchCoords = ref(null);
-const geoMarker = ref(null);
-
-const getGeoLocation = () => {
-    if (coords.value) {
-        coords.value = null;
-        sessionStorage.removeItem("coords");
-        map.removeLayer(geoMarker.value);
-        return;
-    }
-    // check session storage for coords
-    if (sessionStorage.getItem("coords")) {
-        coords.value = JSON.parse(sessionStorage.getItem("coords"));
-        plotGeolocation(coords.value);
-        return;
-    }
-
-    fetchCoords.value = true;
-    navigator.geolocation.getCurrentPosition(setCoords, getLocErro);
-};
-
-const setCoords = (pos) => {
-    // stop fetching coords
-    fetchCoords.value = null;
-
-    // set coords in session storage
-    const setSessionCoords = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-    };
-
-    sessionStorage.setItem("coords", JSON.stringify(setSessionCoords));
-
-    //set ref coords value
-    coords.value = setSessionCoords;
-
-    plotGeolocation(coords.value);
-};
-
-const plotGeolocation = (coords) => {
-    // create custom marker
-    const customMarker = leaflet.icon({
-        iconUrl: "/assets/img/map-marker-red.svg",
-        iconSize: [35, 35],
-    });
-
-    // create a marker with coords and custom icon
-    geoMarker.value = leaflet
-        .marker([coords.lat, coords.lng], { icon: customMarker })
-        .addTo(map);
-
-    //set map view to the current location
-    map.setView([coords.lat, coords.lng], 10);
-};
 
 const resultMarker = ref(null);
 const plotResult = (coords) => {
@@ -214,8 +131,10 @@ async function createToilette() {
                     "La toilette a été ajoutée avec succès.",
                     "success"
                 );
-                router.push("/parcs");
-            }, 1000);
+                router.push({
+                    name: "home",
+                });
+            }, 300);
         }
     });
 }
@@ -277,7 +196,6 @@ const goBack = () => {
                 </div>
 
                 <MapSearchToilettes
-                    @getGeolocation="getGeoLocation"
                     @plotResult="plotResult"
                     @toggleSearchResults="toggleSearchResults"
                     @removeResult="removeResult"

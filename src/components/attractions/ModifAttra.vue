@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useParcsStore } from "../../stores/parcs.js";
 import { useAttractionsStore } from "../../stores/attractions.js";
 import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";

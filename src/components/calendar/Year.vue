@@ -3,10 +3,6 @@ import dayjs from "dayjs";
 import { ref } from "vue";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 
-const props = defineProps({
-    calendarYear: Number,
-});
-
 const yearEmit = defineEmits<{ (e: "selected", v: number): void }>();
 
 const year = ref<number>(dayjs().year());

@@ -24,8 +24,7 @@
     "pinia": "^2.0.36",
     "sweetalert2": "^11.7.5",
     "vue": "^3.3.2",
-    "vue-router": "^4.2.0",
-    "vuex": "^4.1.0"
+    "vue-router": "^4.2.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^5.0.4",

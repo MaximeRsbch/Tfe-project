@@ -29,8 +29,6 @@ export const useUsersStore = defineStore("users", {
             }).then((res) => {
                 const token = res.data.token;
 
-                console.log(token);
-
                 if (!token) {
                     return;
                 } else {

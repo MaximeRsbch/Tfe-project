@@ -5,7 +5,7 @@ import { ref, onMounted, computed } from "vue";
 import { useParcsStore } from "../../stores/parcs.js";
 import MapSearchParc from "./MapSearchParc.vue";
 import Swal from "sweetalert2";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import jwtDecode from "jwt-decode";
 
 const parcsStore = useParcsStore();
@@ -79,11 +79,6 @@ const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référenc
 const saveImageToConstant = () => {
     // Récupérer l'élément d'entrée de fichier
     const selectedImage = imageInput.value.files[0];
-
-    if (!selectedImage) {
-        console.log("Aucun fichier sélectionné");
-        return;
-    }
 
     // Créer un objet FormData pour envoyer le fichier
     const formData = new FormData();
