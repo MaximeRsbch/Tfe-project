@@ -1,5 +1,5 @@
 <script setup>
-import GestionParcs from "../components/admin/parcs/GestionParcs.vue";
+import GestionParcs from "../components/admin/Parcs/GestionParcs.vue";
 </script>
 
 <template>
