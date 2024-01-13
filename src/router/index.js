@@ -16,7 +16,7 @@ import GestionArticlesView from "../views/GestionArticlesView.vue";
 import ModifArticleView from "../views/ModifArticleView.vue";
 import BestAttraPageView from "../views/BestAttraPageView.vue";
 import ContactPageView from "../views/ContactPageView.vue";
-import TicketsPageView from "../views/TicketsPageView.vue";
+import TicketsPageView from "../views/ticketsPageView.vue";
 import EvenementsPageView from "../views/EvenementsPageView.vue";
 import CalendarPageView from "../views/CalendarPageView.vue";
 import AddMagasinView from "../views/AddMagasinsView.vue";
