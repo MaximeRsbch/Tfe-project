@@ -753,6 +753,17 @@ function formaterDate(date) {
 // Utilisation de la fonction avec la date actuelle
 var aujourdHui = new Date();
 var dateFormatee = formaterDate(aujourdHui);
+
+const toolTipAlone = ref(false);
+const toolTipAcc = ref(false);
+
+const showToolHeightAlone = () => {
+    toolTipAlone.value = !toolTipAlone.value;
+};
+
+const showToolHeightAcc = () => {
+    toolTipAcc.value = !toolTipAcc.value;
+};
 </script>
 
 <template>
@@ -930,7 +941,7 @@ var dateFormatee = formaterDate(aujourdHui);
                                 {{ showpeople }}
                             </span>
                             <span
-                                v-if="showpeople < 20"
+                                v-if="showpeople < 20 && showpeople !== 0"
                                 class="text-green-500 pr-2"
                             >
                                 {{ showpeople }}
@@ -938,10 +949,14 @@ var dateFormatee = formaterDate(aujourdHui);
                             <span
                                 v-if="
                                     showpeople !==
-                                    'Aucune attraction disponible'
+                                        'Aucune attraction disponible' &&
+                                    showpeople !== 0
                                 "
                                 class="text-sm"
                                 >min d'attente en moyenne</span
+                            >
+                            <span v-if="showpeople === 0" class="text-base"
+                                >Aucune minute d'attente</span
                             >
                         </p>
                     </div>
@@ -1060,25 +1075,37 @@ var dateFormatee = formaterDate(aujourdHui);
                             <hr />
                             <div class="grid grid-cols-2 pt-4">
                                 <div class="flex justify-end">
-                                    <img
-                                        title="Informations sur la hauteur seule"
-                                        class="h-16 w-16"
-                                        src="/assets/img/seul.png"
-                                        alt=""
-                                        id="imageAlone"
-                                    />
+                                    <button @click="showToolHeightAlone">
+                                        <img
+                                            class="h-16 w-16"
+                                            src="/assets/img/seul.png"
+                                            alt=""
+                                            id="imageAlone"
+                                        />
+                                    </button>
+                                    <div v-if="toolTipAlone">
+                                        <span class="tooltipSeultext"
+                                            >Taille seule</span
+                                        >
+                                    </div>
                                 </div>
                                 <p class="pt-3">{{ showHeightAlone }} cm</p>
                             </div>
                             <div class="grid grid-cols-2 pt-4 pb-4">
                                 <div class="flex justify-end">
-                                    <img
-                                        title="Informations sur la hauteur avec un adulte"
-                                        class="h-16 w-16"
-                                        src="/assets/img/accompgne.png"
-                                        alt=""
-                                        id="imageWithAdult"
-                                    />
+                                    <button @click="showToolHeightAcc">
+                                        <img
+                                            class="h-16 w-16"
+                                            src="/assets/img/accompgne.png"
+                                            alt=""
+                                            id="imageWithAdult"
+                                        />
+                                    </button>
+                                    <div v-if="toolTipAcc">
+                                        <span class="tooltipAcctext"
+                                            >Taille accompagné</span
+                                        >
+                                    </div>
                                 </div>
                                 <p class="pt-3">{{ showHeightWithAdult }} cm</p>
                             </div>
@@ -1439,12 +1466,65 @@ var dateFormatee = formaterDate(aujourdHui);
             </div>
         </div>
 
-        <div id="map" class="h-[606px] z-[1]"></div>
+        <div id="map" class="h-[555px] lg:h-[606px] z-[1]"></div>
     </div>
 </template>
 
 <style scoped>
 .selected {
     border-bottom: 2px solid blue;
+}
+.tooltipSeultext {
+    visibility: visible;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 10;
+    bottom: 48%;
+    left: 41%;
+    margin-left: -60px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+.tooltipSeultext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltipAcctext {
+    visibility: visible;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 10;
+    bottom: 35%;
+    left: 41%;
+    margin-left: -60px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+.tooltipAcctext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
 }
 </style>
