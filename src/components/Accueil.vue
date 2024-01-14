@@ -58,21 +58,32 @@ onMounted(() => {
     //init map
     map = leaflet.map("map").setView([50.7001368, 4.5873087], 10);
 
-    //add tile layer
-    leaflet
-        .tileLayer(
-            `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
+    const ids = [
+        "mapbox/satellite-streets-v12",
+        "mapbox/dark-v11",
+        "mapbox/outdoors-v12",
+    ];
+    const baselayers = {};
 
-            {
-                maxZoom: 19,
-                attribution:
-                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                id: "mapbox/streets-v11",
-                tileSize: 512,
-                zoomOffset: -1,
-            }
-        )
-        .addTo(map);
+    ids.forEach(
+        (id) =>
+            (baselayers[id] = leaflet.tileLayer(
+                `https://api.mapbox.com/styles/v1/${id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
+                {
+                    maxZoom: 19,
+                    attribution:
+                        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+
+                    tileSize: 512,
+                    zoomOffset: -1,
+                }
+            ))
+    );
+
+    // Set the default layer when you open the map
+    baselayers["mapbox/outdoors-v12"].addTo(map);
+    // Associating each style name to its tile layer
+    leaflet.control.layers(baselayers).addTo(map);
 
     map.zoomControl.remove();
 
@@ -395,7 +406,7 @@ const plotInfoParc = () => {
                     showpeople.value = averageWaitTime;
                 });
         }
-    }, 500);
+    }, 200);
 };
 
 const calculateAverageRating = (attraction) => {
@@ -491,7 +502,7 @@ const plotInfoAttraction = () => {
                     }, 300);
                 });
         }
-    }, 500);
+    }, 200);
 };
 
 const removeAttrResults = () => {
