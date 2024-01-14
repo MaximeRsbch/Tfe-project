@@ -87,12 +87,6 @@ onMounted(() => {
 
     map.zoomControl.remove();
 
-    leaflet.control
-        .zoom({
-            position: "topright",
-        })
-        .addTo(map);
-
     getGeoLocation();
     parcstore.fetchParcs();
     attractionstore.fetchAttractions();
