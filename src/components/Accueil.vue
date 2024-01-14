@@ -83,7 +83,26 @@ onMounted(() => {
     // Set the default layer when you open the map
     baselayers["mapbox/outdoors-v12"].addTo(map);
     // Associating each style name to its tile layer
-    leaflet.control.layers(baselayers).addTo(map);
+    const layerControl = leaflet.control.layers(baselayers);
+
+    // Ajoutez le contrôle des calques à la carte
+    layerControl.addTo(map);
+
+    // Ajoutez un événement de clic sur le contrôle des calques pour les appareils mobiles
+    if (leaflet.Browser.touch) {
+        layerControl.getContainer().classList.add("leaflet-touch"); // Ajoute une classe pour les styles tactiles
+        layerControl.getContainer().addEventListener("click", function () {
+            if (
+                layerControl._container.classList.contains(
+                    "leaflet-control-layers-expanded"
+                )
+            ) {
+                layerControl._collapse(); // Ferme le contrôle des calques s'il est ouvert
+            } else {
+                layerControl._expand(); // Ouvre le contrôle des calques s'il est fermé
+            }
+        });
+    }
 
     map.zoomControl.remove();
 
@@ -1474,7 +1493,7 @@ const showToolHeightAcc = () => {
             </div>
         </div>
 
-        <div id="map" class="h-[555px] lg:h-[606px] z-[1]"></div>
+        <div id="map" class="h-[900px] lg:h-[606px] z-[1]"></div>
     </div>
 </template>
 
