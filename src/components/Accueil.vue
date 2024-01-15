@@ -1482,7 +1482,7 @@ const showToolHeightAcc = () => {
 
         <div
             id="map"
-            class="z-[1] h-[620px] sm:h-[642px] md:h-[642px] lg:h-[606px] xl:h-[606px]"
+            class="z-[1] h-[600px] sm:h-[642px] md:h-[642px] lg:h-[606px] xl:h-[606px]"
         ></div>
     </div>
 </template>
