@@ -86,23 +86,9 @@ onMounted(() => {
     const layerControl = leaflet.control.layers(baselayers);
 
     // Ajoutez le contrôle des calques à la carte
-    layerControl.addTo(map);
+    layerControl.addTo(map).setPosition("bottomright");
 
     // Ajoutez un événement de clic sur le contrôle des calques pour les appareils mobiles
-    if (leaflet.Browser.touch) {
-        layerControl.getContainer().classList.add("leaflet-touch"); // Ajoute une classe pour les styles tactiles
-        layerControl.getContainer().addEventListener("click", function () {
-            if (
-                layerControl._container.classList.contains(
-                    "leaflet-control-layers-expanded"
-                )
-            ) {
-                layerControl._collapse(); // Ferme le contrôle des calques s'il est ouvert
-            } else {
-                layerControl._expand(); // Ouvre le contrôle des calques s'il est fermé
-            }
-        });
-    }
 
     map.zoomControl.remove();
 
@@ -474,6 +460,7 @@ const plotInfoAttraction = () => {
                 .on("click", function (e) {
                     showModalResults.value = true;
                     showAttractionResults.value = true;
+
                     showParcResults.value = false;
                     showModalMagasin.value = false;
                     showModalResto.value = false;
@@ -819,10 +806,10 @@ const showToolHeightAcc = () => {
         <div
             v-if="showModalResults"
             id="modal"
-            class="h-full absolute z-10 flex justify-start items-start pt-32 md:pt-16 pl-6 md:pl-2"
+            class="h-full absolute z-10 flex justify-start items-start pt-20 md:pt-16 pl-6 md:pl-2 overflow-hidden"
         >
             <div
-                class="flex flex-col bg-white w-[280px] sm:w-[400px] rounded-md max-h-[66vh] md:max-h-[74vh] overflow-y-auto"
+                class="flex flex-col bg-white w-[280px] sm:w-[400px] rounded-md max-h-[71vh] md:max-h-[74vh] lg:max-h-[68vh] overflow-y-auto"
             >
                 <div class="relative z-10 flex justify-end top-6 right-2">
                     <i
@@ -1007,7 +994,7 @@ const showToolHeightAcc = () => {
                             </h2>
                             <div class="flex justify-end pr-4">
                                 <div
-                                    class="absolute z-10 top-36 md:top-20 left-8"
+                                    class="absolute z-10 top-24 md:top-20 left-8"
                                     v-for="data in showFavorite"
                                 >
                                     <div v-if="data.ref_user !== id">
@@ -1025,7 +1012,7 @@ const showToolHeightAcc = () => {
                                 </div>
 
                                 <div
-                                    class="absolute z-10 top-36 md:top-20 left-8"
+                                    class="absolute z-10 top-24 md:top-20 left-8"
                                     v-if="showFavorite.length === 0"
                                 >
                                     <button @click="toggleFavorite">
@@ -1041,7 +1028,7 @@ const showToolHeightAcc = () => {
                                 </div>
 
                                 <div
-                                    class="absolute z-10 top-20 left-8"
+                                    class="absolute z-10 top-24 md:top-20 left-8"
                                     v-if="showFavorite.length !== 0"
                                     v-for="data in showFavorite"
                                 >
@@ -1493,11 +1480,41 @@ const showToolHeightAcc = () => {
             </div>
         </div>
 
-        <div id="map" class="h-[900px] lg:h-[606px] z-[1]"></div>
+        <div id="map" class="z-[1]"></div>
     </div>
 </template>
 
 <style scoped>
+@media (min-width: 430px) {
+    #map {
+        height: 850px;
+    }
+}
+
+@media (min-width: 360px) {
+    #map {
+        height: 652px;
+    }
+}
+
+@media (min-width: 320px) {
+    #map {
+        height: 512px;
+    }
+}
+
+@media (min-width: 768px) {
+    #map {
+        height: 512px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #map {
+        height: 606px;
+    }
+}
+
 .selected {
     border-bottom: 2px solid blue;
 }
