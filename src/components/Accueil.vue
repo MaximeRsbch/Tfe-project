@@ -809,7 +809,7 @@ const showToolHeightAcc = () => {
             class="h-full absolute z-10 flex justify-start items-start pt-20 md:pt-16 pl-6 md:pl-2 overflow-hidden"
         >
             <div
-                class="flex flex-col bg-white w-[280px] sm:w-[400px] rounded-md max-h-[71vh] md:max-h-[74vh] lg:max-h-[68vh] overflow-y-auto"
+                class="flex flex-col bg-white w-[280px] sm:w-[400px] rounded-md max-h-[60vh] md:max-h-[74vh] lg:max-h-[68vh] overflow-y-auto"
             >
                 <div class="relative z-10 flex justify-end top-6 right-2">
                     <i
