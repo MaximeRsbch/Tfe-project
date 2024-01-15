@@ -858,7 +858,7 @@ const showToolHeightAcc = () => {
                             class="flex justify-end pr-4"
                         >
                             <div
-                                class="absolute z-10 top-36 md:top-20 left-8 md:left-4"
+                                class="absolute z-10 top-24 md:top-20 left-8 md:left-4"
                             >
                                 <button
                                     class="bg-[#344d59] text-white px-4 py-2 rounded-lg"
@@ -1480,41 +1480,14 @@ const showToolHeightAcc = () => {
             </div>
         </div>
 
-        <div id="map" class="z-[1]"></div>
+        <div
+            id="map"
+            class="z-[1] h-[642px] sm:h-[642px] md:h-[642px] lg:h-[606px] xl:h-[606px]"
+        ></div>
     </div>
 </template>
 
 <style scoped>
-@media (min-width: 430px) {
-    #map {
-        height: 850px;
-    }
-}
-
-@media (min-width: 360px) {
-    #map {
-        height: 652px;
-    }
-}
-
-@media (min-width: 320px) {
-    #map {
-        height: 512px;
-    }
-}
-
-@media (min-width: 768px) {
-    #map {
-        height: 512px;
-    }
-}
-
-@media (min-width: 1024px) {
-    #map {
-        height: 606px;
-    }
-}
-
 .selected {
     border-bottom: 2px solid blue;
 }
