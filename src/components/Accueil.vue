@@ -93,10 +93,12 @@ onMounted(() => {
     map.zoomControl.remove();
 
     getGeoLocation();
-    parcstore.fetchParcs();
-    attractionstore.fetchAttractions();
-    plotInfoParc();
-    plotInfoAttraction();
+    setTimeout(() => {
+        parcstore.fetchParcs();
+        attractionstore.fetchAttractions();
+        plotInfoParc();
+        plotInfoAttraction();
+    }, 200);
     usersStore.fetchOneUser(id.value);
     attractionstore.fetchFavoriteAttraction(id.value);
 });
@@ -431,6 +433,7 @@ const calculateAverageRating = (attraction) => {
 const plotInfoAttraction = () => {
     setTimeout(() => {
         const attractions = computed(() => attractionstore.getAttractions);
+
         for (const attraction of attractions.value) {
             let customMarker;
 
