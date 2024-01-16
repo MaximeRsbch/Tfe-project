@@ -101,15 +101,6 @@ onMounted(() => {
     attractionstore.fetchFavoriteAttraction(id.value);
 });
 
-const parcs = computed(() => parcstore.getParcs);
-
-const attractions = computed(() => attractionstore.getAttractions);
-
-setTimeout(() => {
-    console.log(parcs.value);
-    console.log(attractions.value);
-}, 300);
-
 const user = computed(() => usersStore.getUsersById);
 
 const coords = ref(null);
@@ -265,6 +256,8 @@ const parcIdInAttraction = ref(null);
 
 const plotInfoParc = () => {
     setTimeout(() => {
+        const parcs = computed(() => parcstore.getParcs);
+
         const customMarker = leaflet.icon({
             iconUrl: "../assets/img/map-marker-blue.svg",
             iconSize: [32, 32],
@@ -437,6 +430,7 @@ const calculateAverageRating = (attraction) => {
 
 const plotInfoAttraction = () => {
     setTimeout(() => {
+        const attractions = computed(() => attractionstore.getAttractions);
         for (const attraction of attractions.value) {
             let customMarker;
 
