@@ -102,10 +102,13 @@ onMounted(() => {
 });
 
 const parcs = computed(() => parcstore.getParcs);
+
+const attractions = computed(() => attractionstore.getAttractions);
+
 setTimeout(() => {
     console.log(parcs.value);
+    console.log(attractions.value);
 }, 300);
-const attractions = computed(() => attractionstore.getAttractions);
 
 const user = computed(() => usersStore.getUsersById);
 
