@@ -13,7 +13,7 @@ const props = defineProps({
         >
             <h1 class="text-lg mb-1">Erreur:</h1>
             <p class="text-sm mb-4">
-                Pour profiter au maximum de cette application, vérifier que
+                Pour profiter au maximum de cette application, vérifiez que
                 votre localisation soit activée
             </p>
             <button

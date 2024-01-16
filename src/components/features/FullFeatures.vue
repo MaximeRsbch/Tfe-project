@@ -300,7 +300,7 @@ const goBack = () => {
                         <textarea
                             id="content"
                             v-model="contentReport"
-                            placeholder="Donner votre avis sur cet attraction ;)"
+                            placeholder="Donnez votre avis sur cette article ;)"
                             minlength="10"
                             maxlength="500"
                             rows="5"

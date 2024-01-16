@@ -82,9 +82,9 @@ const sortTable = (field) => {
 <template>
     <div>
         <div class="pt-10">
-            <h1 class="text-center text-4xl">Meilleur attraction</h1>
+            <h1 class="text-center text-4xl">Meilleures attractions</h1>
             <p class="text-center text-lg pt-2">
-                Ici se trouve le classement des meilleurs attractions de chaque
+                Ici se trouve le classement des meilleures attractions de chaque
                 parc
             </p>
         </div>

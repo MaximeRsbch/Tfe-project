@@ -1265,7 +1265,7 @@ const showToolHeightAcc = () => {
                     <textarea
                         id="content"
                         v-model="contentReport"
-                        placeholder="Donner votre avis sur cet attraction ;)"
+                        placeholder="Donnez votre avis sur cette attraction ;)"
                         minlength="10"
                         maxlength="500"
                         rows="5"
@@ -1318,7 +1318,7 @@ const showToolHeightAcc = () => {
                     <textarea
                         v-model="content"
                         id="content"
-                        placeholder="Donner votre avis sur cet attraction ;)"
+                        placeholder="Donnez votre avis sur cette attraction ;)"
                         minlength="10"
                         maxlength="500"
                         rows="5"

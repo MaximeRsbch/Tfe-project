@@ -431,7 +431,7 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                                         alt="modoPImg"
                                                     />
                                                     <div class="tooltip">
-                                                        Donner role Modo
+                                                        Donner le role Modo
                                                     </div>
                                                 </div>
                                             </button>
@@ -452,7 +452,7 @@ const giveRoleModo = (Id, username, email, roleUser) => {
                                                         alt="modoPImg"
                                                     />
                                                     <div class="tooltip">
-                                                        Donner role ModoP
+                                                        Donner le role ModoP
                                                     </div>
                                                 </div>
                                             </button>
