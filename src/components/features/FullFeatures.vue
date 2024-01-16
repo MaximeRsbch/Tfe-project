@@ -211,7 +211,6 @@ const goBack = () => {
         <div>
             <h1 class="text-center md:text-4xl text-3xl pt-4">
                 {{ articles.title }}
-                {{ articles.showCommentaires }}
             </h1>
             <div class="flex justify-center">
                 <p class="pt-4 max-w-5xl text-center pb-5">
