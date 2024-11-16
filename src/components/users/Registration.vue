@@ -49,76 +49,92 @@ function checkPasswordValidation() {}
 <template>
     <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">
                 Inscrivez-vous !
             </h2>
         </div>
 
-        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form class="space-y-6" @submit.prevent="createUsers">
                     <div>
                         <label
-                            for="username"
-                            class="block text-sm font-medium text-gray-700"
+                            class="input input-bordered flex items-center gap-2"
                         >
-                            Nom d'utilisateur
-                        </label>
-                        <div class="mt-1">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 16 16"
+                                fill="currentColor"
+                                class="h-4 w-4 opacity-70"
+                            >
+                                <path
+                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"
+                                />
+                            </svg>
                             <input
-                                id="username"
-                                name="username"
-                                required
                                 type="text"
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black bg-zinc-200"
+                                class="grow"
+                                placeholder="Username"
                                 v-model="username"
                             />
-                        </div>
+                        </label>
                     </div>
                     <div>
                         <label
-                            for="email"
-                            class="block text-sm font-medium text-gray-700"
+                            class="input input-bordered flex items-center gap-2"
                         >
-                            Email
-                        </label>
-                        <div class="mt-1">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 16 16"
+                                fill="currentColor"
+                                class="h-4 w-4 opacity-70"
+                            >
+                                <path
+                                    d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
+                                />
+                                <path
+                                    d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
+                                />
+                            </svg>
                             <input
-                                id="email"
-                                required
-                                name="email"
-                                type="email"
-                                autocomplete="email"
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black bg-zinc-200"
+                                type="text"
+                                class="grow"
+                                placeholder="Email"
                                 v-model="email"
                             />
-                        </div>
+                        </label>
                     </div>
 
                     <div>
                         <label
-                            for="password"
-                            class="block text-sm font-medium text-gray-700"
+                            class="input input-bordered flex items-center gap-2"
                         >
-                            Mot de passe
-                        </label>
-                        <div class="mt-1">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 16 16"
+                                fill="currentColor"
+                                class="h-4 w-4 opacity-70"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
                             <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                autocomplete="current-password"
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black bg-zinc-200"
                                 v-model="password"
+                                placeholder="Mot de passe"
+                                type="password"
+                                class="grow"
                             />
-                        </div>
+                        </label>
                     </div>
 
                     <div>
                         <button
                             @click="checkPasswordValidation"
                             type="submit"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-[#344d59] hover:bg-[#344d59] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            class="btn w-full sm:btn-sm md:btn-md lg:btn-md"
                         >
                             Inscrivez-vous !
                         </button>
@@ -140,8 +156,8 @@ function checkPasswordValidation() {}
                 <div class="pt-5">
                     <button
                         @click="goToLogin"
-                        type="button"
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-[#344d59] hover:bg-[#344d59] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        type="submit"
+                        class="btn w-full sm:btn-sm sm:px-10 md:btn-md lg:btn-md"
                     >
                         Connectez-vous !
                     </button>

@@ -1,10 +1,12 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
-import { onMounted, computed } from "vue";
+import { useAttractionsStore } from "../../stores/attractions.js";
+import { onMounted, computed, ref } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
 
 const usersStore = useUsersStore();
+const attractionStore = useAttractionsStore();
 
 //Empecher l'accès à la page si l'utilisateur n'est pas connecté
 const isConnect = computed(() => localStorage.getItem("savedToken"));
@@ -15,10 +17,14 @@ const id = computed(() => tokenDecode.value.id_user);
 
 onMounted(() => {
     usersStore.fetchOneUser(id.value);
+    attractionStore.fetchRatingAttraction(id.value);
 });
 
 //Récupère l'utilisateurs connecter
 const user = computed(() => usersStore.getUsersById);
+
+//Récupère les commentaires de l'utilisateur
+const comments = computed(() => attractionStore.getComments);
 
 // Modification des données de l'utilisateurs
 
@@ -50,68 +56,157 @@ const updateUsers = () => {
         }
     });
 };
+
+const showAbout = ref(false);
+const showPost = ref(false);
+
+//const token = useRef(localStorage.getItem("token"));
+//const tokenDecode = jwtDecode(token.current);
+
+/* useEffect(() => {
+        dispatch(fetchUser(tokenDecode.id_user));
+        dispatch(fetchComments(tokenDecode.id_user));
+    }, []); */
+
+const showAboutOrNot = () => {
+    showAbout.value = true;
+    showPost.value = false;
+    document.getElementById("about").style.fontWeight = "bold";
+    document.getElementById("post").style.fontWeight = "normal";
+};
+
+const showPostOrNot = () => {
+    showPost.value = true;
+    showAbout.value = false;
+    document.getElementById("post").style.fontWeight = "bold";
+    document.getElementById("about").style.fontWeight = "normal";
+};
 </script>
 <template>
-    <div>
-        <div v-if="isConnect" class="pt-16">
-            <img
-                src="/assets/img/image.jpg"
-                alt="profil"
-                class="mx-auto rounded-full w-36"
-            />
-            <div v-for="data in user">
-                <div v-if="data.id">
-                    <div v-if="data.id == id">
-                        <div>
-                            <div class="relative flex items-center">
-                                <input
-                                    type="text"
-                                    placeholder="Enter name"
-                                    class="pr-4 pl-14 py-3 text-sm text-black rounded bg-white border border-gray-400 w-full outline-[#333]"
-                                />
-
-                                <div class="absolute left-4">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="22px"
-                                        height="22px"
-                                        fill="#bbb"
-                                        viewBox="0 0 512 512"
-                                    >
-                                        <path
-                                            d="M437.02 74.981C388.667 26.629 324.38 0 256 0S123.333 26.629 74.98 74.981C26.629 123.333 0 187.62 0 256s26.629 132.667 74.98 181.019C123.333 485.371 187.62 512 256 512s132.667-26.629 181.02-74.981C485.371 388.667 512 324.38 512 256s-26.629-132.667-74.98-181.019zM256 482c-66.869 0-127.037-29.202-168.452-75.511C113.223 338.422 178.948 290 256 290c-49.706 0-90-40.294-90-90s40.294-90 90-90 90 40.294 90 90-40.294 90-90 90c77.052 0 142.777 48.422 168.452 116.489C383.037 452.798 322.869 482 256 482z"
-                                            data-original="#000000"
-                                        ></path>
-                                    </svg>
-                                </div>
+    <div className="mx-auto container">
+        <img
+            className="md:w-full md:h-48 hidden md:flex"
+            src="assets/img/background.jpg"
+            alt=""
+        />
+        <div className="md:grid md:grid-cols-2">
+            <div className="flex justify-center">
+                <div
+                    className="bg-white w-64 h-80 shadow-xl md:absolute md:bottom-40 xl:bottom-56"
+                >
+                    <div>
+                        <div className="flex justify-center pt-10">
+                            <img
+                                className="rounded-full w-40"
+                                src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg"
+                            />
+                            <div
+                                className="absolute top-56 left-52 md:top-36 md:left-44 bg-gray-400 rounded-full w-10 h-10 flex justify-center items-center"
+                            >
+                                <button>
+                                    <img
+                                        className="w-5 h-5 mx-auto"
+                                        src="assets/img/crayon.png"
+                                        alt=""
+                                    />
+                                </button>
                             </div>
                         </div>
+                        <div v-for="data in user">
+                            <p className="text-center pt-4 text-xl font-bold">
+                                {{ data.username }}
+                            </p>
+                            <p className="text-center pt-2">{{ data.email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div
+                    className="flex justify-center xl:justify-start pt-8 md:pr-40"
+                >
+                    <div className="grid grid-cols-2">
+                        <button
+                            id="about"
+                            @click="showAboutOrNot"
+                            className="pr-8 text-lg"
+                        >
+                            Profil
+                        </button>
+                        <button
+                            id="post"
+                            @click="showPostOrNot"
+                            className="pl-8 text-lg"
+                        >
+                            Avis
+                        </button>
+                    </div>
+                </div>
 
-                        <div class="pt-4">
-                            <h2 class="text-center pb-2">Email :</h2>
-                            <div class="flex justify-center">
-                                <input
-                                    id="email"
-                                    class="block l rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    type="text"
-                                    :value="data.email"
-                                />
+                <div
+                    v-if="showAbout"
+                    className="flex justify-center xl:justify-start pt-8 pb-8"
+                >
+                    <div
+                        className="bg-white w-52 inline-block shadow-xl pb-2 md:w-[360px] md:inline-block xl:w-full xl:max-w-2xl"
+                    >
+                        <form id="aboutForm">
+                            <p className="pl-2 pt-4 font-semibold">
+                                <label htmlFor="aboutInput"> A propos : </label>
+                            </p>
+                            <p className="text-center pt-4 mx-4">
+                                <textarea
+                                    id="aboutInput"
+                                    className="w-full"
+                                    rows="4"
+                                    placeholder="Saisissez votre texte ici..."
+                                ></textarea>
+                            </p>
+                            <button
+                                type="submit"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mx-4"
+                            >
+                                Enregistrer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div
+                    v-if="showPost"
+                    class="post-container max-h-[500px] overflow-y-auto"
+                >
+                    <div
+                        key="{post.id}"
+                        className="flex justify-center pt-8 pb-8 xl:pr-10"
+                    >
+                        <div
+                            className="bg-white w-52  inline-block shadow-xl md:w-80 xl:w-full"
+                        >
+                            <p className="pt-4 pl-4 font-bold">
+                                Maxime Rossbach
+                                {{ comments }}
+                            </p>
+                            <p className="pl-4 pt-1 italic">Konda - Walibi</p>
+                            <p className="pl-4 pt-4">3/5</p>
+                            <p className="pl-4 pt-2 pr-4 max-w-sm xl:max-w-3xl">
+                                Moyen cette attraction, je ne la recommande pas
+                            </p>
+
+                            <p className="pt-4 pl-4">23/01/23</p>
+                            <div className="flex justify-end pr-2 pt-4 pb-2">
+                                <button>
+                                    <img
+                                        className="w-7 h-7 mx-auto"
+                                        src="assets/img/delete.png"
+                                        alt=""
+                                    />
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="flex justify-center pt-10">
-                <button
-                    @click="updateUsers"
-                    class="bg-[#344d59] text-white text-2xl px-5 py-2 rounded-xl"
-                >
-                    Sauvegarder
-                </button>
-            </div>
-        </div>
-        <div v-if="!isConnect">
-            <h2>Veuillez-vous connecter pour accéder à cette page</h2>
         </div>
     </div>
 </template>
