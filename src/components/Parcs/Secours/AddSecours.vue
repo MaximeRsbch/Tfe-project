@@ -19,7 +19,7 @@ onMounted(() => {
     //add tile layer
     leaflet
         .tileLayer(
-            `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
+            `http://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
 
             {
                 maxZoom: 19,

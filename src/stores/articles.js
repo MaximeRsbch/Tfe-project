@@ -15,7 +15,7 @@ export const useArticlesStore = defineStore("articles", {
         async fetchArticles() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be/api/articles",
+                url: "http://localhost:3000/api/articles",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -27,7 +27,7 @@ export const useArticlesStore = defineStore("articles", {
         async fetchAllArticles(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/articles/all/${id}`,
+                url: `http://localhost:3000/api/articles/parc/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -39,7 +39,7 @@ export const useArticlesStore = defineStore("articles", {
         async fetchArticleById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/articles/${id}`,
+                url: `http://localhost:3000/api/articles/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -51,7 +51,7 @@ export const useArticlesStore = defineStore("articles", {
         async createArticles(title, content, img, showCommentaires, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `https://maximerossbach.be/api/articles/`,
+                url: `http://localhost:3000/api/articles/`,
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -73,7 +73,7 @@ export const useArticlesStore = defineStore("articles", {
         async fetchArticleComments(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/commentsart/${id}`,
+                url: `http://localhost:3000/api/commentsart/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -85,7 +85,7 @@ export const useArticlesStore = defineStore("articles", {
         async createArticleComments(content, ref_user, ref_article) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `https://maximerossbach.be/api/commentsart/`,
+                url: `http://localhost:3000/api/commentsart/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -104,7 +104,7 @@ export const useArticlesStore = defineStore("articles", {
         async deleteArticleComments(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/commentsart/${id}`,
+                url: `http://localhost:3000/api/commentsart/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -118,7 +118,7 @@ export const useArticlesStore = defineStore("articles", {
         async deleteArticle(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/articles/${id}`,
+                url: `http://localhost:3000/api/articles/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -132,7 +132,7 @@ export const useArticlesStore = defineStore("articles", {
         async updateArticle(id, title, content, img_url) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `https://maximerossbach.be/api/articles/${id}`,
+                url: `http://localhost:3000/api/articles/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:

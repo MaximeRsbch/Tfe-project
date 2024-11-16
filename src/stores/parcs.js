@@ -30,7 +30,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchParcs() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be/api/parcs/all",
+                url: "http://localhost:3000/api/parcs/all",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -42,7 +42,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchParcById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/parcs/${id}`,
+                url: `http://localhost:3000/api/parcs/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -54,7 +54,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchQueuetimeParc() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be/api/parcs/all/queuetime",
+                url: "http://localhost:3000/api/parcs/all/queuetime",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -79,7 +79,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/parcs",
+                url: "http://localhost:3000/api/parcs",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -109,7 +109,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteParc(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/parcs/${id}`,
+                url: `http://localhost:3000/api/parcs/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -135,7 +135,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `https://maximerossbach.be/api/parcs/`,
+                url: `http://localhost:3000/api/parcs/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -163,7 +163,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchToilettes(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/toilettes/${id}`,
+                url: `http://localhost:3000/api/toilettes/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -175,7 +175,7 @@ export const useParcsStore = defineStore("parcs", {
         async createToilettes(latitude, longitude, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/toilettes",
+                url: "http://localhost:3000/api/toilettes",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -195,7 +195,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchMagasins(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/magasins/all/${id}`,
+                url: `http://localhost:3000/api/magasins/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -207,7 +207,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchMagasinsById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/magasins/${id}`,
+                url: `http://localhost:3000/api/magasins/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -228,7 +228,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/magasins/",
+                url: "http://localhost:3000/api/magasins/",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -254,7 +254,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteMagasins(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/magasins/${id}`,
+                url: `http://localhost:3000/api/magasins/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -276,7 +276,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `https://maximerossbach.be/api/magasins/`,
+                url: `http://localhost:3000/api/magasins/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -300,7 +300,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/restaurants/all/${id}`,
+                url: `http://localhost:3000/api/restaurants/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -312,7 +312,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchRestaurantsById(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/restaurants/${id}`,
+                url: `http://localhost:3000/api/restaurants/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -334,7 +334,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/restaurants/",
+                url: "http://localhost:3000/api/restaurants/",
                 headers: {
                     "Content-Type": "application/json",
                     "Content-Type": "multipart/form-data",
@@ -361,7 +361,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteRestaurants(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/restaurants/${id}`,
+                url: `http://localhost:3000/api/restaurants/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -383,7 +383,7 @@ export const useParcsStore = defineStore("parcs", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "PUT",
-                url: `https://maximerossbach.be/api/restaurants/`,
+                url: `http://localhost:3000/api/restaurants/`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -407,7 +407,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchSecours(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/secours/all/${id}`,
+                url: `http://localhost:3000/api/secours/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -419,7 +419,7 @@ export const useParcsStore = defineStore("parcs", {
         async createSecours(latitude, longitude, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/secours/",
+                url: "http://localhost:3000/api/secours/",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -439,7 +439,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchInfos(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/info/all/${id}`,
+                url: `http://localhost:3000/api/info/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -451,7 +451,7 @@ export const useParcsStore = defineStore("parcs", {
         async createInfos(latitude, longitude, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/info/",
+                url: "http://localhost:3000/api/info/",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -471,7 +471,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchEvenements(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/evenements/all/${id}`,
+                url: `http://localhost:3000/api/evenements/all/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -483,7 +483,7 @@ export const useParcsStore = defineStore("parcs", {
         async fetchCalendar(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `https://maximerossbach.be/api/parcs/calendar/${id}`,
+                url: `http://localhost:3000/api/parcs/calendar/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -495,7 +495,7 @@ export const useParcsStore = defineStore("parcs", {
         async deleteCalendar(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/parcs/calendar/${id}`,
+                url: `http://localhost:3000/api/parcs/calendar/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
@@ -509,7 +509,7 @@ export const useParcsStore = defineStore("parcs", {
         async addCalendar(day, beginHour, endHour, ref_parc) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: `https://maximerossbach.be/api/parcs/calendar`,
+                url: `http://localhost:3000/api/parcs/calendar`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:

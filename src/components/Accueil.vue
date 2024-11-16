@@ -68,7 +68,7 @@ onMounted(() => {
     ids.forEach(
         (id) =>
             (baselayers[id] = leaflet.tileLayer(
-                `https://api.mapbox.com/styles/v1/${id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
+                `http://api.mapbox.com/styles/v1/${id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
                 {
                     maxZoom: 19,
                     attribution:
@@ -674,7 +674,7 @@ const showAvisOrNot = () => {
 
 const goToPark = () => {
     window.open(
-        `https://www.google.com/maps/dir/?api=1&destination=${latitude.value},${longitude.value}`
+        `http://www.google.com/maps/dir/?api=1&destination=${latitude.value},${longitude.value}`
     );
 };
 

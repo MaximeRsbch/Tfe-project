@@ -104,118 +104,62 @@ const sortTable = (field) => {
             </div>
         </div>
         <div>
-            <div class="mt-4 flex flex-col container mx-auto">
+            <div class="container mx-auto">
                 <div class="overflow-x-auto">
-                    <div
-                        class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
-                    >
-                        <div
-                            class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md"
-                        >
-                            <table class="min-w-full divide-y divide-gray-300">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                        >
-                                            <a
-                                                class="group inline-flex text-base"
-                                            >
-                                                Nom de l'attraction
-                                            </a>
-                                        </th>
-
-                                        <th
-                                            scope="col"
-                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                        >
-                                            <a
-                                                class="group inline-flex text-base"
-                                            >
-                                                Ouverte/fermée
-                                            </a>
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-                                        >
-                                            <button
-                                                @click="
-                                                    sortTable('averageRating')
-                                                "
-                                                class="group inline-flex text-base"
-                                            >
-                                                Note Moyenne
-                                                <!-- Add an arrow icon or text indicating the sort order -->
-                                                <span
-                                                    v-if="
-                                                        sortBy ===
-                                                        'averageRating'
-                                                    "
-                                                >
-                                                    {{
-                                                        sortOrder === "asc"
-                                                            ? "▲"
-                                                            : "▼"
-                                                    }}
-                                                </span>
-                                            </button>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody
-                                    class="divide-y divide-gray-200 bg-white"
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-3 py-3.5 text-left font-semibold text-gray-900"
                                 >
-                                    <!--Affiche les info de tous les users-->
-                                    <tr
-                                        v-for="data in attraction"
-                                        :key="data.id"
-                                        class="hover:bg-gray-100"
+                                    <a class="group inline-flex"
+                                        >Nom de l'attraction</a
                                     >
-                                        <div>
-                                            <td
-                                                class="whitespace-nowrap px-3 py-4 text-base"
-                                            >
-                                                {{ data.nom }}
-                                            </td>
-                                        </div>
-
-                                        <td
-                                            v-if="data.is_open == 0"
-                                            class="whitespace-nowrap px-3 py-4 text-base"
+                                </th>
+                                <th
+                                    class="px-3 py-3.5 text-left font-semibold text-gray-900"
+                                >
+                                    <a class="group inline-flex"
+                                        >Ouverte/fermée</a
+                                    >
+                                </th>
+                                <th
+                                    class="px-3 py-3.5 text-left font-semibold text-gray-900"
+                                >
+                                    <button
+                                        @click="sortTable('averageRating')"
+                                        class="group inline-flex"
+                                    >
+                                        Note Moyenne
+                                        <span
+                                            v-if="sortBy === 'averageRating'"
+                                            >{{
+                                                sortOrder === "asc" ? "▲" : "▼"
+                                            }}</span
                                         >
-                                            Fermée
-                                        </td>
-                                        <td
-                                            v-if="data.is_open == 1"
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            Ouverte
-                                        </td>
-                                        <td
-                                            v-if="
-                                                averageRatings[data.id] !==
-                                                '0.00'
-                                            "
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            {{ averageRatings[data.id] }}
-                                        </td>
-                                        <td
-                                            v-if="
-                                                averageRatings[data.id] ===
-                                                '0.00'
-                                            "
-                                            class="whitespace-nowrap px-3 py-4 text-base"
-                                        >
-                                            Pas de note disponible
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                            <tr
+                                v-for="data in attraction"
+                                :key="data.id"
+                                class="hover:bg-gray-100"
+                            >
+                                <td class="px-3 py-4">{{ data.nom }}</td>
+                                <td class="px-3 py-4">
+                                    {{ data.is_open ? "Ouverte" : "Fermée" }}
+                                </td>
+                                <td class="px-3 py-4">
+                                    {{
+                                        averageRatings[data.id] ||
+                                        "Pas de note disponible"
+                                    }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

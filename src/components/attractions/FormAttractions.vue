@@ -29,7 +29,7 @@ onMounted(() => {
     //add tile layer
     leaflet
         .tileLayer(
-            `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
+            `http://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${Mapbox_API_KEY}`,
 
             {
                 maxZoom: 19,
@@ -193,8 +193,6 @@ const imageInput = ref(null); // Ajoutez cette ligne pour obtenir une référenc
 const saveImageToConstant = () => {
     // Récupérer l'élément d'entrée de fichier
     const selectedImage = imageInput.value.files[0];
-
-    
 
     // Créer un objet FormData pour envoyer le fichier
     const formData = new FormData();

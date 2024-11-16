@@ -21,7 +21,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async fetchContact() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be/api/contact/",
+                url: "http://localhost:3000/api/contact/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -33,7 +33,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async createContact(title, description, ref_user) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/contact/",
+                url: "http://localhost:3000/api/contact/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -50,7 +50,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async deleteContact(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/contact/${id}`,
+                url: `http://localhost:3000/api/contact/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -62,7 +62,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async fetchReportArticle() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be/api/reportArt/",
+                url: "http://localhost:3000/api/reportArt/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -79,7 +79,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         ) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/reportArt/",
+                url: "http://localhost:3000/api/reportArt/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -97,7 +97,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async deleteReportArticle(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/reportArt/${id}`,
+                url: `http://localhost:3000/api/reportArt/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -109,7 +109,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async fetchReportAttr() {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: "https://maximerossbach.be/api/reportAttr/",
+                url: "http://localhost:3000/api/reportAttr/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -121,7 +121,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async createReportAttr(title, description, ref_user, ref_review) {
             const response = await CapacitorHttp.request({
                 method: "POST",
-                url: "https://maximerossbach.be/api/reportAttr/",
+                url: "http://localhost:3000/api/reportAttr/",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -139,7 +139,7 @@ export const useTicketsModStore = defineStore("ticketsMod", {
         async deleteReportAttr(id) {
             const response = await CapacitorHttp.request({
                 method: "DELETE",
-                url: `https://maximerossbach.be/api/reportAttr/${id}`,
+                url: `http://localhost:3000/api/reportAttr/${id}`,
                 headers: {
                     "Content-Type": "application/json",
                 },

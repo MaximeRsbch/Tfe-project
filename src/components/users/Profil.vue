@@ -54,23 +54,36 @@ const updateUsers = () => {
 <template>
     <div>
         <div v-if="isConnect" class="pt-16">
-            <h1 class="text-center text-4xl pb-10">
-                Information de votre compte :
-            </h1>
+            <img
+                src="/assets/img/image.jpg"
+                alt="profil"
+                class="mx-auto rounded-full w-36"
+            />
             <div v-for="data in user">
                 <div v-if="data.id">
                     <div v-if="data.id == id">
                         <div>
-                            <h2 class="pb-2 text-center">
-                                Nom d'utilisateur :
-                            </h2>
-                            <div class="flex justify-center">
+                            <div class="relative flex items-center">
                                 <input
-                                    id="username"
-                                    class="block l rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     type="text"
-                                    :value="data.username"
+                                    placeholder="Enter name"
+                                    class="pr-4 pl-14 py-3 text-sm text-black rounded bg-white border border-gray-400 w-full outline-[#333]"
                                 />
+
+                                <div class="absolute left-4">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="22px"
+                                        height="22px"
+                                        fill="#bbb"
+                                        viewBox="0 0 512 512"
+                                    >
+                                        <path
+                                            d="M437.02 74.981C388.667 26.629 324.38 0 256 0S123.333 26.629 74.98 74.981C26.629 123.333 0 187.62 0 256s26.629 132.667 74.98 181.019C123.333 485.371 187.62 512 256 512s132.667-26.629 181.02-74.981C485.371 388.667 512 324.38 512 256s-26.629-132.667-74.98-181.019zM256 482c-66.869 0-127.037-29.202-168.452-75.511C113.223 338.422 178.948 290 256 290c-49.706 0-90-40.294-90-90s40.294-90 90-90 90 40.294 90 90-40.294 90-90 90c77.052 0 142.777 48.422 168.452 116.489C383.037 452.798 322.869 482 256 482z"
+                                            data-original="#000000"
+                                        ></path>
+                                    </svg>
+                                </div>
                             </div>
                         </div>
 
