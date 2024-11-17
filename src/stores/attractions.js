@@ -223,7 +223,7 @@ export const useAttractionsStore = defineStore("attractions", {
         async fetchRatingAttraction(id) {
             const response = await CapacitorHttp.request({
                 method: "GET",
-                url: `http://localhost:3000/api/reviews/${id}?`,
+                url: `http://localhost:3000/api/reviews/user/${id}?`,
                 headers: {
                     "Content-Type": "application/json",
                 },

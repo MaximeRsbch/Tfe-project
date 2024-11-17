@@ -1,12 +1,14 @@
 <script setup>
 import { useUsersStore } from "../../stores/users.js";
 import { useAttractionsStore } from "../../stores/attractions.js";
+import { useParcsStore } from "../../stores/parcs.js";
 import { onMounted, computed, ref } from "vue";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
 
 const usersStore = useUsersStore();
 const attractionStore = useAttractionsStore();
+const parcsStore = useParcsStore();
 
 //Empecher l'accès à la page si l'utilisateur n'est pas connecté
 const isConnect = computed(() => localStorage.getItem("savedToken"));
@@ -15,16 +17,53 @@ const tokenDecode = computed(() => jwtDecode(isConnect.value));
 
 const id = computed(() => tokenDecode.value.id_user);
 
+const parc = ref();
+
 onMounted(() => {
     usersStore.fetchOneUser(id.value);
     attractionStore.fetchRatingAttraction(id.value);
+
+    let rating = computed(() => attractionStore.getRatingStarAttraction);
+
+    for (let i = 0; i < rating.value.length; i++) {
+        console.log(rating.value[i].Attraction.ref_parc);
+        parcsStore.fetchParcById(rating.value[i].Attraction.ref_parc);
+        setTimeout(() => {
+            const parcs = computed(() => parcsStore.getParcs);
+
+            console.log(parcs.value);
+            for (let i = 0; i < parcs.value.length; i++) {
+                parc.value = parcs.value[i].nom;
+            }
+        }, 1000);
+    }
 });
 
 //Récupère l'utilisateurs connecter
 const user = computed(() => usersStore.getUsersById);
 
 //Récupère les commentaires de l'utilisateur
-const comments = computed(() => attractionStore.getComments);
+const comments = computed(() => attractionStore.getRatingStarAttraction);
+
+const date = ref();
+
+const formattedDate = (createdAt) => {
+    const date = new Date(createdAt);
+    const day = String(date.getDate()).padStart(2, "0"); // Jour avec 2 chiffres
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Mois avec 2 chiffres
+    const year = String(date.getFullYear()).slice(-2); // Année sur 2 chiffres
+
+    return `${day}/${month}/${year}`;
+};
+
+const fetchParc = (id) => {
+    parcsStore.fetchParcById(id);
+    const parc = computed(() => parcsStore.getParcs);
+
+    for (let i = 0; i < parc.value.length; i++) {
+        console.log(parc.value[i]);
+    }
+};
 
 // Modification des données de l'utilisateurs
 
@@ -59,14 +98,6 @@ const updateUsers = () => {
 
 const showAbout = ref(false);
 const showPost = ref(false);
-
-//const token = useRef(localStorage.getItem("token"));
-//const tokenDecode = jwtDecode(token.current);
-
-/* useEffect(() => {
-        dispatch(fetchUser(tokenDecode.id_user));
-        dispatch(fetchComments(tokenDecode.id_user));
-    }, []); */
 
 const showAboutOrNot = () => {
     showAbout.value = true;
@@ -182,18 +213,27 @@ const showPostOrNot = () => {
                     >
                         <div
                             className="bg-white w-52  inline-block shadow-xl md:w-80 xl:w-full"
+                            v-for="data in comments"
                         >
                             <p className="pt-4 pl-4 font-bold">
-                                Maxime Rossbach
-                                {{ comments }}
+                                {{ data.User.username }}
                             </p>
-                            <p className="pl-4 pt-1 italic">Konda - Walibi</p>
-                            <p className="pl-4 pt-4">3/5</p>
+                            <p
+                                id="ref_parc"
+                                :id="data.Attraction.ref_parc"
+                                className="pl-4 pt-1 italic"
+                            >
+                                {{ data.Attraction.nom }} -
+                                {{ parc }}
+                            </p>
+                            <p className="pl-4 pt-4">{{ data.rating }}/5</p>
                             <p className="pl-4 pt-2 pr-4 max-w-sm xl:max-w-3xl">
-                                Moyen cette attraction, je ne la recommande pas
+                                {{ data.content }}
                             </p>
 
-                            <p className="pt-4 pl-4">23/01/23</p>
+                            <p className="pt-4 pl-4">
+                                {{ formattedDate(data.createdAt) }}
+                            </p>
                             <div className="flex justify-end pr-2 pt-4 pb-2">
                                 <button>
                                     <img
