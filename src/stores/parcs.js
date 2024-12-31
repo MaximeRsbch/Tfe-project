@@ -48,6 +48,7 @@ export const useParcsStore = defineStore("parcs", {
                 },
             }).then((res) => {
                 this.parcsdict = res.data;
+                console.log(res.data);
             });
         },
 

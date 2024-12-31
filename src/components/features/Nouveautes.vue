@@ -2,14 +2,21 @@
 import { ref, onMounted, computed } from "vue";
 import { useArticlesStore } from "../../stores/articles.js";
 import { useParcsStore } from "../../stores/parcs.js";
+import { RouterLink, useRouter } from "vue-router";
 
 const articlesStore = useArticlesStore();
+const parcsStore = useParcsStore();
 
 onMounted(() => {
     articlesStore.getAllArticles();
 });
 
+setTimeout(() => {
+    articlesStore.getAllArticles();
+}, 200);
+
 const articles = computed(() => articlesStore.getArticles);
+const parc = computed(() => parcsStore.getParcs);
 </script>
 
 <template>
@@ -23,17 +30,27 @@ const articles = computed(() => articlesStore.getArticles);
                     class="bg-white w-full inline-block border rounded-md shadow-lg pt-2 pb-2 md:w-full max-w-4xl"
                 >
                     <h1 class="text-center font-semibold mx-6 md:text-start">
-                        {{ article.title }}
-                    </h1>
-                    <div class="">
-                        <p
-                            class="text-center md:text-start break-words mx-6 pt-4"
+                        <RouterLink
+                            v-if="article.id !== undefined"
+                            v-bind:to="{
+                                name: 'fullfeature',
+                                params: {
+                                    id: article.id,
+                                },
+                            }"
                         >
-                            {{ article.content }}
-                        </p>
-                    </div>
+                            {{ article.title }}
+                        </RouterLink>
+                    </h1>
+
+                    <p class="text-center md:text-start break-words mx-6 pt-4">
+                        {{ article.content }}
+                    </p>
+
                     <div class="grid grid-cols-2">
-                        <p class="pl-4 pt-4">Walibi</p>
+                        <p id="parcId" :id="article.ref_parc" class="pl-4 pt-4">
+                            {{ article.ref_parc }}
+                        </p>
                         <div class="flex justify-end">
                             <div class="grid grid-cols-2">
                                 <img
