@@ -167,7 +167,7 @@ const reportComment = () => {
 function formatCreatedAt(createdAt) {
     const date = new Date(createdAt);
     // Format the date as per your requirement
-    const formattedDate = date.toLocaleString(); // Adjust the format as needed
+    const formattedDate = date.toLocaleDateString("fr-FR"); // Adjust the format as needed
     return formattedDate;
 }
 
@@ -177,9 +177,9 @@ const goBack = () => {
 </script>
 
 <template>
-    <button
+    <!-- <button
         @click="goBack"
-        class="text-blue-500 pt-10 pl-4 text-xl hover:underline"
+        class="text-white pt-10 pl-4 text-xl absolute hover:underline"
     >
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -196,36 +196,38 @@ const goBack = () => {
             ></path>
         </svg>
         Retour
-    </button>
+    </button> 
+    -->
 
     <div class="flex justify-center">
         <img
             v-if="articles.img_url"
             :src="`${BASE_URL}/${articles.img_url.replace(/\\/g, '/')}`"
             alt="Article Image"
-            class="mt-4 w-11/12 md:w-3/4 lg:w-1/2"
+            class="md:w-full md:h-[300px] lg:w-full lg:h-[300px] xl:h-[400px] object-cover"
         />
     </div>
     <!-- Récupère et affiche les informations de l'image spécifique-->
-    <div class="mx-auto container max-w-4xl">
-        <div>
-            <h1 class="text-center md:text-4xl text-3xl pt-4">
-                {{ articles.title }}
-            </h1>
-            <div class="flex justify-center">
-                <p class="pt-4 max-w-5xl text-center pb-5">
-                    {{ articles.content }}
-                </p>
-            </div>
-        </div>
+    <div class="">
+        <h1
+            class="md:text-3xl text-2xl pr-10 pl-8 pt-10 font-bold xl:text-4xl xl:text-center"
+        >
+            {{ articles.title }}
+        </h1>
+
+        <p
+            class="pt-4 pb-5 px-8 text-justify break-words xl:px-20 xl:text-xl xl:pt-20"
+        >
+            {{ articles.content }}
+        </p>
     </div>
     <div
         v-if="articles.showCommentaires === true"
         class="flex justify-center pt-20"
     >
-        <h2 class="md:text-4xl text-2xl">Espace commentaire</h2>
+        <h2 class="md:text-4xl text-2xl font-semibold">Espace commentaire</h2>
     </div>
-    <div v-if="articles.showCommentaires === true" class="pt-10">
+    <div v-if="articles.showCommentaires === true" class="pt-10 px-2">
         <div
             class="mx-auto container max-w-xl"
             v-for="test in articleCommentaire"
@@ -251,7 +253,7 @@ const goBack = () => {
                     <button
                         v-if="test.ref_user == idUser || role === 'admin'"
                         @click="deleteComment(test.id)"
-                        class="bg-[#344D59] text-white rounded-md px-4 py-1"
+                        class="bg-[#344D59] text-white rounded-md px-3 py-1"
                     >
                         Delete
                     </button>

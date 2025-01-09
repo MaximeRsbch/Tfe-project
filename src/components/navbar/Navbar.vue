@@ -30,7 +30,7 @@ const goToLogin = () => {
 };
 </script>
 <template>
-    <header class="bg-[#344d59] h-[87px] lg:h-[123px]">
+    <header class="bg-[#344d59] h-[60px] lg:h-[123px]">
         <div class="px-7 h-full flex flex-col">
             <div
                 class="h-full flex items-center justify-between container mx-auto"
@@ -40,7 +40,7 @@ const goToLogin = () => {
                         id="logo"
                         src="/assets/img/logo.png"
                         alt="Logo"
-                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-24 md:h-24 w-20 lg:w-full"
+                        class="lg:bg-white lg:rounded-md lg:px-4 lg:py-2 md:w-24 md:h-24 w-14 lg:w-full"
                     />
                 </a>
                 <nav
@@ -48,7 +48,7 @@ const goToLogin = () => {
                     class="z-30 bg-[#344d59] transition h-screen w-screen pb-16 lg:pb-0 left-0 top-0 fixed scale-x-0 flex flex-col lg:w-auto lg:h-auto origin-right opacity-0 lg:opacity-100 lg:static lg:scale-x-100"
                 >
                     <ul
-                        class="flex flex-1 justify-start items-center text-2xl md:text-2xl lg:text-sm xl:text-lg max-h-fit px-7 pt-[112px] flex-col lg:p-0 lg:flex-row gap-5 lg:gap-7 text-white lg:flex lg:justify-end lg:items-center lg:w-full lg:font-semibold"
+                        class="flex flex-1 justify-start items-center text-2xl md:text-2xl lg:text-sm xl:text-lg max-h-fit px-7 pt-[112px] flex-col lg:p-0 lg:flex-row gap-5 lg:gap-7 text-white font-semibold lg:flex lg:justify-end lg:items-center lg:w-full lg:font-semibold"
                     >
                         <li v-for="link in links">
                             <RouterLink :to="link.href" active-class="active">{{
